@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <definition name="baselayout_user" template="/main_layouts/user/master_layout.jsp">
+        <put-attribute name="header" value="/main_layouts/user/header.jsp" />
+        <put-attribute name="content" value="" />
+        <put-attribute name="footer" value="/main_layouts/user/footer.jsp" />
+    </definition>
+
+    <definition name="home" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/home.jsp" />
+    </definition>
+    <definition name="shop" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/shop.jsp" />
+    </definition>
+
+
+    <definition name="baselayout_admin" template="/main_layouts/admin/master_layout.jsp">
+        <put-attribute name="header" value="/main_layouts/admin/header.jsp" />
+        <put-attribute name="content" value="" />
+        <put-attribute name="footer" value="/main_layouts/admin/footer.jsp" />
+    </definition>
+
+    <definition name="admin_home" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/home.jsp" />
+    </definition>
+    <definition name="admin_book" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/book/book.jsp" />
+    </definition>
+    <definition name="admin_book_new" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/book/book_new.jsp" />
+    </definition>
+    <definition name="admin_book_edit" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/book/book_edit.jsp" />
+    </definition>
+    <definition name="admin_publisher" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/publisher/publisher.jsp" />
+    </definition>
+    <definition name="admin_publisher_new" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/publisher/publisher_new.jsp" />
+    </definition>
+    <definition name="admin_publisher_edit" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/publisher/publisher_edit.jsp" />
+    </definition>
+</tiles-definitions>
