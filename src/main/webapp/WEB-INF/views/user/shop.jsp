@@ -108,7 +108,7 @@
                                         </div><!-- End .product-action-vertical -->
 
                                         <div class="product-action">
-                                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                            <a href="/trang-chu/them-vao-gio/${item.id}" class="btn-product btn-cart"><span>Thêm giỏ hàng</span></a>
                                         </div><!-- End .product-action -->
                                     </figure><!-- End .product-media -->
 
