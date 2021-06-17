@@ -12,15 +12,15 @@
     <!-- TABLE HOVER -->
     <div class="panel">
         <div class="panel-heading" style="text-align: end;">
-            <a href="<c:url value="/admin/home/category/new"/>" class="btn btn-success">NEW</a>
+            <a href="<c:url value="/admin/category/new"/>" class="btn btn-success">NEW</a>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Name</th>
-                    <th>Created Date</th>
+                    <th>Tên loại sách</th>
+                    <th>Ngày tạo</th>
                     <th></th>
                 </tr>
                 </thead>

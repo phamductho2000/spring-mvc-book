@@ -10,8 +10,8 @@ import com.webbansach.repository.CategoryRepository;
 import com.webbansach.repository.PublisherRepository;
 import com.webbansach.service.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,7 @@ public class BookService implements IBookService {
     private PublisherRepository publisherRepository;
     @Autowired
     private BookConverter bookConverter;
+
     @Override
     public List<BookDTO> findAll() {
         List<BookEntity> bookEntities = bookRepository.findAll();
@@ -45,8 +46,8 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public  List<BookDTO> findAllByCateId(long id){
-        List<BookEntity> bookEntities = bookRepository.findAllByCategoryId(id);
+    public  List<BookDTO> findAllByCateId(long id, Pageable pageable){
+        List<BookEntity> bookEntities = bookRepository.findAllByCategoryId(id, pageable);
         List<BookDTO> bookDTOS = new ArrayList<>();
         for(BookEntity item: bookEntities) {
             BookDTO bookDTO = bookConverter.entityToDTO(item);
@@ -81,5 +82,8 @@ public class BookService implements IBookService {
         bookRepository.delete(bookEntity);
     }
 
-
+    @Override
+    public int getTotalItem(){
+        return (int) bookRepository.count();
+    }
 }

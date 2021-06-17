@@ -12,7 +12,7 @@
     <!-- TABLE HOVER -->
     <div class="panel">
         <div class="panel-heading" style="text-align: end;">
-            <a href="<c:url value="/admin/home/publisher/new"/>" class="btn btn-success">NEW</a>
+            <a href="<c:url value="/admin/publisher/new"/>" class="btn btn-success">NEW</a>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
@@ -43,8 +43,8 @@
                         <td>
                             <div class="crud" style="text-align: center;">
                                 <a href="<c:url value="/admin/home/publisher/detail"/>" style="margin-right: 8px"><i class="fa fa-info-circle"></i></a>
-                                <a href="<c:url value="/admin/home/publisher/edit/${item.id}"/>" style="margin-right: 8px"><i class="fa fa-edit"></i></a>
-                                <a href="<c:url value="/admin/home/publisher/remove/${item.id}"/>"><i class="fa fa-close"></i></a>
+                                <a href="<c:url value="/admin/publisher/edit/${item.id}"/>" style="margin-right: 8px"><i class="fa fa-edit"></i></a>
+                                <a href="<c:url value="/admin/publisher/remove/${item.id}"/>"><i class="fa fa-close"></i></a>
                             </div>
                         </td>
                     </tr>

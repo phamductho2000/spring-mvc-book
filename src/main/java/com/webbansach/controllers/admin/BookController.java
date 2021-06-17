@@ -22,35 +22,35 @@ public class BookController {
     @Autowired
     IPublisherService publisherService;
 
-    @RequestMapping(value = "/admin/home/book", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/book", method = RequestMethod.GET)
     public ModelAndView homePage() {
         ModelAndView mav = new ModelAndView("admin_book");
         mav.addObject("listBook", bookService.findAll());
         return mav;
     }
 
-    @RequestMapping(value = "/admin/home/book/new", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/book/new", method = RequestMethod.GET)
     public ModelAndView addPage() {
         ModelAndView mav = new ModelAndView("admin_book_new", "book", new BookDTO());
         mav.addObject("listCategoryName", categoryService.findAll());
         mav.addObject("listPublisherName", publisherService.findAll());
+        mav.addObject("totalItem", bookService.getTotalItem());
         return mav;
     }
 
-    @RequestMapping(value = "/admin/home/book/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/book/save", method = RequestMethod.POST)
     public String saveBook(@ModelAttribute("book") BookDTO book) {
         bookService.save(book);
         return "redirect:/admin/home/book";
     }
 
-    @RequestMapping(value = "/admin/home/book/detail/{id}", method = RequestMethod.GET)
-    public ModelAndView removeBook(@PathVariable("id") long id) {
-        ModelAndView mav = new ModelAndView("admin_book");
+    @RequestMapping(value = "/admin/book/remove/{id}", method = RequestMethod.GET)
+    public String removeBook(@PathVariable("id") long id) {
         bookService.remove(id);
-        return mav;
+        return "redirect:/admin/home/book";
     }
 
-    @RequestMapping(value = "/admin/home/book/edit/{id}/{pId}/{cId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/book/edit/{id}/{pId}/{cId}", method = RequestMethod.GET)
     public ModelAndView editPage(@PathVariable("id") long id,
                                  @PathVariable("pId") long pId,
                                  @PathVariable("cId") long cId) {
@@ -63,13 +63,13 @@ public class BookController {
         return mav;
     }
 
-    @RequestMapping(value = "/admin/home/book/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/book/update", method = RequestMethod.POST)
     public String updateBook(@ModelAttribute("book") BookDTO book) {
         bookService.save(book);
         return "redirect:/admin/home/book";
     }
 
-    @RequestMapping(value = "/admin/home/book/search", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/book/search", method = RequestMethod.POST)
     public ModelAndView searchBook(@RequestParam(name = "key") String key) {
         System.out.println(key);
 

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: tho20
@@ -7,7 +8,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<main class="main">
+<main class="main" id="main_shop">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
             <h1 class="page-title">Grid 4 Columns<span>Shop</span></h1>
@@ -108,7 +109,7 @@
                                         </div><!-- End .product-action-vertical -->
 
                                         <div class="product-action">
-                                            <a href="/trang-chu/them-vao-gio/${item.id}" class="btn-product btn-cart"><span>Thêm giỏ hàng</span></a>
+                                         <button class="btn-product btn-cart addCart" onclick="addToCart(${item.id})"><span>Thêm giỏ hàng</span></button>
                                         </div><!-- End .product-action -->
                                     </figure><!-- End .product-media -->
 
@@ -138,10 +139,13 @@
                                     <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
                                 </a>
                             </li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item-total">of 6</li>
+                            <% int total = (int) request.getAttribute("totalItem"); %>
+                            <% for(int i = 1; i <= (total) ; i++) { %>
+                                <li class="page-item active" aria-current="page"><a class="page-link" href="/trang-chu/${nameCate}/${cateId}/page=<%= i %>"><%= i %></a></li>
+
+                            <% } %>
+                            <li class="page-item-total">of ${totalItem}</li>
+
                             <li class="page-item">
                                 <a class="page-link page-link-next" href="#" aria-label="Next">
                                     Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
@@ -206,4 +210,17 @@
             </div><!-- End .row -->
         </div><!-- End .container -->
     </div><!-- End .page-content -->
+
+    <!-- Toast message -->
+<%--    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">--%>
+<%--        <!-- Position it -->--%>
+<%--        <div style="position: absolute; bottom: 0; right: 0;">--%>
+<%--            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">--%>
+<%--                <div class="toast-body">--%>
+<%--                    Đã thêm sản phẩm vào giỏ hàng--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+    <!-- Toast message -->
 </main><!-- End .main -->

@@ -10,7 +10,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%  HashMap<Long, CartDTO> cart = (HashMap<Long, CartDTO>)session.getAttribute("Cart"); %>
-<header class="header header-8">
+<header class="header header-8" id="header_user">
     <div class="header-top">
         <div class="container">
             <div class="header-left">
@@ -145,7 +145,7 @@
                 </div><!-- End .header-search -->
 
                 <div class="dropdown cart-dropdown">
-                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                    <a href="/gio-hang" class="dropdown-toggle" role="button" >
                         <i class="icon-shopping-cart"></i>
                         <% if (cart == null) { %>
                             <span class="cart-count">0</span>
@@ -154,7 +154,7 @@
                         <% } %>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <% if (cart == null) { %>
+                        <% if (cart == null || cart.size() == 0) { %>
                             <div class="dropdown-cart-products">
                                 <div class="product">
                                     <strong>Chưa có sản phẩm nào trong giỏ hàng</strong>
@@ -170,7 +170,7 @@
                                             </h4>
                                             <span class="cart-product-info">
                                                 <span class="cart-product-qty">${item.value.quanty}</span>
-                                                x ${item.value.book.price}
+                                                x ${item.value.book.price}₫
                                             </span>
                                         </div><!-- End .product-cart-details -->
                                         <figure class="product-image-container">
@@ -183,13 +183,13 @@
                                 </div><!-- End .cart-product -->
                             </c:forEach>
                             <div class="dropdown-cart-total">
-                                        <span>Total</span>
-                                        <span class="cart-total-price">$160.00</span>
+                                        <span>TỔNG</span>
+                                        <span class="cart-total-price">${totalPrice}₫</span>
                             </div><!-- End .dropdown-cart-total -->
 
                             <div class="dropdown-cart-action">
-                                        <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                        <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                                        <a href="/gio-hang" class="btn btn-primary">XEM GIỎ HÀNG</a>
+                                        <a href="checkout.html" class="btn btn-outline-primary-2"><span>THANH TOÁN</span><i class="icon-long-arrow-right"></i></a>
                             </div><!-- End .dropdown-cart-total -->
                         <% } %>
                     </div><!-- End .dropdown-menu -->
@@ -318,3 +318,4 @@
         </div><!-- End .modal-content -->
     </div><!-- End .modal-dialog -->
 </div><!-- End .modal -->
+</head>

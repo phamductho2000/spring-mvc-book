@@ -52,6 +52,8 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		$('html, body').animate({scrollTop: $('.section-support').offset().top}, 1200);
 	});
+
+
 });
 
 jQuery(window).on('load', function() {

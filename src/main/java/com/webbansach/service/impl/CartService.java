@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -33,6 +34,22 @@ public class CartService implements ICartService {
         }
         cart.put(id, itemCart);
         return cart;
+    }
+    @Override
+    public HashMap<Long, CartDTO> editCart(int[] quantys, HashMap<Long, CartDTO> cart){
+        Set<Long> keySet = cart.keySet();
+        int i = 0;
+        for (Long key : keySet) {
+           cart.get(key).setQuanty(quantys[i]);
+           cart.get(key).setTotalPrice(quantys[i] * cart.get(key).getBook().getPrice());
+           i++;
+        }
+        return cart;
+    }
+
+    @Override
+    public void deleteItemCart(long id, HashMap<Long, CartDTO> cart){
+        cart.remove(id);
     }
 
     @Override

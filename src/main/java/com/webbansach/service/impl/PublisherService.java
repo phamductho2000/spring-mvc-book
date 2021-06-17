@@ -1,6 +1,8 @@
 package com.webbansach.service.impl;
 
+import com.webbansach.converter.PublisherConverter;
 import com.webbansach.dto.BookDTO;
+import com.webbansach.dto.CategoryDTO;
 import com.webbansach.dto.PublisherDTO;
 import com.webbansach.entity.BookEntity;
 import com.webbansach.entity.CategoryEntity;
@@ -18,16 +20,15 @@ public class PublisherService implements IPublisherService {
     @Autowired
     PublisherRepository publisherRepository;
 
+    @Autowired
+    PublisherConverter publisherConverter;
+
     @Override
     public List<PublisherDTO> findAll(){
         List<PublisherEntity> publisherEntities = publisherRepository.findAll();
         List<PublisherDTO> publisherDTOS = new ArrayList<>();
         for(PublisherEntity item: publisherEntities){
-            PublisherDTO publisherDTO = new PublisherDTO();
-            publisherDTO.setId(item.getId());
-            publisherDTO.setName(item.getName());
-            publisherDTO.setAddress(item.getAddress());
-            publisherDTO.setCreated_date(item.getCreated_date());
+            PublisherDTO publisherDTO = publisherConverter.entityToDTO(item);
             publisherDTOS.add(publisherDTO);
         }
         return publisherDTOS;
@@ -36,12 +37,7 @@ public class PublisherService implements IPublisherService {
     @Override
     public PublisherDTO findOne(long id){
         PublisherEntity publisherEntity = publisherRepository.findOne(id);
-        PublisherDTO publisherDTO = new PublisherDTO();
-            publisherDTO.setId(publisherEntity.getId());
-            publisherDTO.setName(publisherEntity.getName());
-            publisherDTO.setAddress(publisherEntity.getAddress());
-            publisherDTO.setCreated_date(publisherEntity.getCreated_date());
-
+        PublisherDTO publisherDTO = publisherConverter.entityToDTO(publisherEntity);
         return publisherDTO;
     }
 
@@ -54,17 +50,16 @@ public class PublisherService implements IPublisherService {
 
     @Override
     public void save(PublisherDTO publisherDTO){
-       PublisherEntity publisher = new PublisherEntity();
-       publisher.setName(publisherDTO.getName());
-       publisher.setAddress(publisherDTO.getAddress());
-       publisherRepository.save(publisher);
-    }
+        PublisherEntity publisherEntity = new PublisherEntity();
+        if(publisherDTO.getId() != null){
+            PublisherEntity publisherEntityOld = publisherRepository.findOne(publisherDTO.getId());
+            publisherEntity = publisherConverter.dtoToEntity(publisherEntityOld, publisherDTO);
+        }
+        else{
+            publisherEntity = publisherConverter.dtoToEntity(publisherDTO);
+        }
 
-    @Override
-    public void update(PublisherDTO publisherDTO){
-        PublisherEntity publisherEntity = publisherRepository.findOne(publisherDTO.getId());
-        publisherEntity.setName(publisherDTO.getName());
-        publisherEntity.setAddress(publisherDTO.getAddress());
         publisherRepository.save(publisherEntity);
     }
+
 }

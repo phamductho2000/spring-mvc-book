@@ -8,34 +8,34 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="main">
+<div class="main" id="main_book">
     <!-- TABLE HOVER -->
     <div class="panel">
+        <div class="" STYLE="text-align: center;">
+            <h3>QUẢN LÝ SÁCH</h3>
+        </div>
         <div class="row">
-            <div class="col-md-4">
-                <h3>Book manager</h3>
-            </div>
-            <div class="col-md-4">
-                <form class="navbar-form navbar-left" action="/admin/home/book/search" method="POST">
+            <div class="col-md-6">
+                <form class="navbar-form navbar-left" action="/admin/book/search" method="POST">
                     <div class="input-group">
                         <input type="text" value="" class="form-control" name="key" placeholder="Enter keyword...">
                         <span class="input-group-btn"><button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button></span>
                     </div>
                 </form>
             </div>
-            <div class="panel-heading col-md-4" style="text-align: end">
-                <a href="<c:url value="/admin/home/book/new"/>" class="btn btn-success">NEW</a>
+            <div class="panel-heading col-md-6" style="text-align: end">
+                <a href="<c:url value="/admin/book/new"/>" class="btn btn-success">NEW</a>
             </div>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Author</th>
-                    <th>Price</th>
-                    <th>Created Date</th>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Tác giả</th>
+                    <th>Đơn giá</th>
+                    <th>Ngày tạo</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -57,9 +57,9 @@
                         </td>
                         <td>
                             <div class="crud" style="text-align: center;">
-                                <a href="<c:url value="/admin/home/book/detail/${item.id}"/>" style="margin-right: 8px"><i class="fa fa-info-circle"></i></a>
-                                <a href="<c:url value="/admin/home/book/edit/${item.id}/${item.publisher_id}/${item.category_id}"/>" style="margin-right: 8px"><i class="fa fa-edit"></i></a>
-                                <a href="<c:url value="/admin/home/book/remove/${item.id}"/>"><i class="fa fa-close"></i></a>
+                                <button class="infoBook" style="border: none;background: none;"><a href="" style="margin-right: 8px" ><i class="fa fa-eye"></i></a></button>
+                                <button class="editBook" style="border: none;background: none;" onclick="editBook(${item.id},${item.publisher_id},${item.category_id})"><i class="fa fa-edit"></i></button>
+                                <button class="removeBook" style="border: none;background: none;" onclick="removeBook(${item.id})"><i class="fa fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -70,6 +70,3 @@
     </div>
     <!-- END TABLE HOVER -->
 </div>
-<script>
-    alert(${message})
-</script>

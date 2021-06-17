@@ -40,10 +40,10 @@
 				<nav>
 					<ul class="nav">
 						<li><a href="<c:url value='/admin/home'/>" class="active"><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
-						<li><a href="<c:url value='/admin/home/book'/>" class=""><i class="lnr lnr-code"></i> <span>Book</span></a></li>
-						<li><a href="<c:url value='/admin/home/category'/>" class=""><i class="lnr lnr-chart-bars"></i> <span>Category</span></a></li>
-						<li><a href="<c:url value='/admin/home/publisher'/>" class=""><i class="lnr lnr-cog"></i> <span>Publisher</span></a></li>
-						<li><a href="<c:url value='/admin/home'/>" class=""><i class="lnr lnr-alarm"></i> <span>Notifications</span></a></li>
+						<li><a href="<c:url value='/admin/book'/>" class="managerBook"><i class="fa fa-book"></i> <span>Book</span></a></li>
+						<li><a href="<c:url value='/admin/category'/>" class=""><i class="lnr lnr-chart-bars"></i> <span>Category</span></a></li>
+						<li><a href="<c:url value='/admin/publisher'/>" class=""><i class="lnr lnr-cog"></i> <span>Publisher</span></a></li>
+						<li><a href="<c:url value='/admin/order'/>" class=""><i class="lnr lnr-alarm"></i> <span>Order</span></a></li>
 						<li>
 							<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Pages</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages" class="collapse ">
@@ -76,6 +76,7 @@
 	<script src="<c:url value='/resources/admin/vendor/chartist/js/chartist.min.js'/>"></script>
 	<script src="<c:url value='/resources/admin/scripts/klorofil-common.js'/>"></script>
 	<script src="<c:url value='/resources/admin/scripts/toast.js'/>"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script>
 	$(function() {
 		var data, options;
@@ -194,6 +195,39 @@
 
 	});
 	</script>
-</body>
 
+</body>
 </html>
+<script>
+    $('.managerBook').click(function () {
+        $.ajax({
+            type: "GET",
+            url: "/admin/book",
+            success: function(response) {
+                $("#main_home").replaceWith( response );
+            }
+        })
+    })
+
+	function editBook(id, pId, cateId) {
+		var url = "/admin/book/edit/"+id+"/"+pId+"/"+cateId
+		$.ajax({
+			type: "GET",
+			url: url,
+			success: function(response) {
+				$("#main_book").replaceWith( response );
+			}
+		})
+	}
+    function removeBook(id) {
+        var url = "/admin/book/remove/"+id
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(response) {
+                $("#main_book").replaceWith( response );
+            }
+        })
+    }
+</script>
+

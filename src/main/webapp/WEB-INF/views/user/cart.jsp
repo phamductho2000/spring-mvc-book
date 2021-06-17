@@ -1,3 +1,8 @@
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.webbansach.dto.CartDTO" %>
+<%@ page import="java.util.HashMap" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: tho20
@@ -6,8 +11,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<main class="main">
+<%  HashMap<Long, CartDTO> cart = (HashMap<Long, CartDTO>)session.getAttribute("Cart"); %>
+<main class="main" id="main_cart">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
             <h1 class="page-title">Shopping Cart<span>Shop</span></h1>
@@ -26,66 +31,52 @@
     <div class="page-content">
         <div class="cart">
             <div class="container">
+                <% if (cart.size() == 0 || cart == null) { %>
+                <p style="text-align: center">KHÔNG CÓ SẢN PHẨM NÀO TRONG GIỎ HÀNG</p>
+                    <br>
+                <a href="/trang-chu" class="btn btn-success">QUAY LẠI TRANG CHỦ</a>
+                <% } else { %>
                 <div class="row">
                     <div class="col-lg-9">
                         <table class="table table-cart table-mobile">
                             <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th>Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
                                 <th></th>
                             </tr>
                             </thead>
-
                             <tbody>
-                            <tr>
-                                <td class="product-col">
-                                    <div class="product">
-                                        <figure class="product-media">
-                                            <a href="#">
-                                                <img src="assets/images/products/table/product-1.jpg" alt="Product image">
-                                            </a>
-                                        </figure>
+                            <c:forEach var="item" items="${Cart}">
+                                <tr>
+                                    <td id="idProduct" hidden="true">${item.value.book.id}</td>
+                                    <td class="product-col">
+                                        <div class="product">
+                                            <figure class="product-media">
+                                                <a href="#">
+                                                    <img src="${item.value.book.image}" alt="Product image">
+                                                </a>
+                                            </figure>
 
-                                        <h3 class="product-title">
-                                            <a href="#">Beige knitted elastic runner shoes</a>
-                                        </h3><!-- End .product-title -->
-                                    </div><!-- End .product -->
-                                </td>
-                                <td class="price-col">$84.00</td>
-                                <td class="quantity-col">
-                                    <div class="cart-product-quantity">
-                                        <input type="number" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
-                                    </div><!-- End .cart-product-quantity -->
-                                </td>
-                                <td class="total-col">$84.00</td>
-                                <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td class="product-col">
-                                    <div class="product">
-                                        <figure class="product-media">
-                                            <a href="#">
-                                                <img src="assets/images/products/table/product-2.jpg" alt="Product image">
-                                            </a>
-                                        </figure>
-
-                                        <h3 class="product-title">
-                                            <a href="#">Blue utility pinafore denim dress</a>
-                                        </h3><!-- End .product-title -->
-                                    </div><!-- End .product -->
-                                </td>
-                                <td class="price-col">$76.00</td>
-                                <td class="quantity-col">
-                                    <div class="cart-product-quantity">
-                                        <input type="number" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
-                                    </div><!-- End .cart-product-quantity -->
-                                </td>
-                                <td class="total-col">$76.00</td>
-                                <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
-                            </tr>
+                                            <h3 class="product-title">
+                                                <a href="#">${item.value.book.name}</a>
+                                            </h3><!-- End .product-title -->
+                                        </div><!-- End .product -->
+                                    </td>
+                                    <td class="price-col">${item.value.book.price}₫</td>
+                                    <td class="quantity-col">
+                                        <div class="cart-product-quantity">
+                                            <input type="number" id="quanty" class="form-control" value="${item.value.quanty}" min="1" max="10" step="1" data-decimals="0" required>
+                                        </div><!-- End .cart-product-quantity -->
+                                    </td>
+                                    <td class="total-col">${item.value.totalPrice}₫</td>
+                                    <td class="remove-col">
+                                        <button onclick="removeItemCart(${item.value.book.id})" style="background: none; border: none;"><i class="icon-close" style="color: red"></i></button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table><!-- End .table table-wishlist -->
 
@@ -93,15 +84,15 @@
                             <div class="cart-discount">
                                 <form action="#">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" required placeholder="coupon code">
+                                        <input type="text" class="form-control" required placeholder="NHẬP MÃ GIẢM GIÁ">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
                                         </div><!-- .End .input-group-append -->
                                     </div><!-- End .input-group -->
                                 </form>
                             </div><!-- End .cart-discount -->
+                            <button onclick="updateCart()" class="btn btn-outline-dark-2"><span>CẬP NHẬT GIỎ HÀNG</span><i class="icon-refresh"></i></button>
 
-                            <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
                         </div><!-- End .cart-bottom -->
                     </div><!-- End .col-lg-9 -->
                     <aside class="col-lg-3">
@@ -161,12 +152,14 @@
                                 </tbody>
                             </table><!-- End .table table-summary -->
 
-                            <a href="checkout.html" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+                            <a href="/thanh-toan" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
                         </div><!-- End .summary -->
 
                         <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
                     </aside><!-- End .col-lg-3 -->
                 </div><!-- End .row -->
+                <% } %>
+
             </div><!-- End .container -->
         </div><!-- End .cart -->
     </div><!-- End .page-content -->

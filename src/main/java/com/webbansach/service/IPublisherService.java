@@ -14,5 +14,4 @@ public interface IPublisherService {
 
     void save(PublisherDTO publisherDTO);
 
-    void update(PublisherDTO publisherDTO);
 }

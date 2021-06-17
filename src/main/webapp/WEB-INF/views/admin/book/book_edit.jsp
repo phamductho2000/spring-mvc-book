@@ -9,48 +9,48 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <div class="main">
     <div class="container-fluid" style="margin: 20px 20px;">
-        <form:form method="POST" action="/admin/home/book/update" modelAttribute="book">
+        <form:form method="POST" action="/admin/book/update" modelAttribute="book">
             <div class="row">
                 <form:input path="id" type="hidden" value="${book.id}"></form:input>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <form:label path="name">Name</form:label>
+                        <form:label path="name">Tên sách</form:label>
                         <form:input path="name" type="text" class="form-control" value="${book.name}"></form:input>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <form:label path="author" >Author</form:label>
+                        <form:label path="author" >Tác giả</form:label>
                         <form:input path="author" type="text" class="form-control" value="${book.author}"></form:input>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <form:label path="price" >Price</form:label>
+                        <form:label path="price" >Đơn giá</form:label>
                         <form:input path="price" type="text" class="form-control" value="${book.price}"></form:input>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <form:label path="image" >Image</form:label>
+                        <form:label path="image" >Hình ảnh</form:label>
                         <form:input path="image" type="text" class="form-control" value="${book.image}"></form:input>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <form:label path="page" >Page</form:label>
+                        <form:label path="page" >Số trang</form:label>
                         <form:input path="page" type="text" class="form-control" value="${book.page}"></form:input>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <form:label path="weight" >Weight</form:label>
+                        <form:label path="weight" >Cân nặng</form:label>
                         <form:input path="weight" type="text" class="form-control" value="${book.weight}"></form:input>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <form:label path="size" >Size</form:label>
+                        <form:label path="size" >Kích thước</form:label>
                         <form:input path="size" type="text" class="form-control" value="${book.size}"></form:input>
                     </div>
                 </div>
@@ -72,10 +72,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <form:label path="description" >Description</form:label>
+                <form:label path="description" >Mô tả</form:label>
                 <form:input path="description" type="text" class="form-control" id="des"></form:input>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" onclick="createNotification({position: 'bottom right',type: 'warning', duration: -18})">Update</button>
         </form:form>
     </div>
 </div>
@@ -86,6 +86,3 @@
 <%--            console.error( error );--%>
 <%--        } );--%>
 <%--</script>--%>
-<script>
-
-</script>

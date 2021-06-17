@@ -9,7 +9,7 @@
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <!-- molla/index-10.html  22 Nov 2019 09:58:04 GMT -->
 <head>
@@ -41,7 +41,6 @@
     <link rel="stylesheet" href="<c:url value='/resources/user/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/user/assets/css/skins/skin-demo-10.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/user/assets/css/demos/demo-10.css'/>">
-</head>
 
 <body>
 <div class="page-wrapper">
@@ -55,14 +54,12 @@
 
 </div><!-- End .page-wrapper -->
 <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
-
 <!-- Mobile Menu -->
 <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
 
 <div class="mobile-menu-container">
     <div class="mobile-menu-wrapper">
         <span class="mobile-menu-close"><i class="icon-close"></i></span>
-
         <form action="#" method="get" class="mobile-search">
             <label for="mobile-search" class="sr-only">Search</label>
             <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
@@ -259,6 +256,12 @@
     </div>
 </div>
 <!-- Plugins JS -->
+<div class="toast" id="myToast" style="position: fixed; bottom: 0; right: 0; background: #518abc;">
+    <div class="toast-body">
+        <div><p style="font-size: 14px; color: #FFFFFF">Đã thêm sản phẩm vào giỏ hàng</p></div>
+    </div>
+</div>
+
 <script src="<c:url value='/resources/user/assets/js/jquery.min.js'/>"></script>
 <script src="<c:url value='/resources/user/assets/js/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/resources/user/assets/js/jquery.hoverIntent.min.js'/>"></script>
@@ -272,8 +275,57 @@
 <!-- Main JS File -->
 <script src="<c:url value='/resources/user/assets/js/main.js'/>"></script>
 <script src="<c:url value='/resources/user/assets/js/demos/demo-10.js'/>"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-
 <!-- molla/index-10.html  22 Nov 2019 09:58:22 GMT -->
 </html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".addCart").click(function () {
+            $(".toast").toast({ delay: 3000 });
+            $(".toast").toast('show')
+        })
+    })
+    function addToCart(id) {
+        $.ajax({
+            type: "GET",
+            url: "/them-vao-gio/"+id,
+            dataType:"html",
+            success: function(response) {
+                $("#header_user").replaceWith( $(response).find("header"))
+            }
+        })
+    }
+    function removeItemCart(id) {
+        $.ajax({
+            type: "GET",
+            url: "/xoa-san-pham-trong-gio-hang/"+id,
+            dataType:"html",
+            success: function(response) {
+                $("#main_cart").replaceWith($(response).find(".main"))
+            }
+        })
+    }
+    function updateCart() {
+        const quantys = []
+        $('.table-cart tbody tr').each(function () {
+            var value = parseInt($(this).find('td #quanty').val())
+            quantys.push(value)
+        })
+        console.log(quantys)
+        $.ajax({
+            type : 'POST',
+            url : '/cap-nhat-gio',
+            data : {myQuantys : quantys},
+            traditional: true,
+            success : function(response) {
+                $("#main_cart").replaceWith($(response).find(".main"))
+            },
+            error : function(response) {
+                alert("Loi");
+            },
+
+        });
+    }
+</script>

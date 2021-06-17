@@ -14,7 +14,12 @@
     <definition name="shop" extends="baselayout_user">
         <put-attribute name="content" value="/WEB-INF/views/user/shop.jsp" />
     </definition>
-
+    <definition name="cart" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/cart.jsp" />
+    </definition>
+    <definition name="checkout" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/checkout.jsp" />
+    </definition>
 
     <definition name="baselayout_admin" template="/main_layouts/admin/master_layout.jsp">
         <put-attribute name="header" value="/main_layouts/admin/header.jsp" />
@@ -42,5 +47,14 @@
     </definition>
     <definition name="admin_publisher_edit" extends="baselayout_admin">
         <put-attribute name="content" value="/WEB-INF/views/admin/publisher/publisher_edit.jsp" />
+    </definition>
+    <definition name="admin_category" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/publisher/category.jsp" />
+    </definition>
+    <definition name="admin_category_new" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/publisher/category_new.jsp" />
+    </definition>
+    <definition name="admin_category_edit" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/publisher/category_edit.jsp" />
     </definition>
 </tiles-definitions>

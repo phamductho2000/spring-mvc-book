@@ -1,4 +1,4 @@
-<div class="main">
+<div class="main" id="main_home">
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">

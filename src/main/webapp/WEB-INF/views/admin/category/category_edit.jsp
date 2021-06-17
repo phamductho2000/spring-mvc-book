@@ -9,16 +9,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <div class="main">
     <div class="container-fluid">
-        <form:form method="POST" action="admin/publisher/save" modelAttribute="publisher">
+        <form:form method="POST" action="/admin/category/update" modelAttribute="category">
+            <form:input path="id" value="${category.id}" type="hidden"></form:input>
             <div class="form-group">
                 <form:label path="name">Name</form:label>
-                <form:input path="name" type="text" class="form-control" ></form:input>
+                <form:input path="name" type="text" class="form-control" value="${category.name}"></form:input>
             </div>
-            <div class="form-group">
-                <form:label path="address" >Author</form:label>
-                <form:input path="address" type="text" class="form-control" ></form:input>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
         </form:form>
     </div>
 </div>

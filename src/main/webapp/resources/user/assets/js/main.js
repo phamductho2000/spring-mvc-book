@@ -779,4 +779,5 @@ $(document).ready(function () {
             }, 500)
         }, 10000)
     }
+
 });
