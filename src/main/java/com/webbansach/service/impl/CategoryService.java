@@ -44,4 +44,22 @@ public class CategoryService implements ICategoryService {
         String name = categoryEntity.getName();
         return name;
     }
+    @Override
+    public void save(CategoryDTO categoryDTO){
+        CategoryEntity categoryEntity = new CategoryEntity();
+        if(categoryDTO.getId() != null){
+            CategoryEntity categoryEntityOld = categoryRepository.findOne(categoryDTO.getId());
+            categoryEntity = categoryConverter.dtoToEntity(categoryEntityOld, categoryDTO);
+        }
+        else{
+            categoryEntity = categoryConverter.dtoToEntity(categoryDTO);
+        }
+
+        categoryRepository.save(categoryEntity);
+    }
+    @Override
+    public void remove(long id){
+        CategoryEntity categoryEntity = categoryRepository.findOne(id);
+        categoryRepository.delete(categoryEntity);
+    }
 }

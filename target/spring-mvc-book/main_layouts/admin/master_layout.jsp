@@ -40,10 +40,10 @@
 				<nav>
 					<ul class="nav">
 						<li><a href="<c:url value='/admin/home'/>" class="active"><i class="lnr lnr-home"></i> <span>Dashboard</span></a></li>
-						<li><a href="<c:url value='/admin/home/book'/>" class="managerBook"><i class="fa fa-book"></i> <span>Book</span></a></li>
-						<li><a href="<c:url value='/admin/home/category'/>" class=""><i class="lnr lnr-chart-bars"></i> <span>Category</span></a></li>
-						<li><a href="<c:url value='/admin/home/publisher'/>" class=""><i class="lnr lnr-cog"></i> <span>Publisher</span></a></li>
-						<li><a href="<c:url value='/admin/home/order'/>" class=""><i class="lnr lnr-alarm"></i> <span>Order</span></a></li>
+						<li><a href="<c:url value='/admin/book'/>" class="managerBook"><i class="fa fa-book"></i> <span>Book</span></a></li>
+						<li><a href="<c:url value='/admin/category'/>" class=""><i class="lnr lnr-chart-bars"></i> <span>Category</span></a></li>
+						<li><a href="<c:url value='/admin/publisher'/>" class=""><i class="lnr lnr-cog"></i> <span>Publisher</span></a></li>
+						<li><a href="<c:url value='/admin/order'/>" class=""><i class="lnr lnr-alarm"></i> <span>Order</span></a></li>
 						<li>
 							<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Pages</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages" class="collapse ">
@@ -77,128 +77,10 @@
 	<script src="<c:url value='/resources/admin/scripts/klorofil-common.js'/>"></script>
 	<script src="<c:url value='/resources/admin/scripts/toast.js'/>"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script>
-	$(function() {
-		var data, options;
-
-		// headline charts
-		data = {
-			labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-			series: [
-				[23, 29, 24, 40, 25, 24, 35],
-				[14, 25, 18, 34, 29, 38, 44],
-			]
-		};
-
-		options = {
-			height: 300,
-			showArea: true,
-			showLine: false,
-			showPoint: false,
-			fullWidth: true,
-			axisX: {
-				showGrid: false
-			},
-			lineSmooth: false,
-		};
-
-		new Chartist.Line('#headline-chart', data, options);
-
-
-		// visits trend charts
-		data = {
-			labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-			series: [{
-				name: 'series-real',
-				data: [200, 380, 350, 320, 410, 450, 570, 400, 555, 620, 750, 900],
-			}, {
-				name: 'series-projection',
-				data: [240, 350, 360, 380, 400, 450, 480, 523, 555, 600, 700, 800],
-			}]
-		};
-
-		options = {
-			fullWidth: true,
-			lineSmooth: false,
-			height: "270px",
-			low: 0,
-			high: 'auto',
-			series: {
-				'series-projection': {
-					showArea: true,
-					showPoint: false,
-					showLine: false
-				},
-			},
-			axisX: {
-				showGrid: false,
-
-			},
-			axisY: {
-				showGrid: false,
-				onlyInteger: true,
-				offset: 0,
-			},
-			chartPadding: {
-				left: 20,
-				right: 20
-			}
-		};
-
-		new Chartist.Line('#visits-trends-chart', data, options);
-
-
-		// visits chart
-		data = {
-			labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-			series: [
-				[6384, 6342, 5437, 2764, 3958, 5068, 7654]
-			]
-		};
-
-		options = {
-			height: 300,
-			axisX: {
-				showGrid: false
-			},
-		};
-
-		new Chartist.Bar('#visits-chart', data, options);
-
-
-		// real-time pie chart
-		var sysLoad = $('#system-load').easyPieChart({
-			size: 130,
-			barColor: function(percent) {
-				return "rgb(" + Math.round(200 * percent / 100) + ", " + Math.round(200 * (1.1 - percent / 100)) + ", 0)";
-			},
-			trackColor: 'rgba(245, 245, 245, 0.8)',
-			scaleColor: false,
-			lineWidth: 5,
-			lineCap: "square",
-			animate: 800
-		});
-
-		var updateInterval = 3000; // in milliseconds
-
-		setInterval(function() {
-			var randomVal;
-			randomVal = getRandomInt(0, 100);
-
-			sysLoad.data('easyPieChart').update(randomVal);
-			sysLoad.find('.percent').text(randomVal);
-		}, updateInterval);
-
-		function getRandomInt(min, max) {
-			return Math.floor(Math.random() * (max - min + 1)) + min;
-		}
-
-	});
-	</script>
-
 </body>
 </html>
 <script>
+    //book
     $('.managerBook').click(function () {
         $.ajax({
             type: "GET",
@@ -208,7 +90,16 @@
             }
         })
     })
-
+	function addBook() {
+		var url = "/admin/book/new"
+		$.ajax({
+			type: "GET",
+			url: url,
+			success: function(response) {
+				$("#main_book").replaceWith( response );
+			}
+		})
+	}
 	function editBook(id, pId, cateId) {
 		var url = "/admin/book/edit/"+id+"/"+pId+"/"+cateId
 		$.ajax({
@@ -229,5 +120,74 @@
             }
         })
     }
+    //category
+	function addCategory() {
+		var url = "/admin/category/new"
+		$.ajax({
+			type: "GET",
+			url: url,
+			success: function(response) {
+				$("#main_category").replaceWith( response );
+			}
+		})
+	}
+	function editCategory(id) {
+		var url = "/admin/category/edit/"+id
+		$.ajax({
+			type: "GET",
+			url: url,
+			success: function(response) {
+				$("#main_category").replaceWith( response );
+			}
+		})
+	}
+	$(document).ready(function () {
+		$(".btnRemoveCate").click(function () {
+			$('#myModal').modal('show')
+		})
+	})
+	function removeCategory(id) {
+		$("#btnYes").on("click", function(){
+			var url = "/admin/category/remove/"+id
+			$.ajax({
+				type: "GET",
+				url: url,
+				success: function(response) {
+					$("#main_category").replaceWith( response );
+				}
+			})
+		})
+	}
+	//publisher
+	function addPublisher() {
+		var url = "/admin/publisher/new"
+		$.ajax({
+			type: "GET",
+			url: url,
+			success: function(response) {
+				$("#main_publisher").replaceWith( response );
+			}
+		})
+	}
+	function editPublisher(id) {
+		var url = "/admin/publisher/edit/"+id
+		$.ajax({
+			type: "GET",
+			url: url,
+			success: function(response) {
+				$("#main_publisher").replaceWith( response );
+			}
+		})
+	}
+	function removePublisher(id) {
+		var url = "/admin/publisher/remove/"+id
+		$.ajax({
+			type: "GET",
+			url: url,
+			success: function(response) {
+				$("#main_publisher").replaceWith( response );
+			}
+		})
+	}
 </script>
 

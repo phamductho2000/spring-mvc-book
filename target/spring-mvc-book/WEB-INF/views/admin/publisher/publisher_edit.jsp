@@ -8,8 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <div class="main">
-    <div class="container-fluid">
-        <form:form method="POST" action="/admin/home/publisher/update" modelAttribute="publisher">
+    <div class="container-fluid" style="margin: 20px 20px;">
+        <form:form method="POST" action="/admin/publisher/update" modelAttribute="publisher">
             <form:input path="id" value="${publisher.id}" type="hidden"></form:input>
             <div class="form-group">
                 <form:label path="name">Name</form:label>

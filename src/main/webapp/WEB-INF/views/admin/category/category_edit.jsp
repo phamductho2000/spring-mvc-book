@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <div class="main">
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin: 20px 20px;">
         <form:form method="POST" action="/admin/category/update" modelAttribute="category">
             <form:input path="id" value="${category.id}" type="hidden"></form:input>
             <div class="form-group">

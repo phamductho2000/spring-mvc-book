@@ -1,16 +1,9 @@
 package com.webbansach.controllers.admin;
 
-import com.webbansach.dto.BookDTO;
 import com.webbansach.dto.PublisherDTO;
-import com.webbansach.entity.BookEntity;
-import com.webbansach.service.IBookService;
-import com.webbansach.service.ICategoryService;
 import com.webbansach.service.IPublisherService;
-import com.webbansach.service.impl.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +32,7 @@ public class PublisherController {
     @RequestMapping(value = "/admin/publisher/save", method = RequestMethod.POST)
     public String saveBook(@ModelAttribute("book") PublisherDTO publisher) {
         publisherService.save(publisher);
-        return "redirect:/admin/home/publisher";
+        return "redirect:/admin/publisher";
     }
 
     @RequestMapping(value = "/admin/publisher/edit/{id}", method = RequestMethod.GET)
@@ -52,6 +45,6 @@ public class PublisherController {
     @RequestMapping(value = "/admin/publisher/update", method = RequestMethod.POST)
     public String updateBook(@ModelAttribute("publisher") PublisherDTO publisher) {
         publisherService.save(publisher);
-        return "redirect:/admin/home/publisher";
+        return "redirect:/admin/publisher";
     }
 }

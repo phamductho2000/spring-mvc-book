@@ -1,11 +1,7 @@
 package com.webbansach.service.impl;
 
 import com.webbansach.converter.PublisherConverter;
-import com.webbansach.dto.BookDTO;
-import com.webbansach.dto.CategoryDTO;
 import com.webbansach.dto.PublisherDTO;
-import com.webbansach.entity.BookEntity;
-import com.webbansach.entity.CategoryEntity;
 import com.webbansach.entity.PublisherEntity;
 import com.webbansach.repository.PublisherRepository;
 import com.webbansach.service.IPublisherService;
@@ -61,5 +57,9 @@ public class PublisherService implements IPublisherService {
 
         publisherRepository.save(publisherEntity);
     }
-
+    @Override
+    public void remove(long id){
+        PublisherEntity publisherEntity = publisherRepository.findOne(id);
+        publisherRepository.delete(publisherEntity);
+    }
 }

@@ -49,12 +49,12 @@
         <put-attribute name="content" value="/WEB-INF/views/admin/publisher/publisher_edit.jsp" />
     </definition>
     <definition name="admin_category" extends="baselayout_admin">
-        <put-attribute name="content" value="/WEB-INF/views/admin/publisher/category.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/admin/category/category.jsp" />
     </definition>
     <definition name="admin_category_new" extends="baselayout_admin">
-        <put-attribute name="content" value="/WEB-INF/views/admin/publisher/category_new.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/admin/category/category_new.jsp" />
     </definition>
     <definition name="admin_category_edit" extends="baselayout_admin">
-        <put-attribute name="content" value="/WEB-INF/views/admin/publisher/category_edit.jsp" />
+        <put-attribute name="content" value="/WEB-INF/views/admin/category/category_edit.jsp" />
     </definition>
 </tiles-definitions>

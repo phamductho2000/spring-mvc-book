@@ -10,4 +10,8 @@ public interface ICategoryService {
     CategoryDTO findOne(long id);
 
     String getNameById(long id);
+
+    void save(CategoryDTO categoryDTO);
+
+    void remove(long id);
 }

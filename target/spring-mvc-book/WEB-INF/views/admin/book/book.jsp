@@ -24,7 +24,7 @@
                 </form>
             </div>
             <div class="panel-heading col-md-6" style="text-align: end">
-                <a href="<c:url value="/admin/book/new"/>" class="btn btn-success">NEW</a>
+                <button type="button" class="btn btn-success" onclick="addBook()">NEW</button>
             </div>
         </div>
         <div class="panel-body">

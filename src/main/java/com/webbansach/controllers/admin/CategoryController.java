@@ -1,9 +1,5 @@
 package com.webbansach.controllers.admin;
-
-import com.webbansach.dto.BookDTO;
 import com.webbansach.dto.CategoryDTO;
-import com.webbansach.dto.PublisherDTO;
-import com.webbansach.service.IBookService;
 import com.webbansach.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,15 +25,15 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/admin/category/save", method = RequestMethod.POST)
-    public String saveBook(@ModelAttribute("book") PublisherDTO publisher) {
-        //categoryService.save(publisher);
-        return "redirect:/admin/home/book";
+    public String saveBook(@ModelAttribute("book") CategoryDTO category) {
+        categoryService.save(category);
+        return "redirect:/admin/category";
     }
 
     @RequestMapping(value = "/admin/category/remove/{id}", method = RequestMethod.GET)
     public String removeBook(@PathVariable("id") long id) {
-        //bookService.remove(id);
-        return "redirect:/admin/home/book";
+        categoryService.remove(id);
+        return "redirect:/admin/category";
     }
 
     @RequestMapping(value = "/admin/category/edit/{id}", method = RequestMethod.GET)
@@ -48,9 +44,9 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/admin/category/update", method = RequestMethod.POST)
-    public String updateBook(@ModelAttribute("book") BookDTO book) {
-        //categoryService.save(book);
-        return "redirect:/admin/home/book";
+    public String updateBook(@ModelAttribute("book") CategoryDTO category) {
+        categoryService.save(category);
+        return "redirect:/admin/category";
     }
 
     @RequestMapping(value = "/admin/category/search", method = RequestMethod.POST)

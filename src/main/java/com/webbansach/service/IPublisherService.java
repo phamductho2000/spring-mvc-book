@@ -14,4 +14,5 @@ public interface IPublisherService {
 
     void save(PublisherDTO publisherDTO);
 
+    void remove(long id);
 }

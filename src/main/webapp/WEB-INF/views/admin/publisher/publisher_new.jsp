@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <div class="main">
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin: 20px 20px;">
         <form:form method="POST" action="admin/publisher/save" modelAttribute="publisher">
             <div class="form-group">
                 <form:label path="name">Name</form:label>
