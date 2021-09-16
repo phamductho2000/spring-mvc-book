@@ -1,17 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: tho20
-  Date: 5/28/2021
-  Time: 1:07 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
-<!-- molla/index-10.html  22 Nov 2019 09:58:04 GMT -->
+<html>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,6 +28,7 @@
     <link rel="stylesheet" href="<c:url value='/resources/user/assets/css/plugins/owl-carousel/owl.carousel.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/user/assets/css/plugins/magnific-popup/magnific-popup.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/user/assets/css/plugins/jquery.countdown.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/user/assets/vendor/font-awesome/css/font-awesome.min.css'/>">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="<c:url value='/resources/user/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/user/assets/css/skins/skin-demo-10.css'/>">
@@ -256,7 +248,7 @@
     </div>
 </div>
 <!-- Plugins JS -->
-<div class="toast" id="myToast" style="position: fixed; bottom: 0; right: 0; background: #518abc;">
+<div class="toast" id="myToast" style="position: fixed; top: 20px; right: 0; background: #518abc; z-index: 999">
     <div class="toast-body">
         <div><p style="font-size: 14px; color: #FFFFFF">Đã thêm sản phẩm vào giỏ hàng</p></div>
     </div>
@@ -274,58 +266,224 @@
 <script src="<c:url value='/resources/user/assets/js/jquery.countdown.min.js'/>"></script>
 <!-- Main JS File -->
 <script src="<c:url value='/resources/user/assets/js/main.js'/>"></script>
+<script src="<c:url value='/resources/user/assets/js/custom.js'/>"></script>
 <script src="<c:url value='/resources/user/assets/js/demos/demo-10.js'/>"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<c:url value='/resources/admin/assets/js/scripts/jquery.twbsPagination.js'/>"></script>
 </body>
 <!-- molla/index-10.html  22 Nov 2019 09:58:22 GMT -->
 </html>
 <script type="text/javascript">
     $(document).ready(function () {
-        $(".addCart").click(function () {
-            $(".toast").toast({ delay: 3000 });
-            $(".toast").toast('show')
-        })
+            var totalPage = $('#totalPage').val()
+            var currentPage = $('#currentPage').val()
+            $('#pagination').twbsPagination({
+                totalPages: totalPage,
+                startPage: currentPage,
+                hideOnlyOnePage: true,
+                onPageClick: function (event, page) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/${nameCate}/${id}?page="+page,
+                        success: function(response) {
+                            $('.products').replaceWith($(response).find('.products'))
+                            window.history.pushState("", "", "/${nameCate}/${id}?page="+page)
+                        },
+                        error : function() {
+                            alert("Loi")
+                        }
+                    })
+                }
+            })
     })
-    function addToCart(id) {
-        $.ajax({
-            type: "GET",
-            url: "/them-vao-gio/"+id,
-            dataType:"html",
-            success: function(response) {
-                $("#header_user").replaceWith( $(response).find("header"))
-            }
-        })
-    }
-    function removeItemCart(id) {
-        $.ajax({
-            type: "GET",
-            url: "/xoa-san-pham-trong-gio-hang/"+id,
-            dataType:"html",
-            success: function(response) {
-                $("#main_cart").replaceWith($(response).find(".main"))
-            }
-        })
-    }
-    function updateCart() {
-        const quantys = []
-        $('.table-cart tbody tr').each(function () {
-            var value = parseInt($(this).find('td #quanty').val())
-            quantys.push(value)
-        })
-        console.log(quantys)
+
+    $(document).on('input', '#inputImgReviewProduct', function(){
+        var elem = document.createElement("img");
+            elem.setAttribute("src", "/resources/book_images/147144.png");
+            elem.setAttribute("height", "40px");
+            elem.setAttribute("width", "40px");
+            elem.setAttribute("alt", "#");
+            $('#list-image-review').append(elem)
+
+    })
+
+    function sortProduct(optionSort) {
+        var url = window.location.href
         $.ajax({
             type : 'POST',
-            url : '/cap-nhat-gio',
-            data : {myQuantys : quantys},
-            traditional: true,
+            url : "/${nameCate}/${id}/sort",
+            data: {sort: optionSort, page: 1},
             success : function(response) {
-                $("#main_cart").replaceWith($(response).find(".main"))
+            $('.products').replaceWith($(response).find('.products'))
+            var totalPage = $('#totalPage').val()
+            var currentPage = $('#currentPage').val()
+            $('#pagination').twbsPagination('destroy')
+            $('#pagination').twbsPagination({
+                totalPages:  totalPage,
+                startPage: currentPage,
+                hideOnlyOnePage: true,
+                onPageClick: function (event, page) {
+                    $.ajax({
+                        type: "POST",
+                        data: {sort: optionSort, page: page},
+                        url: "/${nameCate}/${id}/sort",
+                        success: function(response) {
+                            $('.products').replaceWith($(response).find('.products'))
+                        }
+                    })
+                }
+            })
             },
-            error : function(response) {
-                alert("Loi");
-            },
+            error : function() {
+                alert("Loi")
+            }
+        })
+    }
+        function searchByMoney() {
+            var url = window.location.href
+            var startMoney = $('#startMoney').val()
+            var endMoney = $('#endMoney').val()
+            $.ajax({
+                type : 'POST',
+                url : "/${nameCate}/${id}/search_byMoney",
+                data : {startMoney: startMoney, endMoney: endMoney, page: 1},
+                success : function(response) {
+                    $('.col-lg-9').replaceWith($(response).find('.col-lg-9'))
+                },
+                error : function() {
+                    alert("Loi")
+                }
+            }).done(function () {
+                var totalPage = $('#totalPage').val()
+                var currentPage = $('#currentPage').val()
+                $('#pagination').twbsPagination('destroy')
+                $('#pagination').twbsPagination({
+                    totalPages:  totalPage,
+                    startPage: currentPage,
+                    hideOnlyOnePage: true,
+                    onPageClick: function (event, page) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/${nameCate}/${id}/search_byMoney",
+                            data : {startMoney: startMoney, endMoney: endMoney, page: page},
+                            success: function(response) {
+                                $('.products').replaceWith($(response).find('.products'))
+                            }
+                        })
+                    }
+                })
+            })
+        }
 
-        });
+    $('input[type=checkbox][name=checkBoxPub]').change(function () {
+        if ($(this).prop("checked")) {
+
+           var id = $(this).val()
+           searchByPublisher(id)
+           return
+        }
+        //Here do the stuff you want to do when 'unchecked'
+    })
+
+    function searchByPublisher(id) {
+        var url = window.location.href
+        $.ajax({
+            type : 'POST',
+            url : "/${nameCate}/${id}/search_byPublisher",
+            data : {pubId: id, page: 1},
+            success : function(response) {
+                $('.col-lg-9').replaceWith($(response).find('.col-lg-9'))
+            },
+            error : function() {
+                alert("Loi")
+            }
+        }).done(function () {
+            var totalPage = $('#totalPage').val()
+            var currentPage = $('#currentPage').val()
+            $('#pagination').twbsPagination('destroy')
+            $('#pagination').twbsPagination({
+                totalPages:  totalPage,
+                startPage: currentPage,
+                hideOnlyOnePage: true,
+                onPageClick: function (event, page) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/${nameCate}/${id}/search_byPublisher",
+                        data : {pubId: id, page: page},
+                        success: function(response) {
+                            $('.products').replaceWith($(response).find('.products'))
+                        }
+                    })
+                }
+            })
+        })
+    }
+
+    function applyVoucher() {
+        var code = $('#voucher').val()
+        $.ajax({
+            type : 'POST',
+            url : "/ap-dung-voucher",
+            data :{code: code},
+            success : function(response) {
+                $('.page-content').replaceWith($(response).find('.page-content'))
+                $('#btnApplyVoucher').css("display", "none")
+                $('#btnDisableVoucher').css("display", "block")
+                $('#voucher').val(code)
+                $('#voucher').attr("readonly", true);
+            },
+            error : function() {
+                alert("Voucher không tồn tại")
+            }
+        })
+    }
+
+    function searchProduct() {
+        var q = $('#q').val()
+        var url = "/tim-kiem/q="
+        if(q != ""){
+            $.ajax({
+                type : 'GET',
+                url : url + q,
+                success : function(response) {
+                    $(".main").replaceWith($(response).find(".main"))
+                    window.history.pushState("", "", url+q)
+                },
+                error : function() {
+                    alert("Loi")
+                }
+            }).done(function () {
+                var totalPage = $(response).find('#totalPage').val()
+                var currentPage = $(response).find('#currentPage').val()
+                $('#pagination').twbsPagination('destroy')
+                $('#pagination').twbsPagination({
+                    totalPages:  totalPage,
+                    startPage: currentPage,
+                    hideOnlyOnePage:true,
+                    onPageClick: function (event, page) {
+                        $.ajax({
+                            type: "GET",
+                            url: url+q+"?page="+page,
+                            success: function(response) {
+                                $('table').replaceWith($(response).find('table'))
+                                window.history.pushState("", "", url+q+"?page="+page)
+                            }
+                        })
+                    }
+                })
+            })
+        }
+    }
+
+    function removeItemWishlist(id) {
+        $.ajax({
+            type: "GET",
+            url: "/yeu-thich/xoa/"+id,
+            success: function(response) {
+                $(".main").replaceWith($(response).find(".main"))
+            },
+            error : function() {
+                alert("Loi")
+            }
+        })
     }
 </script>

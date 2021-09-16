@@ -1,5 +1,4 @@
-<footer>
-	<div class="container-fluid">
-	<p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
-	</div>
+<footer class="page-footer">
+	<div class="font-13">2018 © <b>AdminCAST</b> - All rights reserved.</div>
+	<div class="to-top"><i class="fa fa-angle-double-up"></i></div>
 </footer>
