@@ -7,20 +7,24 @@
             http://www.springframework.org/schema/security
             http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-    <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
+    <http auto-config="true" use-expressions="true" >
 
-<!--        <intercept-url pattern="/admin/home" access="hasAnyRole('ADMIN')" />-->
+        <intercept-url pattern="/admin/**" access="hasAnyRole('ADMIN,EMPLOYEE')" />
+
+        <intercept-url pattern="/tai-khoan/**" access="hasAnyRole('USER')" />
 
         <access-denied-handler error-page="/accessDenied" />
+
         <form-login
-                     login-page="/trang-chu"
-                     username-parameter="j_username"
-                     password-parameter="j_password"
-                     login-processing-url="/j_spring_security_check"
-                     authentication-success-handler-ref="customSuccessHandler"
-                     authentication-failure-url="/trang-chu?incorrectAccount"/>
-        <session-management invalid-session-url="/trang-chu?sessionTimeout"/>
+                login-page="/login"
+                username-parameter="j_username"
+                password-parameter="j_password"
+                login-processing-url="/j_spring_security_check"
+                authentication-success-handler-ref="customSuccessHandler"
+                authentication-failure-url="/admin?incorrectAccount"/>
+
         <logout delete-cookies="JSESSIONID"/>
+        <remember-me key="uniqueAndSecret" remember-me-parameter="remember-me"/>
     </http>
 
     <authentication-manager >

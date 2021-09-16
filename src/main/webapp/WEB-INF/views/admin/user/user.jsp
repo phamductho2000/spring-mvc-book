@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="page-heading">
-    <h1 class="page-title">Danh sách danh mục</h1>
+    <h1 class="page-title">Danh sách khách hàng</h1>
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="index.html"><i class="la la-home font-20"></i></a>
@@ -11,19 +11,29 @@
     </ol>
 </div>
 <div class="" style="margin-top: 30px">
+    <form class="" action="/admin/category/search" method="POST">
         <div class="search-form" style="display: flex; justify-content: flex-end; height: 33px">
             <div class="item-flex2">
-                <input type="text" placeholder="Nhập tên thể loại" class="form-control" id="inputCategoryName">
+                <input type="text" placeholder="Nhập tên thành viên" class="form-control">
             </div>
             <div class="item-flex2">
-                <button type="button" class="btn btn-primary" onclick="searchCategory()"><i class="fa fa-search" style="padding-right: 4px;"></i>Tìm kiếm</button>
+                <select class="form-control">
+                    <option value="USER" label="Chọn quyền">
+                    <option value="USER" label="Người dùng">
+                    <option value="ADMIN" label="Admin">
+                    </option>
+                </select>
+            </div>
+            <div class="item-flex2">
+                <button type="submit" class="btn btn-primary" onclick="searchBook()"><i class="fa fa-search" style="padding-right: 4px;"></i>Tìm kiếm</button>
             </div>
         </div>
+    </form>
 </div>
 <div class="page-content fade-in-up">
     <div class="ibox">
         <div class="ibox-head" style="justify-content: flex-end">
-            <a href="/admin/category/new"  style="margin-right: 5px;" class="btn btn-primary" ><i class="fa fa-plus" style="padding-right: 4px;"></i>THÊM MỚI</a>
+            <a href="/admin/user/new"  style="margin-right: 5px;" class="btn btn-primary" ><i class="fa fa-plus" style="padding-right: 4px;"></i>THÊM MỚI</a>
             <button type="button"  class="btn btn-danger" onclick=""><i class="fa fa-trash" style="padding-right: 4px"></i>XÓA</button>
         </div>
         <div class="ibox-body">
@@ -31,15 +41,17 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th>Mã thể loại</th>
-                    <th>Tên thể loại</th>
-                    <th>Hiển thị</th>
+                    <th>Avatar</th>
+                    <th>Tên</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Trạng thái</th>
                     <th>Ngày cập nhật</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="item" items="${listCategory}">
+                <c:forEach var="item" items="${ListUser}">
                     <tr>
                         <td>
                             <label class="ui-checkbox">
@@ -47,27 +59,24 @@
                                 <span class="input-span"></span>
                             </label>
                         </td>
-                        <td>${item.id}</td>
-                        <td><a href="">${item.name}</a></td>
                         <td>
-                            <c:if test="${item.status == 0}">
-                                <span class="badge badge-danger">không</span>
-                            </c:if>
-                            <c:if test="${item.status == 1}">
-                                <span class="badge badge-success">có</span>
-                            </c:if>
+                            <img src="/resources/book_images/${item.avatar}" height="100px"; width="100px"/>
                         </td>
+                        <td>${item.name}</td>
+                        <td>${item.username}</td>
+                        <td>${item.email}</td>
+                        <td>Hoạt động</td>
                         <td>
                             <c:set value="${item.updated_date}" var="dateString" />
                             <fmt:parseDate value="${dateString}" var="dateObject"
                                            pattern="yyyy-MM-dd HH:mm:ss" />
 
-                           <b><fmt:formatDate value="${dateObject }" pattern="dd/MM/yyyy" /></b>
-                           <b><fmt:formatDate value="${dateObject }" pattern="hh:mm a" /></b>
+                            <b><fmt:formatDate value="${dateObject }" pattern="dd/MM/yyyy" /></b>
+                            <b><fmt:formatDate value="${dateObject }" pattern="hh:mm a" /></b>
                         </td>
                         <td>
-                            <a href="/admin/category/edit/${item.id}" class="btn btn-default btn-xs m-r-5" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil font-14"></i></a>
-                            <button class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Delete" onclick="removeCategory(${item.id})"><i class="fa fa-trash font-14"></i></button>
+                            <a href="/admin/user/edit/${item.id}" class="btn btn-default btn-xs m-r-5" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil font-14"></i></a>
+                            <button class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Delete" onclick="removeCustomer(${item.id})"><i class="fa fa-trash font-14"></i></button>
                         </td>
                     </tr>
                 </c:forEach>

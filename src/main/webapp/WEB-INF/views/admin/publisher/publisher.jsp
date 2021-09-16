@@ -1,69 +1,77 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%--
-  Created by IntelliJ IDEA.
-  User: tho20
-  Date: 5/24/2021
-  Time: 1:40 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="main" id="main_publisher">
-    <!-- TABLE HOVER -->
-    <div class="panel">
-        <div class="" STYLE="text-align: center;">
-            <h3>QUẢN LÝ NHÀ XUẤT BẢN</h3>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <form class="navbar-form navbar-left" action="/admin/book/search" method="POST">
-                    <div class="input-group">
-                        <input type="text" value="" class="form-control" name="key" placeholder="Enter keyword...">
-                        <span class="input-group-btn"><button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button></span>
-                    </div>
-                </form>
+<div class="page-heading">
+    <h1 class="page-title">Danh sách nhà xuất bản</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="index.html"><i class="la la-home font-20"></i></a>
+        </li>
+        <li class="breadcrumb-item">DataTables</li>
+    </ol>
+</div>
+<div class="" style="margin-top: 30px">
+        <div class="search-form" style="display: flex; justify-content: flex-end; height: 33px">
+            <div class="item-flex2">
+                <input type="text" placeholder="Nhập tên nhà sản xuất" class="form-control" id="inputPublisherName">
             </div>
-        <div class="panel-heading" style="text-align: end;">
-            <a href="<c:url value="/admin/publisher/new"/>" class="btn btn-success">NEW</a>
+            <div class="item-flex2">
+                <input type="text" placeholder="Nhập địa chỉ nhà sản xuất" class="form-control" id="inputPublisherAddress">
+            </div>
+            <div class="item-flex2">
+                <button type="button" class="btn btn-primary" onclick="searchPublisher()"><i class="fa fa-search" style="padding-right: 4px;"></i>Tìm kiếm</button>
+            </div>
         </div>
-        <div class="panel-body">
-            <table class="table table-hover">
+</div>
+<div class="page-content fade-in-up">
+    <div class="ibox">
+        <div class="ibox-head" style="justify-content: flex-end">
+            <a href="/admin/publisher/new"  style="margin-right: 5px;" class="btn btn-primary" ><i class="fa fa-plus" style="padding-right: 4px;"></i>THÊM MỚI</a>
+            <button type="button"  class="btn btn-danger" onclick=""><i class="fa fa-trash" style="padding-right: 4px"></i>XÓA</button>
+        </div>
+        <div class="ibox-body">
+            <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Adress</th>
-                    <th>Created Date</th>
                     <th></th>
+                    <th>Mã nhà xuất bản</th>
+                    <th>Tên nhà xuất bản</th>
+                    <th>Địa chỉ</th>
+                    <th>Ngày cập nhật</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="item" items="${listPublisher}">
                     <tr>
+                        <td>
+                            <label class="ui-checkbox">
+                                <input type="checkbox">
+                                <span class="input-span"></span>
+                            </label>
+                        </td>
                         <td>${item.id}</td>
-                        <td>${item.name}</td>
+                        <td><a href="">${item.name}</a></td>
                         <td>${item.address}</td>
                         <td>
-                            <c:set value="${item.created_date}" var="dateString" />
+                            <c:set value="${item.updated_date}" var="dateString" />
                             <fmt:parseDate value="${dateString}" var="dateObject"
                                            pattern="yyyy-MM-dd HH:mm:ss" />
 
-                            Date is : <b><fmt:formatDate value="${dateObject }" pattern="dd/MM/yyyy" /></b>
-                            </br>
-                            Time is : <b><fmt:formatDate value="${dateObject }" pattern="hh:mm a" /></b>
+                            <b><fmt:formatDate value="${dateObject }" pattern="dd/MM/yyyy" /></b>
+                            <b><fmt:formatDate value="${dateObject }" pattern="hh:mm a" /></b>
                         </td>
                         <td>
-                            <div class="crud" style="text-align: center;">
-                                <button class="" style="border: none;background: none;"><i class="fa fa-eye"></i></button>
-                                <button style="border: none;background: none;" onclick="editPublisher(${item.id})"><i class="fa fa-edit"></i></button>
-                                <button style="border: none;background: none;" onclick="removePublisher(${item.id})"><i class="fa fa-trash"></i></button>
-                            </div>
+                            <a href="/admin/publisher/edit/${item.id}" class="btn btn-default btn-xs m-r-5" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil font-14"></i></a>
+                            <button class="btn btn-default btn-xs" data-toggle="tooltip" data-original-title="Delete" onclick="removePublisher(${item.id})"><i class="fa fa-trash font-14"></i></button>
                         </td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
+            <ul id="pagination" class="pagination-sm" style="float: right"></ul>
+            <input hidden="true" id="totalPage" value="${totalPage}">
+            <input hidden="true" id="currentPage" value="${currentPage}">
         </div>
     </div>
-    <!-- END TABLE HOVER -->
 </div>
