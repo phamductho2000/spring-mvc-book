@@ -2,6 +2,7 @@ package com.webbansach.controllers.user;
 
 import com.webbansach.dto.CartDTO;
 import com.webbansach.service.ICartService;
+import com.webbansach.service.IVoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +19,24 @@ public class CartController {
     @Autowired
     ICartService cartService;
 
+    @Autowired
+    IVoucherService voucherService;
+
     @RequestMapping(value = "/gio-hang")
-    public ModelAndView showCart(){
+    public ModelAndView showCart(HttpSession session){
         ModelAndView mav = new ModelAndView("cart");
+        HashMap<Long, CartDTO> cart = (HashMap<Long, CartDTO>)session.getAttribute("Cart");
         return mav;
     }
 
-    @RequestMapping(value = "/them-vao-gio/{id}")
-    public String addToCart(HttpServletRequest request, HttpSession session, @PathVariable long id){
+    @RequestMapping(value = "/them-vao-gio/{id}", method = RequestMethod.POST)
+    public String addToCart(HttpServletRequest request, HttpSession session, @PathVariable long id,
+                            @RequestParam("quantity") int quantity){
         HashMap<Long, CartDTO> cart = (HashMap<Long, CartDTO>)session.getAttribute("Cart");
         if(cart == null){
             cart = new HashMap<Long, CartDTO>();
         }
-        cart = cartService.addCart(id, cart);
+        cart = cartService.addCart(id, quantity, cart);
         session.setAttribute("Cart", cart);
         session.setAttribute("totalPrice", cartService.totalPrice(cart));
         return "redirect:"+request.getHeader("Referer");
@@ -39,7 +45,11 @@ public class CartController {
     @RequestMapping(value = "/cap-nhat-gio", method = RequestMethod.POST)
     public @ResponseBody ModelAndView updateCart(@RequestParam(value = "myQuantys") int[] quantys, HttpSession session, HttpServletRequest request){
         HashMap<Long, CartDTO> cart = (HashMap<Long, CartDTO>)session.getAttribute("Cart");
+        int total_price = (int) session.getAttribute("totalPrice");
         cart = cartService.editCart(quantys, cart);
+        total_price = cartService.totalPrice(cart);
+        session.setAttribute("Cart", cart);
+        session.setAttribute("totalPrice", total_price);
         return new ModelAndView("cart");
     }
 
@@ -48,5 +58,31 @@ public class CartController {
         HashMap<Long, CartDTO> cart = (HashMap<Long, CartDTO>)session.getAttribute("Cart");
         cartService.deleteItemCart(id, cart);
         return "redirect:"+request.getHeader("Referer");
+    }
+
+    @RequestMapping(value = "/ap-dung-voucher", method = RequestMethod.POST)
+    public ModelAndView applyVoucher(HttpServletRequest request, HttpSession session, @RequestParam("code") String code){
+        ModelAndView mav = new ModelAndView("cart");
+        int totalPrice = (int) session.getAttribute("totalPrice");
+        int discount = voucherService.getDiscount(code);
+        if(discount != 0){
+            int newTotalPrice = totalPrice/100 * (100 - discount);
+            session.setAttribute("totalPrice", newTotalPrice);
+            session.setAttribute("voucher", discount);
+            mav.addObject("message", "Bạn được giảm "+discount+" % tổng giá trị đơn hàng");
+        }
+        else{
+            session.setAttribute("totalPrice", totalPrice);
+        }
+        return mav;
+    }
+
+    @RequestMapping(value = "/huy-voucher", method = RequestMethod.GET)
+    public String disableVoucher(HttpSession session){
+        int totalPrice = (int) session.getAttribute("totalPrice");
+        int discount = (int) session.getAttribute("voucher");
+        int newTotalPrice = totalPrice*100/(100 - discount);
+        session.setAttribute("totalPrice", newTotalPrice);
+        return "redirect:/gio-hang";
     }
 }

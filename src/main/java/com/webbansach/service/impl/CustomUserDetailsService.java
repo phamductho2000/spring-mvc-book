@@ -1,6 +1,5 @@
 package com.webbansach.service.impl;
 
-import com.webbansach.constant.SystemConstant;
 import com.webbansach.dto.MyUser;
 import com.webbansach.entity.RoleEntity;
 import com.webbansach.entity.UserEntity;
@@ -23,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findOneByUsernameAndStatus(username, SystemConstant.ACTIVE_STATUS);
+        UserEntity userEntity = userRepository.findOneByUsername(username);
 
         if (userEntity == null) {
             throw new UsernameNotFoundException("User not found");
@@ -34,7 +33,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         MyUser myUser = new MyUser(userEntity.getUsername(), userEntity.getPassword(),
                 true, true, true, true, authorities);
+        myUser.setId(userEntity.getId());
         myUser.setFullName(userEntity.getName());
+        myUser.setPassWord(userEntity.getPassword());
+        myUser.setPhone(userEntity.getPhone());
+        myUser.setAddress(userEntity.getAddress());
+        myUser.setEmail(userEntity.getEmail());
+        myUser.setAvatar(userEntity.getAvatar());
         return myUser;
     }
 }

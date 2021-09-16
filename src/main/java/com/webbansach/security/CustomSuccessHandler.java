@@ -41,12 +41,21 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
             url = "/admin/home";
         } else if (isUser(roles)) {
             url = "/trang-chu";
+        } else if (isEmployee(roles)) {
+            url = "/admin/home";
         }
         return url;
     }
 
     private boolean isAdmin(List<String> roles) {
         if (roles.contains("ADMIN")) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isEmployee(List<String> roles) {
+        if (roles.contains("EMPLOYEE")) {
             return true;
         }
         return false;

@@ -14,6 +14,7 @@ public class PublisherConverter {
         result.setName(publisherEntity.getName());
         result.setAddress(publisherEntity.getAddress());
         result.setCreated_date(publisherEntity.getCreated_date());
+        result.setUpdated_date(publisherEntity.getUpdated_date());
         result.setCreated_by(publisherEntity.getCreated_by());
         result.setModified_by(publisherEntity.getModified_by());
         return result;
@@ -24,6 +25,7 @@ public class PublisherConverter {
         result.setName(publisherDTO.getName());
         result.setAddress(publisherDTO.getAddress());
         result.setCreated_date(publisherDTO.getCreated_date());
+        result.setUpdated_date(publisherDTO.getUpdated_date());
         result.setCreated_by(publisherDTO.getCreated_by());
         result.setModified_by(publisherDTO.getModified_by());
         return result;
@@ -32,7 +34,7 @@ public class PublisherConverter {
     public PublisherEntity dtoToEntity(PublisherEntity result, PublisherDTO publisherDTO){
         result.setName(publisherDTO.getName());
         result.setAddress(publisherDTO.getAddress());
-        result.setCreated_date(publisherDTO.getCreated_date());
+        result.setUpdated_date(publisherDTO.getUpdated_date());
         result.setCreated_by(publisherDTO.getCreated_by());
         result.setModified_by(publisherDTO.getModified_by());
         return result;

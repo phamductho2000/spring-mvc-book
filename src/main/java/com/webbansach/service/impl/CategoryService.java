@@ -2,13 +2,12 @@ package com.webbansach.service.impl;
 
 import com.webbansach.converter.CategoryConverter;
 import com.webbansach.dto.CategoryDTO;
-import com.webbansach.dto.PublisherDTO;
 import com.webbansach.entity.CategoryEntity;
-import com.webbansach.entity.PublisherEntity;
 import com.webbansach.repository.CategoryRepository;
-import com.webbansach.repository.PublisherRepository;
 import com.webbansach.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,9 +19,43 @@ public class CategoryService implements ICategoryService {
     CategoryRepository categoryRepository;
     @Autowired
     CategoryConverter categoryConverter;
+
     @Override
     public List<CategoryDTO> findAll(){
         List<CategoryEntity> categoryEntities = categoryRepository.findAll();
+        List<CategoryDTO> categoryDTOS = new ArrayList<>();
+        for(CategoryEntity item: categoryEntities){
+            CategoryDTO categoryDTO = categoryConverter.entityToDTO(item);
+            categoryDTOS.add(categoryDTO);
+        }
+        return categoryDTOS;
+    }
+
+    @Override
+    public List<CategoryDTO> findAll(Pageable pageable){
+        Page<CategoryEntity> categoryEntities = categoryRepository.findAll(pageable);
+        List<CategoryDTO> categoryDTOS = new ArrayList<>();
+        for(CategoryEntity item: categoryEntities){
+            CategoryDTO categoryDTO = categoryConverter.entityToDTO(item);
+            categoryDTOS.add(categoryDTO);
+        }
+        return categoryDTOS;
+    }
+
+    @Override
+    public List<CategoryDTO> findAllByStatus(int status, Pageable pageable){
+        List<CategoryEntity> categoryEntities = categoryRepository.findAllByStatus(status, pageable);
+        List<CategoryDTO> categoryDTOS = new ArrayList<>();
+        for(CategoryEntity item: categoryEntities){
+            CategoryDTO categoryDTO = categoryConverter.entityToDTO(item);
+            categoryDTOS.add(categoryDTO);
+        }
+        return categoryDTOS;
+    }
+
+    @Override
+    public List<CategoryDTO> search(String key, Pageable pageable){
+        List<CategoryEntity> categoryEntities = categoryRepository.findAllByNameContaining(key, pageable);
         List<CategoryDTO> categoryDTOS = new ArrayList<>();
         for(CategoryEntity item: categoryEntities){
             CategoryDTO categoryDTO = categoryConverter.entityToDTO(item);
@@ -47,7 +80,7 @@ public class CategoryService implements ICategoryService {
     @Override
     public void save(CategoryDTO categoryDTO){
         CategoryEntity categoryEntity = new CategoryEntity();
-        if(categoryDTO.getId() != null){
+        if(categoryDTO.getId() != 0){
             CategoryEntity categoryEntityOld = categoryRepository.findOne(categoryDTO.getId());
             categoryEntity = categoryConverter.dtoToEntity(categoryEntityOld, categoryDTO);
         }
@@ -61,5 +94,10 @@ public class CategoryService implements ICategoryService {
     public void remove(long id){
         CategoryEntity categoryEntity = categoryRepository.findOne(id);
         categoryRepository.delete(categoryEntity);
+    }
+
+    @Override
+    public int getTotalItem(){
+        return (int) categoryRepository.count();
     }
 }

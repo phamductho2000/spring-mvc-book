@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: tho20
-  Date: 5/28/2021
-  Time: 1:07 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <footer class="footer footer-dark">
     <div class="cta bg-image bg-dark pt-4 pb-5 mb-0" style="background-image: url(assets/images/demos/demo-10/bg-2.jpg);">

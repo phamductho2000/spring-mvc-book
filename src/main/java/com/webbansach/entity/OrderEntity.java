@@ -1,49 +1,29 @@
 package com.webbansach.entity;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "order")
+@Table(name = "db_order")
 public class OrderEntity extends BaseEntity{
 
 	@Column(name = "total_price")
-	private BigDecimal total_price;
-	public List<DetailOrderEntity> getDetailOrder() {
-		return detailOrder;
-	}
-	public void setDetailOrder(List<DetailOrderEntity> detailOrder) {
-		this.detailOrder = detailOrder;
-	}
-	public UserEntity getUser() {
-		return user;
-	}
-	public void setUser(UserEntity user) {
-		this.user = user;
-	}
-	public BigDecimal getTotal_price() {
-		return total_price;
-	}
-	public void setTotal_price(BigDecimal total_price) {
-		this.total_price = total_price;
-	}
+	private int total_price;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private UserEntity user;
 	@OneToMany(mappedBy = "order")
-    private List<DetailOrderEntity> detailOrder = new ArrayList<>();
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity user;
+	private List<DetailOrderEntity> detailOrder = new ArrayList<>();
+	@Column(name = "status")
+	private int status;
+
+	public int getStatus() { return status; }
+	public void setStatus(int status) { this.status = status; }
+	public List<DetailOrderEntity> getDetailOrder() { return detailOrder; }
+	public void setDetailOrder(List<DetailOrderEntity> detailOrder) { this.detailOrder = detailOrder; }
+	public UserEntity getUser() { return user; }
+	public void setUser(UserEntity user) { this.user = user; }
+	public int getTotal_price() { return total_price; }
+	public void setTotal_price(int total_price) { this.total_price = total_price; }
 }

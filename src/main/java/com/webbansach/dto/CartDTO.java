@@ -1,19 +1,15 @@
 package com.webbansach.dto;
 
-import com.webbansach.entity.BookEntity;
-
-import java.util.ArrayList;
-
 public class CartDTO {
     private BookDTO book;
     private int quanty;
-    private double totalPrice;
+    private int totalPrice;
 
     public CartDTO() {
 
     }
 
-    public CartDTO(BookDTO book, int quanty, double totalPrice) {
+    public CartDTO(BookDTO book, int quanty, int totalPrice) {
         this.book = book;
         this.quanty = quanty;
         this.totalPrice = totalPrice;
@@ -35,11 +31,11 @@ public class CartDTO {
         this.quanty = quanty;
     }
 
-    public double getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 

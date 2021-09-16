@@ -8,5 +8,7 @@
         <class>com.webbansach.entity.DetailOrderEntity</class>
         <class>com.webbansach.entity.PublisherEntity</class>
         <class>com.webbansach.entity.RoleEntity</class>
+        <class>com.webbansach.entity.ReviewEntity</class>
+        <class>com.webbansach.entity.CustomerEntity</class>
     </persistence-unit>
 </persistence>

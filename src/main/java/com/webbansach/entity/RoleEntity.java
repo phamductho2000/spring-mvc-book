@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "role")
+@Table(name = "db_role")
 public class RoleEntity extends BaseEntity{
 
     @Column(name = "name")
     private String name;
+    @Column(name = "code")
+    private String code;
+    @ManyToMany(mappedBy = "roles")
+    private List<UserEntity> users = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -34,9 +38,4 @@ public class RoleEntity extends BaseEntity{
     public void setUsers(List<UserEntity> users) {
         this.users = users;
     }
-
-    @Column(name = "code")
-    private String code;
-    @ManyToMany(mappedBy = "roles")
-    private List<UserEntity> users = new ArrayList<>();
 }

@@ -4,7 +4,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -16,10 +15,11 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
+
     @Column(name = "created_date")
     @CreationTimestamp
-    private Timestamp created_date;
+    private Timestamp createdDate;
 
     @Column(name = "updated_date")
     @UpdateTimestamp
@@ -34,11 +34,11 @@ public abstract class BaseEntity {
     private String modified_by;
 
     public Timestamp getCreated_date() {
-        return created_date;
+        return createdDate;
     }
 
     public void setCreated_date(Timestamp created_date) {
-        this.created_date = created_date;
+        this.createdDate = created_date;
     }
 
     public Timestamp getUpdated_date() {

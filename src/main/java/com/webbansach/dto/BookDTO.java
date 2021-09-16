@@ -1,13 +1,19 @@
 package com.webbansach.dto;
 
-import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 public class BookDTO extends AbstractDTO<BookDTO>{
 	
 	private String name;
 	
 	private int price;
-	
+
+	private int oldPrice;
+
+	private int quanty;
+
+	private  int discount;
+
 	private String author;
 	
 	private String image;
@@ -18,11 +24,57 @@ public class BookDTO extends AbstractDTO<BookDTO>{
 	
 	private String description;
 
+	private String shortDes;
+
 	private String size;
-	
+
+	private int status;
+
+	private int rate;
+
+	private int countReviews;
+
 	private long category_id;
 	
 	private long publisher_id;
+
+	private Timestamp publishDate;
+
+	private String namePublisher;
+
+	private String nameCategory;
+
+	public String getNameCategory() {
+		return nameCategory;
+	}
+
+	public void setNameCategory(String nameCategory) {
+		this.nameCategory = nameCategory;
+	}
+
+	public String getNamePublisher() { return namePublisher; }
+
+	public void setNamePublisher(String namePublisher) { this.namePublisher = namePublisher; }
+
+	public Timestamp getPublishDate() { return publishDate; }
+
+	public void setPublishDate(Timestamp publishDate) { this.publishDate = publishDate; }
+
+	public String getShortDes() {
+		return shortDes;
+	}
+
+	public void setShortDes(String shortDes) {
+		this.shortDes = shortDes;
+	}
+
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
 
 	public String getName() {
 		return name;
@@ -84,6 +136,14 @@ public class BookDTO extends AbstractDTO<BookDTO>{
 		return size;
 	}
 
+	public int getOldPrice() { return oldPrice; }
+
+	public void setOldPrice(int oldPrice) { this.oldPrice = oldPrice; }
+
+	public int getQuanty() { return quanty; }
+
+	public void setQuanty(int quanty) { this.quanty = quanty; }
+
 	public void setSize(String size) {
 		this.size = size;
 	}
@@ -102,5 +162,29 @@ public class BookDTO extends AbstractDTO<BookDTO>{
 
 	public void setPublisher_id(long publisher_id) {
 		this.publisher_id = publisher_id;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public int getRate() {
+		return rate;
+	}
+
+	public void setRate(int rate) {
+		this.rate = rate;
+	}
+
+	public int getCountReviews() {
+		return countReviews;
+	}
+
+	public void setCountReviews(int countReviews) {
+		this.countReviews = countReviews;
 	}
 }

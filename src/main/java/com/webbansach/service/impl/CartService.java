@@ -16,17 +16,27 @@ public class CartService implements ICartService {
     IBookService bookService;
 
     @Override
-    public HashMap<Long, CartDTO> addCart(long id, HashMap<Long, CartDTO> cart){
+    public HashMap<Long, CartDTO> addCart(long id, int quantity, HashMap<Long, CartDTO> cart){
         CartDTO itemCart = new CartDTO();
         BookDTO book = bookService.findOne(id);
         if(book != null && cart.containsKey(id)){
             itemCart = cart.get(id);
-            itemCart.setQuanty(itemCart.getQuanty() + 1);
+            if(quantity != 0){
+                itemCart.setQuanty(itemCart.getQuanty() + quantity);
+            }
+            else{
+                itemCart.setQuanty(itemCart.getQuanty() + 1);
+            }
             itemCart.setTotalPrice(itemCart.getQuanty() * itemCart.getBook().getPrice());
         }
         else{
             itemCart.setBook(book);
-            itemCart.setQuanty(1);
+            if(quantity == 0){
+                itemCart.setQuanty(1);
+            }
+            else{
+                itemCart.setQuanty(quantity);
+            }
             itemCart.setTotalPrice(book.getPrice());
         }
         cart.put(id, itemCart);

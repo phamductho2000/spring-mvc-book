@@ -1,7 +1,6 @@
 package com.webbansach.interceptor;
 
-import com.webbansach.repository.CategoryRepository;
-import com.webbansach.service.impl.CategoryService;
+import com.webbansach.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,12 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 public class MenuHandleInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private CategoryService categoryService;
+    private ICategoryService categoryService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        request.setAttribute("menu",categoryService.findAll());
+
+        request.setAttribute("menu", categoryService.findAllByStatus(1, null));
+
         return true;
     }
 

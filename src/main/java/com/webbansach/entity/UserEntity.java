@@ -1,15 +1,12 @@
 package com.webbansach.entity;
 
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "db_user")
 public class UserEntity extends BaseEntity{
 
 	@Column(name = "name")
@@ -18,32 +15,37 @@ public class UserEntity extends BaseEntity{
 	private String email;
 	@Column(name = "address")
 	private String address;
-
-	public List<RoleEntity> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<RoleEntity> roles) {
-		this.roles = roles;
-	}
-
 	@Column(name = "phone")
 	private int phone;
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	@Column(name = "status")
-	private int status;
 	@Column(name = "username")
 	private String username;
+	@Column(name = "avatar")
+	private String avatar;
 	@Column(name = "password")
 	private String password;
+	@OneToMany(mappedBy = "user")
+	private List<OrderEntity> order;
+	@ManyToMany(cascade = CascadeType.MERGE)
+	@JoinTable(name = "db_user_role",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id")
+	)
+	private List<RoleEntity> roles = new ArrayList<>();
+	//	@Column
+//	private int status;
+	@OneToMany(mappedBy = "userEntity")
+	List<ReviewEntity> reviews;
+	@OneToMany(mappedBy = "userEntity")
+	List<WishlistEntity> wishlist;
+
+	public String getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+	public List<ReviewEntity> getReviews() { return reviews; }
+	public void setReviews(List<ReviewEntity> reviews) { this.reviews = reviews; }
 	public String getName() {
 		return name;
 	}
@@ -80,18 +82,20 @@ public class UserEntity extends BaseEntity{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public OrderEntity getOrder() {
-		return order;
+	public List<RoleEntity> getRoles() {
+		return roles;
 	}
-	public void setOrder(OrderEntity order) {
-		this.order = order;
+	public void setRoles(List<RoleEntity> roles) {
+		this.roles = roles;
 	}
-	@OneToOne(mappedBy = "user")
-    private OrderEntity order;
-	@ManyToMany
-	@JoinTable(name = "user_role",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id")
-	)
-	private List<RoleEntity> roles = new ArrayList<>();
+	public List<OrderEntity> getOrder() { return order; }
+	public void setOrder(List<OrderEntity> order) { this.order = order; }
+
+	public List<WishlistEntity> getWishlist() {
+		return wishlist;
+	}
+
+	public void setWishlist(List<WishlistEntity> wishlist) {
+		this.wishlist = wishlist;
+	}
 }

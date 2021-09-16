@@ -1,12 +1,16 @@
 package com.webbansach.service;
 
-import com.webbansach.dto.BookDTO;
 import com.webbansach.dto.PublisherDTO;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface IPublisherService {
     List<PublisherDTO> findAll();
+
+    List<PublisherDTO> findAll(Pageable pageable);
+
+    List<PublisherDTO> search(String name, String address, Pageable pageable);
 
     PublisherDTO findOne(long id);
 
@@ -15,4 +19,6 @@ public interface IPublisherService {
     void save(PublisherDTO publisherDTO);
 
     void remove(long id);
+
+    int getTotalItem();
 }

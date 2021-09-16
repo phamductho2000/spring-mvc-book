@@ -1,10 +1,14 @@
 package com.webbansach.dto;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AbstractDTO<T> {
+    private long id;
+    private Timestamp createdDate;
+    private Timestamp updated_date;
+    private String created_by;
+    private String modified_by;
+
     public String getCreated_by() {
         return created_by;
     }
@@ -21,38 +25,20 @@ public class AbstractDTO<T> {
         this.modified_by = modified_by;
     }
 
-    private Long id;
-    private Timestamp created_date;
-    private long[] ids;
-    private List<T> listResult = new ArrayList<>();
-    private String created_by;
-    private String modified_by;
     public Long getId() {
             return id;
     }
 
     public Timestamp getCreated_date() {
-        return created_date;
+        return createdDate;
     }
+
+    public Timestamp getUpdated_date() { return updated_date; }
+
+    public void setUpdated_date(Timestamp updated_date) { this.updated_date = updated_date; }
 
     public void setCreated_date(Timestamp created_date) {
-        this.created_date = created_date;
-    }
-
-    public long[] getIds() {
-        return ids;
-    }
-
-    public void setIds(long[] ids) {
-        this.ids = ids;
-    }
-
-    public List<T> getListResult() {
-        return listResult;
-    }
-
-    public void setListResult(List<T> listResult) {
-        this.listResult = listResult;
+        this.createdDate = created_date;
     }
 
     public void setId(Long id) {

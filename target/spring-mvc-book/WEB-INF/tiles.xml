@@ -2,7 +2,15 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
-    <definition name="baselayout_user" template="/main_layouts/user/master_layout.jsp">
+    <definition name="admin_login" template="/WEB-INF/views/admin/login.jsp">
+
+    </definition>
+
+    <definition name="quick_view" template="/main_layouts/user/quickView.jsp">
+
+    </definition>
+
+    <definition name="baselayout_user" template="/main_layouts/user/layout.jsp">
         <put-attribute name="header" value="/main_layouts/user/header.jsp" />
         <put-attribute name="content" value="" />
         <put-attribute name="footer" value="/main_layouts/user/footer.jsp" />
@@ -20,11 +28,36 @@
     <definition name="checkout" extends="baselayout_user">
         <put-attribute name="content" value="/WEB-INF/views/user/checkout.jsp" />
     </definition>
+    <definition name="order_success" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/order_success.jsp" />
+    </definition>
+    <definition name="search" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/search.jsp" />
+    </definition>
+    <definition name="product" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/product.jsp" />
+    </definition>
+    <definition name="account" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/account.jsp" />
+    </definition>
+    <definition name="order" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/order.jsp" />
+    </definition>
+    <definition name="detail_order" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/detail_order.jsp" />
+    </definition>
+    <definition name="login" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/login.jsp" />
+    </definition>
+    <definition name="wishlist" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/wishlist.jsp" />
+    </definition>
 
-    <definition name="baselayout_admin" template="/main_layouts/admin/master_layout.jsp">
+    <definition name="baselayout_admin" template="/main_layouts/admin/layout.jsp">
         <put-attribute name="header" value="/main_layouts/admin/header.jsp" />
         <put-attribute name="content" value="" />
         <put-attribute name="footer" value="/main_layouts/admin/footer.jsp" />
+        <put-attribute name="sidebar" value="/main_layouts/admin/sidebar.jsp" />
     </definition>
 
     <definition name="admin_home" extends="baselayout_admin">
@@ -38,6 +71,9 @@
     </definition>
     <definition name="admin_book_edit" extends="baselayout_admin">
         <put-attribute name="content" value="/WEB-INF/views/admin/book/book_edit.jsp" />
+    </definition>
+    <definition name="admin_book_detail" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/book/book_detail.jsp" />
     </definition>
     <definition name="admin_publisher" extends="baselayout_admin">
         <put-attribute name="content" value="/WEB-INF/views/admin/publisher/publisher.jsp" />
@@ -56,5 +92,63 @@
     </definition>
     <definition name="admin_category_edit" extends="baselayout_admin">
         <put-attribute name="content" value="/WEB-INF/views/admin/category/category_edit.jsp" />
+    </definition>
+
+    <definition name="admin_order" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/order/order.jsp" />
+    </definition>
+    <definition name="admin_order_detail" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/order/order_detail.jsp" />
+    </definition>
+    <definition name="admin_order_new" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/order/order_new.jsp" />
+    </definition>
+
+    <definition name="admin_report" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/report/report.jsp" />
+    </definition>
+
+    <definition name="admin_profile" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/profile/profile.jsp" />
+    </definition>
+
+    <definition name="admin_user" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/user/user.jsp" />
+    </definition>
+    <definition name="admin_user_new" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/user/user_new.jsp" />
+    </definition>
+    <definition name="admin_user_edit" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/user/user_edit.jsp" />
+    </definition>
+    <definition name="admin_user_detail" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/user/user_detail.jsp" />
+    </definition>
+
+    <definition name="admin_customer" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/customer/customer.jsp" />
+    </definition>
+    <definition name="admin_customer_new" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/customer/customer_new.jsp" />
+    </definition>
+    <definition name="admin_customer_edit" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/customer/customer_edit.jsp" />
+    </definition>
+    <definition name="admin_customer_detail" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/customer/customer_detail.jsp" />
+    </definition>
+
+    <definition name="admin_voucher" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/voucher/voucher.jsp" />
+    </definition>
+    <definition name="admin_voucher_new" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/voucher/voucher_new.jsp" />
+    </definition>
+    <definition name="admin_voucher_edit" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/voucher/voucher_edit.jsp" />
+    </definition>
+
+    <definition name="admin_login" template="/WEB-INF/views/admin/login.jsp">
+
     </definition>
 </tiles-definitions>

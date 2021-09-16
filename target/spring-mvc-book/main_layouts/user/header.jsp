@@ -1,51 +1,39 @@
 <%@ page import="com.webbansach.dto.CartDTO" %>
 <%@ page import="java.util.HashMap" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: tho20
-  Date: 5/28/2021
-  Time: 1:07 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>
+<%@ page import = "com.webbansach.util.SecurityUtils"%>
 <%  HashMap<Long, CartDTO> cart = (HashMap<Long, CartDTO>)session.getAttribute("Cart"); %>
+
 <header class="header header-8" id="header_user">
     <div class="header-top">
         <div class="container">
-            <div class="header-left">
-                <div class="header-dropdown">
-                    <a href="#">USD</a>
-                    <div class="header-menu">
-                        <ul>
-                            <li><a href="#">Eur</a></li>
-                            <li><a href="#">Usd</a></li>
-                        </ul>
-                    </div><!-- End .header-menu -->
-                </div><!-- End .header-dropdown -->
-
-                <div class="header-dropdown">
-                    <a href="#">Eng</a>
-                    <div class="header-menu">
-                        <ul>
-                            <li><a href="#">English</a></li>
-                            <li><a href="#">French</a></li>
-                            <li><a href="#">Spanish</a></li>
-                        </ul>
-                    </div><!-- End .header-menu -->
-                </div><!-- End .header-dropdown -->
-            </div><!-- End .header-left -->
-
             <div class="header-right">
                 <ul class="top-menu">
                     <li>
                         <a href="#">Links</a>
                         <ul>
                             <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
-                            <li><a href="wishlist.html"><i class="icon-heart-o"></i>My Wishlist <span>(3)</span></a></li>
-                            <li><a href="about.html">About Us</a></li>
-                            <li><a href="contact.html">Contact Us</a></li>
-                            <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
+                            <li><a href="">About Us</a></li>
+                            <sec:authorize access="isAnonymous()">
+                                <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Đăng nhập</a></li>
+                            </sec:authorize>
+                            <sec:authorize access="isAuthenticated()">
+                            <li>
+                                <div class="dropdown">
+                                    <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <%= SecurityUtils.getPrincipal().getFullName() %>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="/tai-khoan/thong-tin">Tài khoản</a>
+                                        <a class="dropdown-item" href="/tai-khoan/don-hang">Lịch sử mua hàng</a>
+                                        <a class="dropdown-item" href="/dang-xuat">Đăng xuất</a>
+                                    </div>
+                                </div>
+                            </li>
+                            </sec:authorize>
                         </ul>
                     </li>
                 </ul><!-- End .top-menu -->
@@ -70,81 +58,43 @@
                 <nav class="main-nav">
                     <ul class="menu sf-arrows">
                         <li class="megamenu-container active">
-                            <a href="/trang-chu" class="sf-with-ul">Trang chủ</a>
+                            <a href="/trang-chu" >Trang chủ</a>
                         </li>
-                        <c:forEach var="item" items="${menu}">
                         <li>
-                            <a href="/trang-chu/${item.name}/${item.id}" class="sf-with-ul">${item.name}</a>
-                            <div class="megamenu megamenu-md">
-                                <div class="row no-gutters">
-                                    <div class="col-md-8">
-                                        <div class="menu-col">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="menu-title">Shop with sidebar</div><!-- End .menu-title -->
-                                                    <ul>
-                                                        <li><a href="category-list.html">Shop List</a></li>
-                                                        <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
-                                                        <li><a href="category.html">Shop Grid 3 Columns</a></li>
-                                                        <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
-                                                        <li><a href="category-market.html"><span>Shop Market<span class="tip tip-new">New</span></span></a></li>
-                                                    </ul>
-
-                                                    <div class="menu-title">Shop no sidebar</div><!-- End .menu-title -->
-                                                    <ul>
-                                                        <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span class="tip tip-hot">Hot</span></span></a></li>
-                                                        <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
-                                                    </ul>
-                                                </div><!-- End .col-md-6 -->
-
-                                                <div class="col-md-6">
-                                                    <div class="menu-title">Product Category</div><!-- End .menu-title -->
-                                                    <ul>
-                                                        <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
-                                                        <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span class="tip tip-new">New</span></span></a></li>
-                                                    </ul>
-                                                    <div class="menu-title">Shop Pages</div><!-- End .menu-title -->
-                                                    <ul>
-                                                        <li><a href="cart.html">Cart</a></li>
-                                                        <li><a href="checkout.html">Checkout</a></li>
-                                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                                        <li><a href="dashboard.html">My Account</a></li>
-                                                        <li><a href="#">Lookbook</a></li>
-                                                    </ul>
-                                                </div><!-- End .col-md-6 -->
-                                            </div><!-- End .row -->
-                                        </div><!-- End .menu-col -->
-                                    </div><!-- End .col-md-8 -->
-
-                                    <div class="col-md-4">
-                                        <div class="banner banner-overlay">
-                                            <a href="category.html" class="banner banner-menu">
-                                                <img src="assets/images/menu/banner-1.jpg" alt="Banner">
-
-                                                <div class="banner-content banner-content-top">
-                                                    <div class="banner-title text-white">Last <br>Chance<br><span><strong>Sale</strong></span></div><!-- End .banner-title -->
-                                                </div><!-- End .banner-content -->
-                                            </a>
-                                        </div><!-- End .banner banner-overlay -->
-                                    </div><!-- End .col-md-4 -->
-                                </div><!-- End .row -->
-                            </div><!-- End .megamenu megamenu-md -->
+                            <a href="#" class="sf-with-ul">Sách</a>
+                            <ul>
+                                <c:forEach var="item" items="${menu}">
+                                <li class="custom-link">
+                                    <a href="/${item.name}/${item.id}" class="linkMenu">${item.name}</a>
+                                </li>
+                                </c:forEach>
+                            </ul>
                         </li>
-                        </c:forEach>
+                        <li>
+                            <a href="#" class="sf-with-ul">Blog</a>
+                        </li>
+                        <li>
+                            <a href="#" class="sf-with-ul">Liên hệ</a>
+                        </li>
                     </ul><!-- End .menu -->
                 </nav><!-- End .main-nav -->
 
                 <div class="header-search">
-                    <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
+                    <a onclick="searchProduct()" class="search-toggle" style="border: none; background: none" ><i class="icon-search"></i></a>
                     <form action="#" method="get">
                         <div class="header-search-wrapper">
                             <label for="q" class="sr-only">Search</label>
-                            <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
+                            <input type="search" class="form-control" name="q" id="q" placeholder="Tìm kiếm..." required>
                         </div><!-- End .header-search-wrapper -->
                     </form>
                 </div><!-- End .header-search -->
 
-                <div class="dropdown cart-dropdown">
+                <div class="cart-dropdown">
+                    <a href="/yeu-thich"><i class="icon-heart-o" style="font-size: 2.2rem"></i></a>
+                    <span class="cart-count" style="background-color: #e94444">0</span>
+                </div>
+
+                <div class="dropdown cart-dropdown" id="cart_dropdown">
                     <a href="/gio-hang" class="dropdown-toggle" role="button" >
                         <i class="icon-shopping-cart"></i>
                         <% if (cart == null) { %>
@@ -157,7 +107,7 @@
                         <% if (cart == null || cart.size() == 0) { %>
                             <div class="dropdown-cart-products">
                                 <div class="product">
-                                    <strong>Chưa có sản phẩm nào trong giỏ hàng</strong>
+                                    <p>Chưa có sản phẩm nào trong giỏ hàng</p>
                                 </div>
                             </div>
                         <% } else { %>
@@ -170,12 +120,12 @@
                                             </h4>
                                             <span class="cart-product-info">
                                                 <span class="cart-product-qty">${item.value.quanty}</span>
-                                                x ${item.value.book.price}₫
+                                                x <fmt:formatNumber type="number" groupingUsed="true" value="${item.value.book.price}"/> ₫
                                             </span>
                                         </div><!-- End .product-cart-details -->
                                         <figure class="product-image-container">
                                             <a href="product.html" class="product-image">
-                                                <img src="${item.value.book.image}" alt="product">
+                                                <img src="/resources/book_images/${item.value.book.image}" alt="product">
                                             </a>
                                         </figure>
                                         <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
@@ -184,7 +134,7 @@
                             </c:forEach>
                             <div class="dropdown-cart-total">
                                         <span>TỔNG</span>
-                                        <span class="cart-total-price">${totalPrice}₫</span>
+                                        <span class="cart-total-price"><fmt:formatNumber type="number" groupingUsed="true" value="${totalPrice}"/> ₫</span>
                             </div><!-- End .dropdown-cart-total -->
 
                             <div class="dropdown-cart-action">
@@ -226,7 +176,7 @@
                                 </div>
                             </c:if>
                             <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                <form action="j_spring_security_check" method="post">
+                                <form action="/j_spring_security_check" method="post">
                                     <div class="form-group">
                                         <label for="singin-email">Tài khoản</label>
                                         <input type="text" class="form-control" id="singin-email" name="j_username" required>
@@ -244,7 +194,7 @@
                                         </button>
 
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="signin-remember">
+                                            <input type="checkbox" class="custom-control-input" id="signin-remember" name="remember-me">
                                             <label class="custom-control-label" for="signin-remember">Remember Me</label>
                                         </div><!-- End .custom-checkbox -->
 
@@ -270,20 +220,20 @@
                                 </div><!-- End .form-choice -->
                             </div><!-- .End .tab-pane -->
                             <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                <form action="#">
+                                <form action="/dang-ky" method="post">
                                     <div class="form-group">
-                                        <label for="register-email">Your email address *</label>
-                                        <input type="email" class="form-control" id="register-email" name="register-email" required>
+                                        <label for="register-email">Nhập tài khoản *</label>
+                                        <input type="email" class="form-control" id="register-email" name="register-user" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
-                                        <label for="register-password">Password *</label>
+                                        <label for="register-password">Nhập mật khẩu *</label>
                                         <input type="password" class="form-control" id="register-password" name="register-password" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-footer">
                                         <button type="submit" class="btn btn-outline-primary-2">
-                                            <span>SIGN UP</span>
+                                            <span>ĐĂNG KÝ</span>
                                             <i class="icon-long-arrow-right"></i>
                                         </button>
 

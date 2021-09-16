@@ -1,12 +1,42 @@
 package com.webbansach.dto;
 
+import java.util.List;
+
 public class UserDTO extends AbstractDTO<UserDTO>{
 	private String name;
 	private String email;
 	private String address;
-	private long phone;
+	private int phone;
 	private String username;
 	private String password;
+	private String avatar;
+	private int status;
+	private List<String> roles;
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -25,10 +55,10 @@ public class UserDTO extends AbstractDTO<UserDTO>{
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public long getPhone() {
+	public int getPhone() {
 		return phone;
 	}
-	public void setPhone(long phone) {
+	public void setPhone(int phone) {
 		this.phone = phone;
 	}
 	public String getUsername() {
