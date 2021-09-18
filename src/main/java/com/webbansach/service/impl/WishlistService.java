@@ -3,6 +3,7 @@ package com.webbansach.service.impl;
 import com.webbansach.converter.CategoryConverter;
 import com.webbansach.converter.WishlistConverter;
 import com.webbansach.dto.WishlistDTO;
+import com.webbansach.dto.WishlistDTO;
 import com.webbansach.dto.ReviewDTO;
 import com.webbansach.dto.WishlistDTO;
 import com.webbansach.entity.BookEntity;
@@ -48,6 +49,13 @@ public class WishlistService implements IWishlistService {
             wishlistDTOS.add(wishlistDTO);
         }
         return wishlistDTOS;
+    }
+
+    @Override
+    public WishlistDTO findOneByBookIdAndUserId(long bId, long uId) {
+        WishlistEntity wishlistEntity = wishlistRepository.findOneByBookIdAndUserId(bId, uId);
+        WishlistDTO wishlistDTO = wishlistConverter.entityToDTO(wishlistEntity);
+        return wishlistDTO;
     }
 
     @Override

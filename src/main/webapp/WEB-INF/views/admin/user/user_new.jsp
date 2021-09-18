@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="ibox-body">
-            <form:form method="POST" action="/admin/user/save" enctype="multipart/form-data" modelAttribute="customer">
+            <form:form method="POST" action="/admin/user/save" enctype="multipart/form-data" modelAttribute="user">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">

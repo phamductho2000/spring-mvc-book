@@ -22,6 +22,7 @@ public class UserConverter {
         result.setAddress(userEntity.getAddress());
         result.setUsername(userEntity.getUsername());
         result.setPassword(userEntity.getPassword());
+        result.setStatus(userEntity.getStatus());
         List<RoleEntity> roleEntities = userEntity.getRoles();
         for(RoleEntity item: roleEntities){
             roles.add(item.getCode());
@@ -40,6 +41,7 @@ public class UserConverter {
         result.setAddress(userDTO.getAddress());
         result.setPhone(userDTO.getPhone());
         result.setUsername(userDTO.getUsername());
+        result.setStatus(userDTO.getStatus());
         if(userDTO.getAvatar() != ""){
             result.setAvatar(userDTO.getAvatar());
         }
@@ -55,6 +57,7 @@ public class UserConverter {
         result.setPhone(userDTO.getPhone());
         result.setEmail(userDTO.getEmail());
         result.setAddress(userDTO.getAddress());
+        result.setStatus(userDTO.getStatus());
         if(userDTO.getAvatar() != ""){
             result.setAvatar(userDTO.getAvatar());
         }

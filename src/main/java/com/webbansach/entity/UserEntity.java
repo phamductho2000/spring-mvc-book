@@ -31,8 +31,8 @@ public class UserEntity extends BaseEntity{
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 	)
 	private List<RoleEntity> roles = new ArrayList<>();
-	//	@Column
-//	private int status;
+	@Column(name = "status")
+	private int status;
 	@OneToMany(mappedBy = "userEntity")
 	List<ReviewEntity> reviews;
 	@OneToMany(mappedBy = "userEntity")
@@ -90,12 +90,8 @@ public class UserEntity extends BaseEntity{
 	}
 	public List<OrderEntity> getOrder() { return order; }
 	public void setOrder(List<OrderEntity> order) { this.order = order; }
-
-	public List<WishlistEntity> getWishlist() {
-		return wishlist;
-	}
-
-	public void setWishlist(List<WishlistEntity> wishlist) {
-		this.wishlist = wishlist;
-	}
+	public List<WishlistEntity> getWishlist() { return wishlist; }
+	public void setWishlist(List<WishlistEntity> wishlist) { this.wishlist = wishlist; }
+	public int getStatus() { return status; }
+	public void setStatus(int status) { this.status = status; }
 }

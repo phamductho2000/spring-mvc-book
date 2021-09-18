@@ -235,7 +235,7 @@
                                 </a>
 
                                 <div class="product-action-vertical">
-                                    <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                    <a href="/them-vao-yeu-thich/${item.id}" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
                                 </div><!-- End .product-action-vertical -->
                             </figure><!-- End .product-media -->
 
@@ -327,7 +327,7 @@
                                     </a>
 
                                     <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                        <a href="/them-vao-yeu-thich/${item.id}" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
                                     </div><!-- End .product-action-vertical -->
                                 </figure><!-- End .product-media -->
 
@@ -397,7 +397,7 @@
                                         <img src="/resources/book_images/${item.image}" alt="Product image" class="product-image">
                                     </a>
                                     <div class="product-action-vertical">
-                                        <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                        <a href="/them-vao-yeu-thich/${item.id}" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
                                     </div><!-- End .product-action-vertical -->
                                 </figure><!-- End .product-media -->
 

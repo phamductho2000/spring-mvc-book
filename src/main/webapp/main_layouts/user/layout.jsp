@@ -254,6 +254,12 @@
     </div>
 </div>
 
+<div class="toast" id="myToastWishlist" style="position: fixed; top: 20px; right: 0; background: #d76262; z-index: 999">
+    <div class="toast-body">
+        <div><p style="font-size: 14px; color: #FFFFFF">Đã thêm sản phẩm vào yêu thích</p></div>
+    </div>
+</div>
+
 <script src="<c:url value='/resources/user/assets/js/jquery.min.js'/>"></script>
 <script src="<c:url value='/resources/user/assets/js/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/resources/user/assets/js/jquery.hoverIntent.min.js'/>"></script>
@@ -483,6 +489,29 @@
             },
             error : function() {
                 alert("Loi")
+            }
+        })
+    }
+
+    function addToWishlist(id) {
+        $.ajax({
+            type : 'POST',
+            url : "/them-vao-yeu-thich",
+            data :{bId: id},
+            success : function(response) {
+                if(response == "NOT_LOGIN"){
+                    $('#signin-modal').modal('show')
+                }
+                if(response == "EXIST"){
+                    alert("Sản phẩm đã tồn tại trong yêu thích")
+                }
+                if(response == "SUCCESS"){
+                    $("#myToastWishlist").toast({ delay: 1000 });
+                    $("#myToastWishlist").toast('show')
+                }
+            },
+            error : function(err) {
+
             }
         })
     }

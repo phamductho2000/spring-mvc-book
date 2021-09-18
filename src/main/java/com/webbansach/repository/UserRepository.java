@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-//    UserEntity findOneByUsernameAndStatus(String username, int status);
+
+    UserEntity findOneByUsernameAndStatus(String username, int status);
+
     UserEntity findOneByUsername(String username);
 
     @Query("select u from UserEntity u inner join u.roles r where r.code = ?1")
@@ -15,6 +17,12 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("select u from UserEntity u where date(u.createdDate) = current_date")
     List<UserEntity> findAllByCurrentDay(Pageable pageable);
+
+    @Query("select u from UserEntity u inner join u.roles r " +
+            "where (?1 = '' or (u.name like concat('%',?1,'%'))) " +
+            "and (?2 = -1 or (u.status = ?2))" +
+            "and (?3 = '' or (r.code = ?3))")
+    List<UserEntity> search(String name, int status, String role, Pageable pageable);
 
     List<UserEntity> findAllByNameContaining(String key, Pageable pageable);
 }

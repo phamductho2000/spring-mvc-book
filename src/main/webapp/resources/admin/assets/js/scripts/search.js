@@ -327,5 +327,83 @@ function searchPublisher() {
     })
 }
 
+function searchVoucher() {
+    var url = '/admin/voucher/search'
+    var code = $('#codeVoucher').val()
+    var discount = $('#discountVoucher').val()
+    var status = $('#statusVoucher').val()
+    var expiration = $('#expirationDateVoucher').val()
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {code: code, status: status, discount: discount, expiration: expiration, page: 1},
+        success: function(response) {
+            $('table').replaceWith($(response).find('table'))
+        },
+        error: function () {
+            alert("Lỗi")
+        }
+    }).done(function () {
+        var totalPage = $(response).find('#totalPage').val()
+        var currentPage = $(response).find('#currentPage').val()
+        $('#pagination').twbsPagination('destroy')
+        $('#pagination').twbsPagination({
+            totalPages:  totalPage,
+            startPage: currentPage,
+            hideOnlyOnePage:true,
+            onPageClick: function (event, page) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {code: code, status: status, discount: discount, expiration: expiration, page: page},
+                    success: function(response) {
+                        $('table').replaceWith($(response).find('table'))
+                        window.history.pushState("", "", url+"?page="+page)
+                    }
+                })
+            }
+        })
+    })
+}
+
+function searchUser() {
+    var url = "/admin/user/search"
+    var key = $('#inputKeyUser').val()
+    var status = $('#statusUser').val()
+    var role = $('#roleUser').val()
+    $.ajax({
+        type: "POST",
+        url: url,
+        data:{key: key, status: status, role: role, page: 1},
+        success: function(response) {
+            $('table').replaceWith($(response).find('table'))
+            window.history.pushState("", "", url)
+        },
+        error: function () {
+
+        }
+    }).done(function () {
+        var totalPage = $(response).find('#totalPage').val()
+        var currentPage = $(response).find('#currentPage').val()
+        $('#pagination').twbsPagination('destroy')
+        $('#pagination').twbsPagination({
+            totalPages:  totalPage,
+            startPage: currentPage,
+            hideOnlyOnePage:true,
+            onPageClick: function (event, page) {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:{key: key, status: status, role: role, page: page},
+                    success: function(response) {
+                        $('table').replaceWith($(response).find('table'))
+                        window.history.pushState("", "", url+"?page="+page)
+                    }
+                })
+            }
+        })
+    })
+}
+
 
 

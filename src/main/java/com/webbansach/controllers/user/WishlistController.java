@@ -3,6 +3,8 @@ package com.webbansach.controllers.user;
 import com.webbansach.dto.BookDTO;
 import com.webbansach.dto.UserDTO;
 import com.webbansach.dto.WishlistDTO;
+import com.webbansach.entity.WishlistEntity;
+import com.webbansach.repository.WishlistRepository;
 import com.webbansach.service.IBookService;
 
 import com.webbansach.service.IUserService;
@@ -15,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,13 +29,16 @@ public class WishlistController {
     IWishlistService wishlistService;
 
     @Autowired
+    WishlistRepository wishlistRepository;
+
+    @Autowired
     IBookService bookService;
 
     @Autowired
     IUserService userService;
 
     @RequestMapping(value = "/yeu-thich")
-    public ModelAndView show(HttpSession session){
+    public ModelAndView show(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication == null || authentication instanceof AnonymousAuthenticationToken){
 
@@ -48,24 +54,30 @@ public class WishlistController {
 
     }
 
-    @RequestMapping(value = "/them-vao-yeu-thich/{bId}", method = RequestMethod.GET)
-    public String addToWishlist(@PathVariable(value = "bId") long id,
-                                HttpServletRequest request,
-                                HttpSession session){
+    @RequestMapping(value = "/them-vao-yeu-thich", method = RequestMethod.POST)
+    @ResponseBody
+    public String addToWishlist(@RequestParam(value = "bId") long id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication == null || authentication instanceof AnonymousAuthenticationToken){
 
-            return "redirect:/dang-nhap";
+            return "NOT_LOGIN";
         }
         else{
             WishlistDTO wishlist = new WishlistDTO();
             BookDTO book = bookService.findOne(id);
             UserDTO user = userService.findOne(SecurityUtils.getPrincipal().getId());
-            wishlist.setBook(book);
-            wishlist.setUser(user);
-            wishlistService.save(wishlist);
+
+            WishlistEntity checkWishlist = wishlistRepository.findOneByBookIdAndUserId(book.getId(), user.getId());
+            if(checkWishlist == null){
+                wishlist.setBook(book);
+                wishlist.setUser(user);
+                wishlistService.save(wishlist);
+                return "SUCCESS";
+            }
+            else{
+                return "EXIST";
+            }
         }
-       return "redirect:/trang-chu";
     }
 
     @RequestMapping(value = "/yeu-thich/xoa/{id}", method = RequestMethod.GET)

@@ -2,6 +2,8 @@ package com.webbansach.service.impl;
 
 import com.webbansach.converter.UserConverter;
 import com.webbansach.dto.UserDTO;
+import com.webbansach.dto.UserDTO;
+import com.webbansach.entity.BookEntity;
 import com.webbansach.entity.PublisherEntity;
 import com.webbansach.entity.RoleEntity;
 import com.webbansach.entity.UserEntity;
@@ -144,6 +146,17 @@ public class UserService implements IUserService {
         }
 
         userRepository.save(userEntity);
+    }
+
+    @Override
+    public  List<UserDTO> searchUser(String key, int status, String role, Pageable pageable){
+        List<UserEntity> userEntities = userRepository.search(key, status, role, pageable);
+        List<UserDTO> userDTOS = new ArrayList<>();
+        for(UserEntity item: userEntities) {
+            UserDTO userDTO = userConverter.entityToDTO(item);
+            userDTOS.add(userDTO);
+        }
+        return userDTOS;
     }
 
     @Override

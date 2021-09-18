@@ -63,7 +63,7 @@
                         </td>
                         <td><a href="/admin/order/detail/${item.id}">${item.id}</a></td>
                         <td><a href="">${item.user_name}</a></td>
-                        <td>${item.total_price}</td>
+                        <td><fmt:formatNumber type="number" groupingUsed="true" value="${item.total_price}"/> ₫</td>
                         <c:if test="${item.status == 1}">
                             <td><span class="badge badge-success">Hoàn thành</span></td>
                         </c:if>

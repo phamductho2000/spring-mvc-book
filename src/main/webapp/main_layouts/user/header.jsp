@@ -89,9 +89,9 @@
                     </form>
                 </div><!-- End .header-search -->
 
-                <div class="cart-dropdown">
+                <div class="cart-dropdown" id="wishlist">
                     <a href="/yeu-thich"><i class="icon-heart-o" style="font-size: 2.2rem"></i></a>
-                    <span class="cart-count" style="background-color: #e94444">0</span>
+<%--                    <span class="cart-count" style="background-color: #e94444">0</span>--%>
                 </div>
 
                 <div class="dropdown cart-dropdown" id="cart_dropdown">

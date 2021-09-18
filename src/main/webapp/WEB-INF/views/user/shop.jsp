@@ -36,7 +36,7 @@
                                         </a>
 
                                         <div class="product-action-vertical">
-                                            <a href="/them-vao-yeu-thich/${item.id}" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                            <a href="#" onclick="addToWishlist(${item.id})" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
                                             <a href="/xem-nhanh/id=${item.id}" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
                                         </div><!-- End .product-action-vertical -->
 
@@ -130,9 +130,9 @@
                                         <div class="filter-price-text">
                                            Chọn khoảng giá:
                                             <div class="input-group">
-                                                <input type="text" pattern="[0-9]*" id="startMoney" class="input-price">
+                                                <input type="number" pattern="[0-9]*" id="startMoney" class="input-price">
                                                 <span style="margin: 0 5px"> - </span>
-                                                <input type="text" pattern="[0-9]*" id="endMoney"class="input-price">
+                                                <input type="number" pattern="[0-9]*" id="endMoney"class="input-price">
                                             </div>
                                         </div><!-- End .filter-price-text -->
                                         <button type="button" class="btn btn-outline-primary" onclick="searchByMoney()">Áp dụng</button>

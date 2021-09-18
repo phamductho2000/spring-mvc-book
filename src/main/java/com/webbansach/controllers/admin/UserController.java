@@ -3,6 +3,7 @@ package com.webbansach.controllers.admin;
 import com.webbansach.dto.UserDTO;
 import com.webbansach.service.IRoleService;
 import com.webbansach.service.IUserService;
+import org.apache.poi.hssf.record.pivottable.StreamIDRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class UserController {
 
     @RequestMapping(value = "/admin/user/new", method = RequestMethod.GET)
     public ModelAndView addPage() {
-        ModelAndView mav = new ModelAndView("admin_user_new", "customer", new UserDTO());
+        ModelAndView mav = new ModelAndView("admin_user_new", "user", new UserDTO());
         mav.addObject("roles", roleService.findAllRole());
         return mav;
     }
@@ -56,14 +58,14 @@ public class UserController {
 
     @RequestMapping(value = "/admin/user/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editPage(@PathVariable("id") long id){
-        ModelAndView mav = new ModelAndView("admin_user_edit", "customer", new UserDTO());
+        ModelAndView mav = new ModelAndView("admin_user_edit", "user", new UserDTO());
         mav.addObject("user", userService.findOne(id));
         mav.addObject("roles", roleService.findAllRole());
         return mav;
     }
 
     @RequestMapping(value = "/admin/user/save", method = RequestMethod.POST)
-    public String updateBook(@ModelAttribute("customer") UserDTO userDTO,
+    public String updateBook(@ModelAttribute("user") UserDTO userDTO,
                              @RequestParam(value = "file") CommonsMultipartFile commonsMultipartFile,
                              @RequestParam(value = "checkRole") String[] roles) {
         String nameFile = commonsMultipartFile.getOriginalFilename();
@@ -81,6 +83,16 @@ public class UserController {
         userDTO.setAvatar(nameFile);
         userService.saveUser(userDTO);
         return "redirect:/admin/user";
+    }
+
+    @RequestMapping(value = "/admin/user/search", method = RequestMethod.POST)
+    public ModelAndView searchBook(@RequestParam(name = "key") String key,
+                                   @RequestParam(name = "status") int status,
+                                   @RequestParam(name = "role") String role,
+                                   @RequestParam(name = "page", required = false) int page)  {
+        ModelAndView mav = new ModelAndView("admin_user");
+        mav.addObject("ListUser", userService.searchUser(key, status, role ,null));
+        return mav;
     }
 
 }

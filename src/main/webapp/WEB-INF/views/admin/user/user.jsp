@@ -11,24 +11,30 @@
     </ol>
 </div>
 <div class="" style="margin-top: 30px">
-    <form class="" action="/admin/category/search" method="POST">
         <div class="search-form" style="display: flex; justify-content: flex-end; height: 33px">
             <div class="item-flex2">
-                <input type="text" placeholder="Nhập tên thành viên" class="form-control">
+                <input type="text" placeholder="Nhập tên thành viên" class="form-control" id="inputKeyUser">
             </div>
             <div class="item-flex2">
-                <select class="form-control">
-                    <option value="USER" label="Chọn quyền">
-                    <option value="USER" label="Người dùng">
+                <select class="form-control" id="statusUser">
+                    <option value="-1" label="Trạng thái">
+                    <option value="0" label="Không hoạt động">
+                    <option value="1" label="Hoạt động">
+                    </option>
+                </select>
+            </div>
+            <div class="item-flex2">
+                <select class="form-control" id="roleUser">
+                    <option value="" label="Vai trò">
+                    <option value="EMPLOYEE" label="Nhân viên">
                     <option value="ADMIN" label="Admin">
                     </option>
                 </select>
             </div>
             <div class="item-flex2">
-                <button type="submit" class="btn btn-primary" onclick="searchBook()"><i class="fa fa-search" style="padding-right: 4px;"></i>Tìm kiếm</button>
+                <button type="submit" class="btn btn-primary" onclick="searchUser()"><i class="fa fa-search" style="padding-right: 4px;"></i>Tìm kiếm</button>
             </div>
         </div>
-    </form>
 </div>
 <div class="page-content fade-in-up">
     <div class="ibox">
@@ -65,7 +71,14 @@
                         <td>${item.name}</td>
                         <td>${item.username}</td>
                         <td>${item.email}</td>
-                        <td>Hoạt động</td>
+                        <td>
+                            <c:if test="${item.status == 1}">
+                                <span class="badge badge-success">Hoạt động</span>
+                            </c:if>
+                            <c:if test="${item.status == 0}">
+                                <span class="badge badge-danger">Không hoạt động</span>
+                            </c:if>
+                        </td>
                         <td>
                             <c:set value="${item.updated_date}" var="dateString" />
                             <fmt:parseDate value="${dateString}" var="dateObject"
