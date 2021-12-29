@@ -4,6 +4,9 @@ import com.webbansach.dto.CartDTO;
 import com.webbansach.service.ICartService;
 import com.webbansach.service.IVoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,9 +27,15 @@ public class CartController {
 
     @RequestMapping(value = "/gio-hang")
     public ModelAndView showCart(HttpSession session){
-        ModelAndView mav = new ModelAndView("cart");
-        HashMap<Long, CartDTO> cart = (HashMap<Long, CartDTO>)session.getAttribute("Cart");
-        return mav;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || authentication instanceof AnonymousAuthenticationToken){
+
+            return new ModelAndView("login");
+        }
+        else{
+
+            return new ModelAndView("cart");
+        }
     }
 
     @RequestMapping(value = "/them-vao-gio/{id}", method = RequestMethod.POST)
@@ -68,7 +77,7 @@ public class CartController {
         if(discount != 0){
             int newTotalPrice = totalPrice/100 * (100 - discount);
             session.setAttribute("totalPrice", newTotalPrice);
-            session.setAttribute("voucher", discount);
+            session.setAttribute("discount", totalPrice - newTotalPrice);
             mav.addObject("message", "Bạn được giảm "+discount+" % tổng giá trị đơn hàng");
         }
         else{
@@ -80,7 +89,7 @@ public class CartController {
     @RequestMapping(value = "/huy-voucher", method = RequestMethod.GET)
     public String disableVoucher(HttpSession session){
         int totalPrice = (int) session.getAttribute("totalPrice");
-        int discount = (int) session.getAttribute("voucher");
+        int discount = (int) session.getAttribute("discount");
         int newTotalPrice = totalPrice*100/(100 - discount);
         session.setAttribute("totalPrice", newTotalPrice);
         return "redirect:/gio-hang";

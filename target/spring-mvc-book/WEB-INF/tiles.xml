@@ -6,6 +6,10 @@
 
     </definition>
 
+    <definition name="404" template="/WEB-INF/views/user/error404.jsp">
+
+    </definition>
+
     <definition name="quick_view" template="/main_layouts/user/quickView.jsp">
 
     </definition>
@@ -52,6 +56,16 @@
     <definition name="wishlist" extends="baselayout_user">
         <put-attribute name="content" value="/WEB-INF/views/user/wishlist.jsp" />
     </definition>
+    <definition name="contact" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/contact.jsp" />
+    </definition>
+    <definition name="change_password" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/change_password.jsp" />
+    </definition>
+    <definition name="forgot_password" extends="baselayout_user">
+        <put-attribute name="content" value="/WEB-INF/views/user/forgot_password.jsp" />
+    </definition>
+
 
     <definition name="baselayout_admin" template="/main_layouts/admin/layout.jsp">
         <put-attribute name="header" value="/main_layouts/admin/header.jsp" />
@@ -146,6 +160,9 @@
     </definition>
     <definition name="admin_voucher_edit" extends="baselayout_admin">
         <put-attribute name="content" value="/WEB-INF/views/admin/voucher/voucher_edit.jsp" />
+    </definition>
+    <definition name="admin_contact" extends="baselayout_admin">
+        <put-attribute name="content" value="/WEB-INF/views/admin/contact.jsp" />
     </definition>
 
     <definition name="admin_login" template="/WEB-INF/views/admin/login.jsp">

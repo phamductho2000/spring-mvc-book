@@ -10,6 +10,8 @@ public interface IPublisherService {
 
     List<PublisherDTO> findAll(Pageable pageable);
 
+    List<PublisherDTO> findAllByCateId(long cateId, Pageable pageable);
+
     List<PublisherDTO> search(String name, String address, Pageable pageable);
 
     PublisherDTO findOne(long id);
@@ -19,6 +21,8 @@ public interface IPublisherService {
     void save(PublisherDTO publisherDTO);
 
     void remove(long id);
+
+    void remove(Long[] ids);
 
     int getTotalItem();
 }

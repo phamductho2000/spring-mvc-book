@@ -3,6 +3,8 @@ package com.webbansach.service;
 import com.webbansach.dto.UserDTO;
 import org.springframework.data.domain.Pageable;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface IUserService {
@@ -15,7 +17,7 @@ public interface IUserService {
 
     List<UserDTO> findAllByName(String key, Pageable pageable);
 
-    List<UserDTO> findAllByRole(String code, Pageable pageable);
+    List<UserDTO> findAllByRole(List<String> codes, Pageable pageable);
 
     UserDTO findOneByUserName(String userName);
 
@@ -28,6 +30,16 @@ public interface IUserService {
     List<UserDTO> searchUser(String key, int status, String role, Pageable pageable);
 
     void remove(long id);
+
+    void createPasswordResetTokenForUser(UserDTO userDTO, String token);
+
+    UserDTO findOneByEmail(String email);
+
+    void updatePassword(long userId, String password);
+
+    void sendEmailToResetPassword(String recipientEmail, String link) throws UnsupportedEncodingException, MessagingException;
+
+    void remove(Long[] ids);
 
     int getTotalItem();
 }

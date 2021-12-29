@@ -1,5 +1,6 @@
 <%@ page import="com.webbansach.dto.CartDTO" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="com.webbansach.util.SecurityUtils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>
@@ -27,10 +28,10 @@
                         </button>
                     </div>
                 </c:if>
-                <% if (cart.size() == 0 || cart == null) { %>
+                <% if (cart == null || cart.size() == 0) { %>
                 <p style="text-align: center">KHÔNG CÓ SẢN PHẨM NÀO TRONG GIỎ HÀNG</p>
                     <br>
-                <a href="/trang-chu" class="btn btn-success">QUAY LẠI TRANG CHỦ</a>
+                <a href="/trang-chu" class="btn btn-primary">QUAY LẠI TRANG CHỦ</a>
                 <% } else { %>
                 <div class="row">
                     <div class="col-lg-9">
@@ -92,43 +93,60 @@
                                 </form>
                             </div><!-- End .cart-discount -->
                             <button onclick="updateCart()" class="btn btn-outline-dark-2"><span>CẬP NHẬT GIỎ HÀNG</span><i class="icon-refresh"></i></button>
-
                         </div><!-- End .cart-bottom -->
                     </div><!-- End .col-lg-9 -->
                     <aside class="col-lg-3">
-                        <div class="summary summary-cart">
-                            <h3 class="summary-title">GIỎ HÀNG</h3><!-- End .summary-title -->
 
+                        <div class="summary summary-cart">
+                            <div>
+                                <span style="color: black">Giao tới</span>
+                                <a href="/tai-khoan/thong-tin" style="float: right">Thay đổi</a>
+                            </div>
+                            <div>
+                                <input type="hidden" name="userId" value="<%= SecurityUtils.getPrincipal().getId() %>">
+                                <span class="nameUser" style="color: black"><%= SecurityUtils.getPrincipal().getFullName() %></span>
+                                <span style="color: black"><%= SecurityUtils.getPrincipal().getPhone() %></span>
+                            </div>
+                            <div>
+                                <p><%= SecurityUtils.getPrincipal().getAddress() %></p>
+                            </div>
+                        </div>
+
+                        <div class="summary summary-cart">
                             <table class="table table-summary">
                                 <tbody>
                                 <tr class="summary-subtotal">
-                                    <td>Tạm tính:</td>
-                                    <td>
+                                    <td style="border: none">Tạm tính:</td>
+                                    <td style="border: none">
                                         <fmt:formatNumber type="number" groupingUsed="true" value="${totalPrice}"/> ₫
                                     </td>
                                 </tr><!-- End .summary-subtotal -->
-                                <tr class="summary-shipping">
-                                    <td>Hình thức giao hàng:</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-
-                                <tr class="summary-shipping-row">
-                                    <td>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
-                                            <label class="custom-control-label" for="free-shipping"> Giao hàng tiết kiệm</label>
-                                        </div><!-- End .custom-control -->
-                                    </td>
-                                    <td>
-                                        <fmt:formatNumber type="number" groupingUsed="true" value="30000"/> ₫
-                                    </td>
-                                </tr><!-- End .summary-shipping-row -->
+                                <tr class="summary-subtotal">
+                                    <td>Giảm giá:</td>
+                                    <c:if test="${discount == null}">
+                                        <td>
+                                            0 ₫
+                                        </td>
+                                    </c:if>
+                                    <c:if test="${discount != null}">
+                                        <td>
+                                            <fmt:formatNumber type="number" groupingUsed="true" value="${discount}"/> ₫
+                                        </td>
+                                    </c:if>
+                                </tr><!-- End .summary-subtotal -->
 
                                 <tr class="summary-total">
                                     <td>Tổng:</td>
-                                    <td id="totalPrice">
-                                        <fmt:formatNumber type="number" groupingUsed="true" value="${totalPrice}"/> ₫
-                                    </td>
+                                    <c:if test="${discount == null}">
+                                        <td id="totalPrice">
+                                            <fmt:formatNumber type="number" groupingUsed="true" value="${totalPrice}"/> ₫
+                                        </td>
+                                    </c:if>
+                                    <c:if test="${discount != null}">
+                                        <td id="totalPrice">
+                                            <fmt:formatNumber type="number" groupingUsed="true" value="${totalPrice - discount}"/> ₫
+                                        </td>
+                                    </c:if>
                                 </tr><!-- End .summary-total -->
                                 </tbody>
                             </table><!-- End .table table-summary -->
@@ -136,7 +154,7 @@
                             <a href="/thanh-toan" class="btn btn-outline-primary-2 btn-order btn-block">TIẾN HÀNH ĐẶT HÀNG</a>
                         </div><!-- End .summary -->
 
-                        <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>TIẾP TỤC MUA SẮM</span><i class="icon-refresh"></i></a>
+                        <a href="/trang-chu" class="btn btn-outline-dark-2 btn-block mb-3"><span>TIẾP TỤC MUA SẮM</span><i class="icon-refresh"></i></a>
                     </aside><!-- End .col-lg-3 -->
                 </div><!-- End .row -->
                 <% } %>

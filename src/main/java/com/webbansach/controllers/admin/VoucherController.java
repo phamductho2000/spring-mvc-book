@@ -21,16 +21,17 @@ public class VoucherController {
     IVoucherService voucherService;
 
     @RequestMapping(value = "/admin/voucher", method = RequestMethod.GET)
-    public ModelAndView voucherPage(@RequestParam(value = "page", required = false, defaultValue = "1") int page){
+    public ModelAndView homePage(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                 @RequestParam(value = "limit", defaultValue = "10") int limit){
         ModelAndView mav = new ModelAndView("admin_voucher");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
         int countItem = voucherService.findAll(null).size();
-        if(countItem % 8 == 0){
-            totalPage = countItem/8;
+        if(countItem % limit == 0){
+            totalPage = countItem/limit;
         }
         else{
-            totalPage = (countItem/8) + 1;
+            totalPage = (countItem/limit) + 1;
         }
         mav.addObject("listVoucher", voucherService.findAll(pageable));
         mav.addObject("totalPage", totalPage);
@@ -68,21 +69,28 @@ public class VoucherController {
         return "redirect:"+url;
     }
 
-    @RequestMapping(value = "/admin/voucher/search", method = RequestMethod.POST)
-    public ModelAndView search(@RequestParam(name = "code") String code,
+    @RequestMapping(value = "/admin/voucher/removeByIds", method = RequestMethod.POST)
+    public String removes(@RequestParam("currentUrl") String url, @RequestParam("ids") Long[] ids) {
+        voucherService.remove(ids);
+        return "redirect:"+url;
+    }
+
+    @RequestMapping(value = "/admin/voucher/search", method = RequestMethod.GET)
+    public ModelAndView search(@RequestParam(name = "code", required = false, defaultValue = "default") String code,
                                @RequestParam(name = "discount", required = false, defaultValue = "0") int discount,
-                               @RequestParam(name = "status") int status,
-                               @RequestParam(name = "expiration") String expiration,
+                               @RequestParam(name = "status", required = false, defaultValue = "-1") int status,
+                               @RequestParam(name = "expiration", required = false, defaultValue = "default") String expiration,
+                               @RequestParam(value = "limit", defaultValue = "10") int limit,
                                @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         ModelAndView mav = new ModelAndView("admin_voucher");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
         int countItem = voucherService.search(code, discount, status, expiration, null).size();
-        if((countItem % 8) == 0){
-            totalPage = countItem/8;
+        if((countItem % limit) == 0){
+            totalPage = countItem/limit;
         }
         else{
-            totalPage = (countItem/8) + 1;
+            totalPage = (countItem/limit) + 1;
         }
         mav.addObject("listVoucher", voucherService.search(code, discount, status, expiration, pageable));
         mav.addObject("totalPage", totalPage);

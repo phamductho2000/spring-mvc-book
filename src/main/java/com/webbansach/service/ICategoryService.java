@@ -22,5 +22,7 @@ public interface ICategoryService {
 
     void remove(long id);
 
+    void remove(Long[] ids);
+
     int getTotalItem();
 }

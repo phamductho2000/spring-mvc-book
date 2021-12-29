@@ -270,249 +270,88 @@
 <script src="<c:url value='/resources/user/assets/js/jquery.plugin.min.js'/>"></script>
 <script src="<c:url value='/resources/user/assets/js/jquery.magnific-popup.min.js'/>"></script>
 <script src="<c:url value='/resources/user/assets/js/jquery.countdown.min.js'/>"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
+<script src="<c:url value='/resources/admin/assets/js/scripts/jquery.twbsPagination.js'/>"></script>
 <!-- Main JS File -->
 <script src="<c:url value='/resources/user/assets/js/main.js'/>"></script>
 <script src="<c:url value='/resources/user/assets/js/custom.js'/>"></script>
-<script src="<c:url value='/resources/user/assets/js/demos/demo-10.js'/>"></script>
-<script src="<c:url value='/resources/admin/assets/js/scripts/jquery.twbsPagination.js'/>"></script>
+<script src="<c:url value='/resources/user/assets/js/shop.js'/>"></script>
+<script src="<c:url value='/resources/user/assets/js/cart.js'/>"></script>
+<script src="<c:url value='/resources/user/assets/js/wishlist.js'/>"></script>
+
 </body>
 <!-- molla/index-10.html  22 Nov 2019 09:58:22 GMT -->
 </html>
 <script type="text/javascript">
     $(document).ready(function () {
-            var totalPage = $('#totalPage').val()
-            var currentPage = $('#currentPage').val()
-            $('#pagination').twbsPagination({
-                totalPages: totalPage,
-                startPage: currentPage,
-                hideOnlyOnePage: true,
-                onPageClick: function (event, page) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/${nameCate}/${id}?page="+page,
-                        success: function(response) {
-                            $('.products').replaceWith($(response).find('.products'))
-                            window.history.pushState("", "", "/${nameCate}/${id}?page="+page)
-                        },
-                        error : function() {
-                            alert("Loi")
-                        }
-                    })
-                }
-            })
-    })
 
-    $(document).on('input', '#inputImgReviewProduct', function(){
-        var elem = document.createElement("img");
-            elem.setAttribute("src", "/resources/book_images/147144.png");
-            elem.setAttribute("height", "40px");
-            elem.setAttribute("width", "40px");
-            elem.setAttribute("alt", "#");
-            $('#list-image-review').append(elem)
-
-    })
-
-    function sortProduct(optionSort) {
-        var url = window.location.href
-        $.ajax({
-            type : 'POST',
-            url : "/${nameCate}/${id}/sort",
-            data: {sort: optionSort, page: 1},
-            success : function(response) {
-            $('.products').replaceWith($(response).find('.products'))
-            var totalPage = $('#totalPage').val()
-            var currentPage = $('#currentPage').val()
-            $('#pagination').twbsPagination('destroy')
-            $('#pagination').twbsPagination({
-                totalPages:  totalPage,
-                startPage: currentPage,
-                hideOnlyOnePage: true,
-                onPageClick: function (event, page) {
-                    $.ajax({
-                        type: "POST",
-                        data: {sort: optionSort, page: page},
-                        url: "/${nameCate}/${id}/sort",
-                        success: function(response) {
-                            $('.products').replaceWith($(response).find('.products'))
-                        }
-                    })
-                }
-            })
-            },
-            error : function() {
-                alert("Loi")
+        $('#btnSearch').click(function () {
+            var q = $('#q').val()
+            if (q != "") {
+                $('#formSearch').submit()
             }
         })
-    }
-        function searchByMoney() {
+
+        $('#forgotPasswordModal').on('shown.bs.modal', function () {
+            $('#signin-modal').modal('hide')
+        })
+
+
+        $("#formForgotPassword").validate({
+            onfocusout: false,
+            onkeyup: false,
+            onclick: false,
+            rules: {
+                "emailReset": {
+                    required: true,
+                    email: true
+                }
+            }
+        })
+
+        $("#demoForm").validate({
+            onfocusout: false,
+            onkeyup: false,
+            onclick: false,
+            rules: {
+                "new-password": {
+                    required: true,
+                    minlength: 8
+                },
+                "re-password": {
+                    equalTo: "#new-password",
+                    minlength: 8
+                }
+            }
+        });
+
+        $('#btnPayment').click(function (e) {
+            if($('#paymentMomo').prop('checked') || $('#paymentZaloPay').prop('checked')){
+                alert('Phương thức thanh toán này hiện không hỗ trợ')
+                e.preventDefault();
+            }
+        })
+
+        $('#submitLogin').click(function () {
             var url = window.location.href
-            var startMoney = $('#startMoney').val()
-            var endMoney = $('#endMoney').val()
+            var username = $('#singin-username').val()
+            var password = $('#singin-password').val()
             $.ajax({
-                type : 'POST',
-                url : "/${nameCate}/${id}/search_byMoney",
-                data : {startMoney: startMoney, endMoney: endMoney, page: 1},
-                success : function(response) {
-                    $('.col-lg-9').replaceWith($(response).find('.col-lg-9'))
+                type: 'POST',
+                url: "/j_spring_security_check",
+                data: {j_username: username, j_password: password},
+                success: function (response) {
+                    if (response == 'LOGIN_FAILURE') {
+                        $('#alertLoginFail').css("display", "block")
+                    } else {
+                        window.location = url
+                    }
                 },
-                error : function() {
+                error: function (err) {
                     alert("Loi")
                 }
-            }).done(function () {
-                var totalPage = $('#totalPage').val()
-                var currentPage = $('#currentPage').val()
-                $('#pagination').twbsPagination('destroy')
-                $('#pagination').twbsPagination({
-                    totalPages:  totalPage,
-                    startPage: currentPage,
-                    hideOnlyOnePage: true,
-                    onPageClick: function (event, page) {
-                        $.ajax({
-                            type: "POST",
-                            url: "/${nameCate}/${id}/search_byMoney",
-                            data : {startMoney: startMoney, endMoney: endMoney, page: page},
-                            success: function(response) {
-                                $('.products').replaceWith($(response).find('.products'))
-                            }
-                        })
-                    }
-                })
             })
-        }
+        })
 
-    $('input[type=checkbox][name=checkBoxPub]').change(function () {
-        if ($(this).prop("checked")) {
-
-           var id = $(this).val()
-           searchByPublisher(id)
-           return
-        }
-        //Here do the stuff you want to do when 'unchecked'
     })
-
-    function searchByPublisher(id) {
-        var url = window.location.href
-        $.ajax({
-            type : 'POST',
-            url : "/${nameCate}/${id}/search_byPublisher",
-            data : {pubId: id, page: 1},
-            success : function(response) {
-                $('.col-lg-9').replaceWith($(response).find('.col-lg-9'))
-            },
-            error : function() {
-                alert("Loi")
-            }
-        }).done(function () {
-            var totalPage = $('#totalPage').val()
-            var currentPage = $('#currentPage').val()
-            $('#pagination').twbsPagination('destroy')
-            $('#pagination').twbsPagination({
-                totalPages:  totalPage,
-                startPage: currentPage,
-                hideOnlyOnePage: true,
-                onPageClick: function (event, page) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/${nameCate}/${id}/search_byPublisher",
-                        data : {pubId: id, page: page},
-                        success: function(response) {
-                            $('.products').replaceWith($(response).find('.products'))
-                        }
-                    })
-                }
-            })
-        })
-    }
-
-    function applyVoucher() {
-        var code = $('#voucher').val()
-        $.ajax({
-            type : 'POST',
-            url : "/ap-dung-voucher",
-            data :{code: code},
-            success : function(response) {
-                $('.page-content').replaceWith($(response).find('.page-content'))
-                $('#btnApplyVoucher').css("display", "none")
-                $('#btnDisableVoucher').css("display", "block")
-                $('#voucher').val(code)
-                $('#voucher').attr("readonly", true);
-            },
-            error : function() {
-                alert("Voucher không tồn tại")
-            }
-        })
-    }
-
-    function searchProduct() {
-        var q = $('#q').val()
-        var url = "/tim-kiem/q="
-        if(q != ""){
-            $.ajax({
-                type : 'GET',
-                url : url + q,
-                success : function(response) {
-                    $(".main").replaceWith($(response).find(".main"))
-                    window.history.pushState("", "", url+q)
-                },
-                error : function() {
-                    alert("Loi")
-                }
-            }).done(function () {
-                var totalPage = $(response).find('#totalPage').val()
-                var currentPage = $(response).find('#currentPage').val()
-                $('#pagination').twbsPagination('destroy')
-                $('#pagination').twbsPagination({
-                    totalPages:  totalPage,
-                    startPage: currentPage,
-                    hideOnlyOnePage:true,
-                    onPageClick: function (event, page) {
-                        $.ajax({
-                            type: "GET",
-                            url: url+q+"?page="+page,
-                            success: function(response) {
-                                $('table').replaceWith($(response).find('table'))
-                                window.history.pushState("", "", url+q+"?page="+page)
-                            }
-                        })
-                    }
-                })
-            })
-        }
-    }
-
-    function removeItemWishlist(id) {
-        $.ajax({
-            type: "GET",
-            url: "/yeu-thich/xoa/"+id,
-            success: function(response) {
-                $(".main").replaceWith($(response).find(".main"))
-            },
-            error : function() {
-                alert("Loi")
-            }
-        })
-    }
-
-    function addToWishlist(id) {
-        $.ajax({
-            type : 'POST',
-            url : "/them-vao-yeu-thich",
-            data :{bId: id},
-            success : function(response) {
-                if(response == "NOT_LOGIN"){
-                    $('#signin-modal').modal('show')
-                }
-                if(response == "EXIST"){
-                    alert("Sản phẩm đã tồn tại trong yêu thích")
-                }
-                if(response == "SUCCESS"){
-                    $("#myToastWishlist").toast({ delay: 1000 });
-                    $("#myToastWishlist").toast('show')
-                }
-            },
-            error : function(err) {
-
-            }
-        })
-    }
 </script>

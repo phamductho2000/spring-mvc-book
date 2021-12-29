@@ -20,14 +20,14 @@
         </div>
         <div class="ibox-body">
             <form:form method="POST" action="/admin/publisher/update" modelAttribute="publisher">
-                <form:input path="id" value="${publisher.id}" type="hidden"></form:input>
+                <form:input path="id" value="${publisher.id}" type="hidden" required="required"></form:input>
                 <div class="form-group">
                     <form:label path="name">Tên nhà sản xuất</form:label>
-                    <form:input path="name" type="text" class="form-control" value="${publisher.name}"></form:input>
+                    <form:input path="name" type="text" class="form-control" value="${publisher.name}" required="required"></form:input>
                 </div>
                 <div class="form-group">
                     <form:label path="address" >Địa chỉ</form:label>
-                    <form:input path="address" type="text" class="form-control" value="${publisher.address}"></form:input>
+                    <form:input path="address" type="text" class="form-control" value="${publisher.address}" required="required"></form:input>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form:form>

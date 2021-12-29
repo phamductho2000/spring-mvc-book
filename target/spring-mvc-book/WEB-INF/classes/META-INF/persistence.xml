@@ -9,6 +9,8 @@
         <class>com.webbansach.entity.PublisherEntity</class>
         <class>com.webbansach.entity.RoleEntity</class>
         <class>com.webbansach.entity.ReviewEntity</class>
-        <class>com.webbansach.entity.CustomerEntity</class>
+        <class>com.webbansach.entity.PaymentEntity</class>
+        <class>com.webbansach.entity.ContactEntity</class>
+        <class>com.webbansach.entity.PasswordResetTokenEntity</class>
     </persistence-unit>
 </persistence>

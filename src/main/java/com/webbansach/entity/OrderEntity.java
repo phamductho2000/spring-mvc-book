@@ -13,10 +13,21 @@ public class OrderEntity extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
+	@ManyToOne
+	@JoinColumn(name = "payment_id")
+	private PaymentEntity payment;
 	@OneToMany(mappedBy = "order")
 	private List<DetailOrderEntity> detailOrder = new ArrayList<>();
 	@Column(name = "status")
 	private int status;
+
+	public PaymentEntity getPayment() {
+		return payment;
+	}
+
+	public void setPayment(PaymentEntity payment) {
+		this.payment = payment;
+	}
 
 	public int getStatus() { return status; }
 	public void setStatus(int status) { this.status = status; }

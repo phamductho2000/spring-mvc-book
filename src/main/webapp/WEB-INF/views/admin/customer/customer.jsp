@@ -22,15 +22,34 @@
 </div>
 <div class="page-content fade-in-up">
     <div class="ibox">
-        <div class="ibox-head" style="justify-content: flex-end">
-            <a href="/admin/customer/new"  style="margin-right: 5px;" class="btn btn-primary" ><i class="fa fa-plus" style="padding-right: 4px;"></i>THÊM MỚI</a>
-            <button type="button"  class="btn btn-danger" onclick=""><i class="fa fa-trash" style="padding-right: 4px"></i>XÓA</button>
+        <div class="ibox-head">
+            <div style="display: flex">
+                <div class="m-r-5">
+                    <p class="m-t-5">Hiển thị</p>
+                </div>
+                <div>
+                    <select class="form-control" id="limitShowOption" >
+                        <option value="10" label="10"/>
+                        <option value="30" label="30"/>
+                        <option value="50" label="50"/>
+                    </select>
+                </div>
+            </div>
+            <div style="justify-content: flex-end">
+                <a href="/admin/customer/new"  style="margin-right: 5px;" class="btn btn-primary" ><i class="fa fa-plus" style="padding-right: 4px;"></i>THÊM MỚI</a>
+                <button type="button"  class="btn btn-danger" id="removeCustomers"><i class="fa fa-trash" style="padding-right: 4px"></i>XÓA</button>
+            </div>
         </div>
         <div class="ibox-body">
-            <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
+            <table class="table table-striped table-bordered table-hover" id="Datatable" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th></th>
+                    <th>
+                        <label class="ui-checkbox">
+                            <input class="checkId" type="checkbox" id="checkAll" onclick="checkAll()">
+                            <span class="input-span"></span>
+                        </label>
+                    </th>
                     <th>Avatar</th>
                     <th>Tên</th>
                     <th>Username</th>
@@ -45,7 +64,7 @@
                     <tr>
                         <td>
                             <label class="ui-checkbox">
-                                <input type="checkbox">
+                                <input class="checkId input-check" type="checkbox">
                                 <span class="input-span"></span>
                             </label>
                         </td>
@@ -55,7 +74,14 @@
                         <td>${item.name}</td>
                         <td>${item.username}</td>
                         <td>${item.email}</td>
-                        <td>Hoạt động</td>
+                        <td>
+                            <c:if test="${item.status == 1}">
+                                <span class="badge badge-success">Hoạt động</span>
+                            </c:if>
+                            <c:if test="${item.status == 0}">
+                                <span class="badge badge-danger">Không hoạt động</span>
+                            </c:if>
+                        </td>
                         <td>
                             <c:set value="${item.updated_date}" var="dateString" />
                             <fmt:parseDate value="${dateString}" var="dateObject"
@@ -72,9 +98,11 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <ul id="pagination" class="pagination-sm" style="float: right"></ul>
-            <input hidden="true" id="totalPage" value="${totalPage}">
-            <input hidden="true" id="currentPage" value="${currentPage}">
+            <nav id="page_navigation">
+                <ul id="pagination" class="pagination-sm" style="float: right"></ul>
+                <input hidden="true" id="totalPage" value="${totalPage}">
+                <input hidden="true" id="currentPage" value="${currentPage}">
+            </nav>
         </div>
     </div>
 </div>

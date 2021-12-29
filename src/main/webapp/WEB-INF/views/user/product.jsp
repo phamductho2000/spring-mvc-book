@@ -69,13 +69,22 @@
                                 </div><!-- End .product-details-quantity -->
                             </div><!-- End .details-filter-row -->
 
-                            <div class="product-details-action">
-                                <a href="#" class="btn-product btn-cart" onclick="addToCart(${book.id})"><span>Thêm giỏ hàng</span></a>
-                                <div class="details-action-wrapper">
-                                    <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
-                                </div><!-- End .details-action-wrapper -->
-                            </div><!-- End .product-details-action -->
+                            <c:if test="${book.status == 0}">
+                                <h4>Hết hàng</h4>
+                            </c:if>
 
+                            <c:if test="${book.status == 2}">
+                                <h4>Ngừng kinh doanh</h4>
+                            </c:if>
+
+                            <c:if test="${book.status == 1}">
+                                <div class="product-details-action">
+                                    <a href="#" class="btn-product btn-cart" onclick="addToCart(${book.id})"><span>Thêm giỏ hàng</span></a>
+                                    <div class="details-action-wrapper">
+                                        <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                                    </div><!-- End .details-action-wrapper -->
+                                </div><!-- End .product-details-action -->
+                            </c:if>
                             <div class="product-details-footer">
                                 <div class="product-cat">
                                     <span>Thể loại:</span>

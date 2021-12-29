@@ -58,7 +58,7 @@ public class UserConverter {
         result.setEmail(userDTO.getEmail());
         result.setAddress(userDTO.getAddress());
         result.setStatus(userDTO.getStatus());
-        if(userDTO.getAvatar() != ""){
+        if(userDTO.getAvatar().equals("") == false){
             result.setAvatar(userDTO.getAvatar());
         }
        if(userDTO.getPassword().equals("") == false){

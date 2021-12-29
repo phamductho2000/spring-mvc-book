@@ -4,6 +4,11 @@ $(document).ready(function () {
 
     owlCarousels();
     quantityInputs();
+    // pagination();
+
+
+
+
 
     // Header Search Toggle
 

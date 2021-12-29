@@ -17,26 +17,12 @@
     <div class="page-content">
         <div class="dashboard">
             <div class="container">
-                <div class="row">
-                    <aside class="col-md-3 col-lg-2">
-                        <ul class="nav nav-dashboard flex-column mb-3 mb-md-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/tai-khoan/thong-tin" ><i class="fa fa-user-circle"></i> Tài khoản</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/tai-khoan/don-hang" ><i class="fa fa-history"></i> Lịch sử mua hàng</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/dang-xuat"><i class="fa fa-sign-out"></i> Đăng xuất</a>
-                            </li>
-                        </ul>
-                    </aside><!-- End .col-lg-3 -->
-                    <div class="col-md-9 col-lg-10">
+
                         <div class="main-account">
                             <sec:authorize access="isAuthenticated()">
                                 <form:form method="POST" action="/tai-khoan/cap-nhat" enctype="multipart/form-data" modelAttribute="user">
                                     <p style="font-size: 20px"><strong>Thông tin tài khoản</strong></p>
-                                    <div class="row" style="border: rgb(206 205 206/47%) 1px solid; margin-bottom: 20px">
+                                    <div class="row" style="border: rgb(206 205 206/47%) 1px solid; margin-bottom: 20px; padding: 10px 10px 10px">
                                         <div class="col-md-6">
                                             <img src="/resources/book_images/${userDetail.avatar}" id="imgProduct" width="90px" height="90px" style="border-radius: 50%; display: inline-block">
                                             <label for="inputImage" style="margin-left: 20px" class="btn btn-secondary">Thay ảnh đại diện</label>
@@ -45,7 +31,9 @@
                                         <div class="col-md-6">
                                             <p><strong>Họ và tên</strong></p>
                                             <form:input path="id" type="hidden"  class="form-control" value="${userDetail.id}"></form:input>
-                                            <form:input path="name" type="text" class="form-control" value="${userDetail.name}"></form:input>
+                                            <div class="form-group">
+                                                <form:input path="name" type="text" class="form-control" value="${userDetail.name}"></form:input>
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
                                             <p><strong>Email</strong> </p>
@@ -57,27 +45,16 @@
                                             <form:input path="phone" type="text" class="form-control" value="${userDetail.phone}"></form:input>
 
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <p><strong>Địa chỉ</strong></p>
                                             <form:input path="address" type="text" class="form-control" value="${userDetail.address}"></form:input>
                                         </div>
-                                    </div>
-                                    <p style="font-size: 20px"><strong>Thay đổi mật khẩu</strong></p>
-                                    <div class="row" style="border: rgb(206 205 206 / 47%) 1px solid; margin-bottom: 20px">
-                                        <div class="col-md-12">
-                                            <label>Mật khẩu hiện tại</label>
-                                            <input type="password" class="form-control" width="394px">
-                                        </div>
+
                                         <div class="col-md-6">
                                             <label>Mật khẩu mới</label>
-                                            <input type="password" class="form-control" >
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label>Nhập lại mật khẩu mới</label>
-                                            <input type="password" class="form-control" >
+                                            <form:input path="password" type="password" class="form-control" ></form:input>
                                         </div>
                                     </div>
-
                                     <button type="submit" class="btn btn-outline-primary-2">
                                         <span>CẬP NHẬT</span>
                                         <i class="icon-long-arrow-right"></i>
@@ -85,7 +62,7 @@
                                 </form:form>
                             </sec:authorize>
                         </div><!-- .End .tab-pane -->
-                    </div><!-- End .col-lg-9 -->
+
 
                 </div>
             </div><!-- End .container -->

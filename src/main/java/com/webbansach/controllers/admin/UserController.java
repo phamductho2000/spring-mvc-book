@@ -1,5 +1,6 @@
 package com.webbansach.controllers.admin;
 
+import com.webbansach.dto.BookDTO;
 import com.webbansach.dto.UserDTO;
 import com.webbansach.service.IRoleService;
 import com.webbansach.service.IUserService;
@@ -26,18 +27,22 @@ public class UserController {
     IRoleService roleService;
 
     @RequestMapping(value = "/admin/user", method = RequestMethod.GET)
-    public ModelAndView userPage(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+    public ModelAndView homePage(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                 @RequestParam(value = "limit", defaultValue = "10") int limit) {
         ModelAndView mav = new ModelAndView("admin_user");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
-        int countItem = userService.findAllByRole("ADMIN", null).size();
-        if(countItem % 8 == 0){
-            totalPage = countItem/8;
+        List<String> codes = new ArrayList<>();
+        codes.add("ADMIN");
+        codes.add("EMPLOYEE");
+        int countItem = userService.findAllByRole(codes, null).size();
+        if(countItem % limit == 0){
+            totalPage = countItem/limit;
         }
         else{
-            totalPage = (countItem/8) + 1;
+            totalPage = (countItem/limit) + 1;
         }
-        mav.addObject("ListUser", userService.findAllByRole("ADMIN", pageable));
+        mav.addObject("ListUser", userService.findAllByRole(codes, pageable));
         mav.addObject("totalPage", totalPage);
         mav.addObject("currentPage", page);
         return mav;
@@ -51,8 +56,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/admin/user/remove", method = RequestMethod.POST)
-    public String removeBook(@RequestParam("currentUrl") String url, @RequestParam("id") long id) {
+    public String remove(@RequestParam("currentUrl") String url, @RequestParam("id") long id) {
         userService.remove(id);
+        return "redirect:"+url;
+    }
+
+    @RequestMapping(value = "/admin/user/removeByIds", method = RequestMethod.POST)
+    public String removes(@RequestParam("currentUrl") String url, @RequestParam("ids") Long[] ids) {
+        userService.remove(ids);
         return "redirect:"+url;
     }
 
@@ -65,7 +76,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/admin/user/save", method = RequestMethod.POST)
-    public String updateBook(@ModelAttribute("user") UserDTO userDTO,
+    public String save(@ModelAttribute("user") UserDTO userDTO,
                              @RequestParam(value = "file") CommonsMultipartFile commonsMultipartFile,
                              @RequestParam(value = "checkRole") String[] roles) {
         String nameFile = commonsMultipartFile.getOriginalFilename();
@@ -85,13 +96,25 @@ public class UserController {
         return "redirect:/admin/user";
     }
 
-    @RequestMapping(value = "/admin/user/search", method = RequestMethod.POST)
-    public ModelAndView searchBook(@RequestParam(name = "key") String key,
+    @RequestMapping(value = "/admin/user/search", method = RequestMethod.GET)
+    public ModelAndView search(@RequestParam(name = "name") String key,
                                    @RequestParam(name = "status") int status,
                                    @RequestParam(name = "role") String role,
+                                   @RequestParam(value = "limit", defaultValue = "10") int limit,
                                    @RequestParam(name = "page", required = false) int page)  {
         ModelAndView mav = new ModelAndView("admin_user");
-        mav.addObject("ListUser", userService.searchUser(key, status, role ,null));
+        Pageable pageable = new PageRequest(page-1, limit);
+        int totalPage = 0;
+        int countItem = userService.searchUser(key, status, role ,null).size();
+        if((countItem % limit) == 0){
+            totalPage = countItem / limit;
+        }
+        else{
+            totalPage = (countItem / limit) + 1;
+        }
+        mav.addObject("ListUser", userService.searchUser(key, status, role ,pageable));
+        mav.addObject("totalPage", totalPage);
+        mav.addObject("currentPage", page);
         return mav;
     }
 

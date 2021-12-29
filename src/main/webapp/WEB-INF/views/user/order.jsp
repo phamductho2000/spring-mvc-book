@@ -15,22 +15,7 @@
     <div class="page-content">
         <div class="dashboard">
             <div class="container">
-                <div class="row">
-                    <aside class="col-md-3 col-lg-2">
-                        <ul class="nav nav-dashboard flex-column mb-3 mb-md-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/tai-khoan/thong-tin" ><i class="fa fa-user-circle"></i> Tài khoản</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/tai-khoan/don-hang"><i class="fa fa-history"></i> Lịch sử mua hàng</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/dang-xuat"><i class="fa fa-sign-out"></i> Đăng xuất</a>
-                            </li>
-                        </ul>
-                    </aside><!-- End .col-lg-3 -->
-                    <div class="col-md-9 col-lg-10">
-                        <div class="main-account">
+                        <div class="main-account products mb-3" >
                             <h3 style="font-size: 30px">Thông tin hóa đơn</h3>
                             <sec:authorize access="isAnonymous()">
                                 <p>Chưa có hóa đơn nào</p>
@@ -49,7 +34,7 @@
                                     <tbody>
                                     <c:forEach var="item" items="${lstOrder}">
                                         <tr>
-                                            <td><a href="#" onclick="loadDetailOrder(${item.id})">${item.id}</a></td>
+                                            <td><a href="/tai-khoan/chi-tiet-don-hang/${item.id}" >${item.id}</a></td>
                                             <td><fmt:formatNumber type="number" groupingUsed="true" value="${item.total_price}"/> ₫</td>
                                             <td>
                                                 <c:set value="${item.created_date}" var="dateString" />
@@ -79,8 +64,11 @@
                                 </table>
                             </sec:authorize>
                         </div><!-- .End .tab-pane -->
-                    </div>
-                </div>
+                <nav id="page_navigation" aria-label="page_navigation">
+                    <ul id="pagination" class="pagination-lg" style="float: right"></ul>
+                    <input hidden="true" id="totalPage" value="${totalPage}">
+                    <input hidden="true" id="currentPage" value="${currentPage}">
+                </nav>
             </div><!-- End .container -->
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->

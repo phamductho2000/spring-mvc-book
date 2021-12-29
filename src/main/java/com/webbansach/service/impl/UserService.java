@@ -2,34 +2,43 @@ package com.webbansach.service.impl;
 
 import com.webbansach.converter.UserConverter;
 import com.webbansach.dto.UserDTO;
-import com.webbansach.dto.UserDTO;
-import com.webbansach.entity.BookEntity;
-import com.webbansach.entity.PublisherEntity;
-import com.webbansach.entity.RoleEntity;
-import com.webbansach.entity.UserEntity;
+import com.webbansach.entity.*;
+import com.webbansach.repository.PasswordResetTokenRepository;
 import com.webbansach.repository.RoleRepository;
 import com.webbansach.repository.UserRepository;
 import com.webbansach.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class UserService implements IUserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    UserConverter userConverter;
+    private UserConverter userConverter;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Override
     public void registerUser(String user, String pass){
@@ -40,6 +49,7 @@ public class UserService implements IUserService {
         userEntity.setUsername(user);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         userEntity.setPassword(encoder.encode(pass));
+        userEntity.setStatus(1);
         userEntity.setRoles(roleEntityList);
         userRepository.save(userEntity);
     }
@@ -78,8 +88,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<UserDTO> findAllByRole(String code, Pageable pageable){
-        List<UserEntity> userEntities =  userRepository.findAllByRole(code, pageable);
+    public List<UserDTO> findAllByRole(List<String> codes, Pageable pageable){
+        List<UserEntity> userEntities =  userRepository.findAllByRole(codes, pageable);
         List<UserDTO> userDTOS = new ArrayList<>();
         for(UserEntity item: userEntities) {
             UserDTO userDTO = userConverter.entityToDTO(item);
@@ -163,6 +173,67 @@ public class UserService implements IUserService {
     public void remove(long id){
         UserEntity userEntity = userRepository.findOne(id);
         userRepository.delete(userEntity);
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(UserDTO userDTO, String token){
+        PasswordResetTokenEntity passwordResetTokenEntity = new PasswordResetTokenEntity();
+        UserEntity userEntity = userRepository.findOne(userDTO.getId());
+        passwordResetTokenEntity.setUser(userEntity);
+        passwordResetTokenEntity.setToken(token);
+        passwordResetTokenRepository.save(passwordResetTokenEntity);
+    }
+
+    @Override
+    public UserDTO findOneByEmail(String email){
+        UserDTO userDTO = new UserDTO();
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if(userEntity != null){
+            userDTO = userConverter.entityToDTO(userEntity);
+        }
+        else {
+            userDTO = null;
+        }
+        return userDTO;
+    }
+
+    @Override
+    public void updatePassword(long userId, String password){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        UserEntity userEntity = userRepository.findOne(userId);
+        userEntity.setPassword(encoder.encode(password));
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void sendEmailToResetPassword(String recipientEmail, String link) throws UnsupportedEncodingException, MessagingException {
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("tho2022000@gmail.com", "Store book support");
+        helper.setTo(recipientEmail);
+
+        String subject = "Here's the link to reset your password";
+
+        String content = "<p>Hello,</p>"
+                + "<p>You have requested to reset your password.</p>"
+                + "<p>Click the link below to change your password:</p>"
+                + "<p><a href=\"" + link + "\">Change my password</a></p>"
+                + "<br>"
+                + "<p>Ignore this email if you do remember your password, "
+                + "or you have not made the request.</p>";
+
+        helper.setSubject(subject);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public void remove(Long[] ids){
+        userRepository.removeUsersByIds(Arrays.asList((ids)));
     }
 
     @Override

@@ -16,15 +16,16 @@ public class PublisherController {
     IPublisherService publisherService;
 
     @RequestMapping(value = "/admin/publisher", method = RequestMethod.GET)
-    public ModelAndView homePage(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+    public ModelAndView homePage(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                 @RequestParam(value = "limit", defaultValue = "10") int limit) {
         ModelAndView mav = new ModelAndView("admin_publisher");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
-        if((publisherService.getTotalItem() % 8) == 0){
-            totalPage = publisherService.getTotalItem()/8;
+        if((publisherService.getTotalItem() % limit) == 0){
+            totalPage = publisherService.getTotalItem()/limit;
         }
         else{
-            totalPage = (publisherService.getTotalItem()/8) + 1;
+            totalPage = (publisherService.getTotalItem()/limit) + 1;
         }
         mav.addObject("listPublisher", publisherService.findAll(pageable));
         mav.addObject("totalPage", totalPage);
@@ -39,13 +40,19 @@ public class PublisherController {
     }
 
     @RequestMapping(value = "/admin/publisher/remove", method = RequestMethod.POST)
-    public String removePage(@RequestParam("currentUrl") String url, @RequestParam("id") long id) {
+    public String remove(@RequestParam("currentUrl") String url, @RequestParam("id") long id) {
         publisherService.remove(id);
         return "redirect:"+url;
     }
 
+    @RequestMapping(value = "/admin/publisher/removeByIds", method = RequestMethod.POST)
+    public String removes(@RequestParam("currentUrl") String url, @RequestParam("ids") Long[] ids) {
+        publisherService.remove(ids);
+        return "redirect:"+url;
+    }
+
     @RequestMapping(value = "/admin/publisher/save", method = RequestMethod.POST)
-    public String saveBook(@ModelAttribute("book") PublisherDTO publisher) {
+    public String save(@ModelAttribute("book") PublisherDTO publisher) {
         publisherService.save(publisher);
         return "redirect:/admin/publisher";
     }
@@ -58,24 +65,25 @@ public class PublisherController {
     }
 
     @RequestMapping(value = "/admin/publisher/update", method = RequestMethod.POST)
-    public String updateBook(@ModelAttribute("publisher") PublisherDTO publisher) {
+    public String update(@ModelAttribute("publisher") PublisherDTO publisher) {
         publisherService.save(publisher);
         return "redirect:/admin/publisher";
     }
 
-    @RequestMapping(value = "/admin/publisher/search", method = RequestMethod.POST)
-    public ModelAndView search(@RequestParam("name") String name,
-                               @RequestParam("address") String address,
+    @RequestMapping(value = "/admin/publisher/search", method = RequestMethod.GET)
+    public ModelAndView search(@RequestParam(value = "name", required = false, defaultValue = "default") String name,
+                               @RequestParam(value = "address", required = false, defaultValue = "default") String address,
+                               @RequestParam(value = "limit", defaultValue = "10") int limit,
                                @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         ModelAndView mav = new ModelAndView("admin_publisher");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
         int countItem = publisherService.search(name, address, null).size();
-        if((countItem % 8) == 0){
-            totalPage = countItem/8;
+        if((countItem % limit) == 0){
+            totalPage = countItem/limit;
         }
         else{
-            totalPage = (countItem/8) + 1;
+            totalPage = (countItem/limit) + 1;
         }
         mav.addObject("listPublisher", publisherService.search(name, address, pageable));
         mav.addObject("totalPage", totalPage);

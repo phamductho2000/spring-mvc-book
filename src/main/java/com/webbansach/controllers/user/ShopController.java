@@ -9,10 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -32,120 +29,60 @@ public class ShopController {
 
     @RequestMapping(value = "/{nameCate}/{id}", method = RequestMethod.GET)
     public ModelAndView homePage(@PathVariable("nameCate") String nameCate,
-                                 @PathVariable("id") long id,
-                                 @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-
+                           @PathVariable("id") int cateId,
+                           @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                           @RequestParam(value = "limit", defaultValue = "16") int limit,
+                           @RequestParam(value = "sort", required = false, defaultValue = "default") String sort,
+                           @RequestParam(value = "publisher", required = false, defaultValue = "0") int publisher,
+                           @RequestParam(value = "price_range", required = false, defaultValue = "0") int price_range) {
         ModelAndView mav = new ModelAndView("shop");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
-        int countItem = bookService.getTotalItemByCateId(id);
-        if((countItem % 8) == 0){
-            totalPage = countItem/8;
+        int min = 0, max = 0;
+        if(price_range == 1){
+            min = 0;
+            max = 150000;
+        }
+        if(price_range == 2){
+            min = 150000;
+            max = 300000;
+        }
+        if(price_range == 3){
+            min = 300000;
+            max = 500000;
+        }
+        if(price_range == 4){
+            min = 500000;
+            max = 0;
+        }
+        if(sort.equals("desc_price")){
+            pageable = new PageRequest(page-1, limit, Sort.Direction.DESC, "price");
+        }
+        if(sort.equals("asc_price")){
+            pageable = new PageRequest(page-1, limit, Sort.Direction.ASC, "price");
+        }
+        if(sort.equals("desc_new")){
+            pageable = new PageRequest(page-1, limit, Sort.Direction.DESC, "createdDate");
+        }
+        if(sort.equals("desc_discount")){
+            pageable = new PageRequest(page-1, limit, Sort.Direction.DESC, "discount");
+        }
+        List<BookDTO> bookDTOList = bookService.search(cateId, publisher, min, max, pageable);
+        int countItem = bookService.search(cateId, publisher, min, max, null).size();
+        if((countItem % limit) == 0){
+            totalPage = countItem / limit;
         }
         else{
-            totalPage = (countItem/8) + 1;
+            totalPage = (countItem / limit) + 1;
         }
-        mav.addObject("listBook", bookService.findAllByCateId(id, pageable));
-        mav.addObject("listPublisher", publisherService.findAll());
+        mav.addObject("listBook", bookDTOList);
+        mav.addObject("listPublisher", publisherService.findAllByCateId(cateId, null));
         mav.addObject("nameCate", nameCate);
-        mav.addObject("cateId", id);
+        mav.addObject("cateId", cateId);
         mav.addObject("totalPage", totalPage);
         mav.addObject("currentPage", page);
         return mav;
-    }
 
-    @RequestMapping(value = "/{nameCate}/{id}/sort", method = RequestMethod.POST)
-    public ModelAndView sortProduct(@PathVariable("nameCate") String nameCate,
-                                 @PathVariable("id") long id,
-                                 @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-                                 @RequestParam(value = "sort", required = false, defaultValue = "default") String sort) {
-
-        ModelAndView mav = new ModelAndView("shop");
-        Pageable pageable = new PageRequest(page-1, 8);
-        List<BookDTO> listBook = new ArrayList<>();
-        int totalPage = 0;
-        int countItem = bookService.getTotalItemByCateId(id);
-
-        if(sort.equals("sort_des_price")){
-            pageable = new PageRequest(page-1, 8, Sort.Direction.DESC, "price");
-        }
-        if(sort.equals("sort_asc_price")){
-            pageable = new PageRequest(page-1, 8, Sort.Direction.ASC, "price");
-        }
-        if(sort.equals("sort_new")){
-            pageable = new PageRequest(page-1, 8, Sort.Direction.DESC, "createdDate");
-        }
-        if(sort.equals("sort_discount")){
-            pageable = new PageRequest(page-1, 8, Sort.Direction.DESC, "discount");
-        }
-        listBook = bookService.findAllByCateId(id, pageable);
-        if(sort.equals("sort_feature")){
-            pageable = new PageRequest(page-1, 8);
-            listBook = bookService.findAllFeature(pageable);
-        }
-
-        if((countItem % 8) == 0){
-            totalPage = countItem/8;
-        }
-        else{
-            totalPage = (countItem/8) + 1;
-        }
-        mav.addObject("listBook", listBook);
-        mav.addObject("listPublisher", publisherService.findAll());
-        mav.addObject("nameCate", nameCate);
-        mav.addObject("cateId", id);
-        mav.addObject("totalPage", totalPage);
-        mav.addObject("currentPage", page);
-        return mav;
-    }
-
-    @RequestMapping(value = "/{nameCate}/{id}/search_byMoney", method = RequestMethod.POST)
-    public ModelAndView searchByMoney(@PathVariable("nameCate") String nameCate,
-                                      @PathVariable("id") long id,
-                                      @RequestParam(value = "startMoney") int startMoney,
-                                      @RequestParam(value = "endMoney") int endMoney,
-                                      @RequestParam(value = "page", required = false, defaultValue = "1") int page){
-        ModelAndView mav = new ModelAndView("shop");
-        Pageable pageable = new PageRequest(page-1, 8);
-        int totalPage = 0;
-        int countItem = bookService.searchByMoney(id, startMoney, endMoney, null).size();
-        if((countItem % 8) == 0){
-            totalPage = countItem/8;
-        }
-        else{
-            totalPage = (countItem/8) + 1;
-        }
-        mav.addObject("listBook", bookService.searchByMoney(id, startMoney, endMoney, pageable));
-        mav.addObject("listPublisher", publisherService.findAll());
-        mav.addObject("nameCate", nameCate);
-        mav.addObject("cateId", id);
-        mav.addObject("totalPage", totalPage);
-        mav.addObject("currentPage", page);
-        return mav;
-    }
-
-    @RequestMapping(value = "/{nameCate}/{id}/search_byPublisher", method = RequestMethod.POST)
-    public ModelAndView searchByPublisher(@PathVariable("nameCate") String nameCate,
-                                      @PathVariable("id") long id,
-                                      @RequestParam(value = "pubId") long pubId,
-                                      @RequestParam(value = "page", required = false, defaultValue = "1") int page){
-        ModelAndView mav = new ModelAndView("shop");
-        Pageable pageable = new PageRequest(page-1, 8);
-        int totalPage = 0;
-        int countItem = bookService.findAllByPublIdandCateId(pubId, id,null).size();
-        if((countItem % 8) == 0){
-            totalPage = countItem/8;
-        }
-        else{
-            totalPage = (countItem/8) + 1;
-        }
-        mav.addObject("listBook", bookService.findAllByPublIdandCateId(pubId, id, pageable));
-        mav.addObject("listPublisher", publisherService.findAll());
-        mav.addObject("nameCate", nameCate);
-        mav.addObject("cateId", id);
-        mav.addObject("totalPage", totalPage);
-        mav.addObject("currentPage", page);
-        return mav;
     }
 
 }

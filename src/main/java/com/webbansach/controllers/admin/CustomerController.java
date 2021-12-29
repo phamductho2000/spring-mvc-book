@@ -13,6 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller(value = "customerControllerOfAdmin")
 public class CustomerController {
@@ -23,18 +25,21 @@ public class CustomerController {
     IRoleService roleService;
 
     @RequestMapping(value = "/admin/customer", method = RequestMethod.GET)
-    public ModelAndView userPage(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+    public ModelAndView homePage(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                 @RequestParam(value = "limit", defaultValue = "10") int limit) {
         ModelAndView mav = new ModelAndView("admin_customer");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
-        int countItem = userService.findAllByRole("USER", null).size();
-        if(countItem % 8 == 0){
-            totalPage = countItem/8;
+        List<String> codes = new ArrayList<>();
+        codes.add("USER");
+        int countItem = userService.findAllByRole(codes, null).size();
+        if(countItem % limit == 0){
+            totalPage = countItem/limit;
         }
         else{
-            totalPage = (countItem/8) + 1;
+            totalPage = (countItem/limit) + 1;
         }
-        mav.addObject("ListUser", userService.findAllByRole("USER", pageable));
+        mav.addObject("ListUser", userService.findAllByRole(codes, pageable));
         mav.addObject("totalPage", totalPage);
         mav.addObject("currentPage", page);
         return mav;
@@ -48,8 +53,14 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/admin/customer/remove", method = RequestMethod.POST)
-    public String removeBook(@RequestParam("currentUrl") String url, @RequestParam("id") long id) {
+    public String remove(@RequestParam("currentUrl") String url, @RequestParam("id") long id) {
         userService.remove(id);
+        return "redirect:"+url;
+    }
+
+    @RequestMapping(value = "/admin/customer/removeByIds", method = RequestMethod.POST)
+    public String removes(@RequestParam("currentUrl") String url, @RequestParam("ids") Long[] ids) {
+        userService.remove(ids);
         return "redirect:"+url;
     }
 
@@ -62,7 +73,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/admin/customer/save", method = RequestMethod.POST)
-    public String updateBook(@ModelAttribute("customer") UserDTO userDTO,
+    public String save(@ModelAttribute("customer") UserDTO userDTO,
                              @RequestParam(value = "file") CommonsMultipartFile commonsMultipartFile) {
         String nameFile = commonsMultipartFile.getOriginalFilename();
         File file = new File("C:\\Users\\tho20\\IdeaProjects\\spring-mvc-book\\src\\main\\webapp\\resources\\book_images", nameFile);
@@ -76,18 +87,19 @@ public class CustomerController {
         return "redirect:/admin/customer";
     }
 
-    @RequestMapping(value = "/admin/customer/search", method = RequestMethod.POST)
-    public ModelAndView search(@RequestParam(name = "key") String key,
-                               @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+    @RequestMapping(value = "/admin/customer/search", method = RequestMethod.GET)
+    public ModelAndView search(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                               @RequestParam(value = "limit", defaultValue = "10") int limit,
+                               @RequestParam(name = "name", required = false, defaultValue = "1") String key) {
         ModelAndView mav = new ModelAndView("admin_customer");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
         int countItem = userService.findAllByName(key, null).size();
-        if(countItem % 8 == 0){
+        if(countItem % limit == 0){
             totalPage = countItem/8;
         }
         else{
-            totalPage = (countItem/8) + 1;
+            totalPage = (countItem/limit) + 1;
         }
         mav.addObject("ListUser", userService.findAllByName(key, pageable));
         mav.addObject("totalPage", totalPage);

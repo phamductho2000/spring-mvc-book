@@ -633,7 +633,7 @@ blockquote.text-white cite span {
     border: none;
     margin: 1px 0 0;
     padding: 2.2rem 3rem 2.5rem;
-    border-radius: 0;
+    border-radius: 10px;
     border: none;
     box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
     background-color: #fff;
@@ -3133,7 +3133,7 @@ p {
      font-weight: 400;
      font-size: 1.4rem;
      color: #f4e8dd;
-     background-color: #c96;
+     /*background-color: #c96;*/
      margin-bottom: 0;
  }
 .header-8 .header-top .container:after, .header-8 .header-top .container-fluid:after {
@@ -8221,7 +8221,7 @@ small.form-text {
     top: 1.5rem;
 }
 .modal-content {
-    border: none;
+    border-radius: 20px;
     box-shadow: 5px 10px 16px rgba(51, 51, 51, 0.05), -5px 10px 16px rgba(51, 51, 51, 0.05);
 }
 .close {
@@ -11858,6 +11858,7 @@ button:focus {
     background-color: #fff;
     padding: 2.2rem 2rem 4.4rem;
     box-shadow: 0 3px 16px rgba(51, 51, 51, 0.1);
+    border-radius: 20px;
 }
 .form-box .btn {
     min-width: 115px;
@@ -12232,8 +12233,8 @@ button:focus {
 }
 .table.table-summary tbody td {
     padding: 0;
-    height: 70px;
-    border-bottom: .1rem solid #ebebeb;
+    height: 55px;
+    /*border-bottom: .1rem solid #ebebeb;*/
 }
 .table.table-summary thead th, .table.table-summary tbody td {
     vertical-align: middle;
@@ -12606,7 +12607,7 @@ button:focus {
     padding-right: 0;
 }
 .summary.summary-cart {
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
 }
 .summary.summary-cart .summary-title {
     margin-bottom: 0;
@@ -12877,10 +12878,11 @@ dashboard .form-control {
     margin-top: -1rem;
 }
 .custom-link{
-    font-size: 14px;
     text-transform: uppercase;
-    color: #0a0a0a;
     padding: 10px 0;
+}
+.custom-link .linkMenu{
+    color: #0c0c0c;
 }
 .custom-link .linkMenu:hover{
     color: white;
@@ -14827,5 +14829,71 @@ dashboard .form-control {
     text-align: right;
 }
 
+.user-dropdown:hover>.dropdown-menu {
+    display: block;
+}
 
+.user-dropdown>.dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+
+.nameUser::after{
+    content: "";
+    width: 1px;
+    height: 18px;
+    background: rgb(224, 224, 224);
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5px;
+}
+
+.main-shipp{
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 4px;
+    box-shadow: rgb(0 0 0 / 5%) 0px 1px 1px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+
+.option-shipp{
+    border: 1px solid rgb(194, 225, 255);
+    background: rgb(240, 248, 255);
+    padding: 16px 23px;
+    border-radius: 10px;
+    max-width: 480px;
+    margin-bottom: 25px;
+    position: relative;
+    display: grid;
+    row-gap: 15px;
+}
+
+.main-payment{
+    background: rgb(255, 255, 255);
+    color: rgb(51, 51, 51);
+    padding: 15px 25px 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid rgb(221, 221, 221);
+}
+
+.infoCustomer{
+    background: #e9ecef;
+    padding: 10px 10px 10px;
+    border-radius: 10px;
+    width: 370px;
+    height: 100%;
+}
+
+.infoCustomer p{
+    color: #0a0a0a;
+}
+
+.google-map iframe{
+    width: 100%;
+}
+.button-active {
+    background-color: #dfdfdf;
+}
 /*# sourceMappingURL=style.css.map */

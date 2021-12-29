@@ -25,37 +25,37 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <form:label path="name">Tên sách</form:label>
-                            <form:input path="name" type="text" class="form-control" value="${book.name}"></form:input>
+                            <form:input path="name" type="text" class="form-control" value="${book.name}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="author" >Tác giả</form:label>
-                            <form:input path="author" type="text" class="form-control" value="${book.author}"></form:input>
+                            <form:input path="author" type="text" class="form-control" value="${book.author}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="oldPrice" >Đơn giá</form:label>
-                            <form:input path="oldPrice" type="text" class="form-control" value="${book.oldPrice}"></form:input>
+                            <form:input path="oldPrice" type="text" class="form-control" value="${book.oldPrice}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="page" >Số trang</form:label>
-                            <form:input path="page" type="text" class="form-control" value="${book.page}"></form:input>
+                            <form:input path="page" type="text" class="form-control" value="${book.page}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="discount" >Khuyến mãi</form:label>
-                            <form:input path="discount" type="text" class="form-control" value="${book.discount}"></form:input>
+                            <form:input path="discount" type="text" class="form-control" value="${book.discount}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="quanty" >Số lượng</form:label>
-                            <form:input path="quanty" type="text" class="form-control" value="${book.quanty}"></form:input>
+                            <form:input path="quanty" type="text" class="form-control" value="${book.quanty}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="weight" >Cân nặng</form:label>
-                            <form:input path="weight" type="text" class="form-control" value="${book.weight}"></form:input>
+                            <form:input path="weight" type="text" class="form-control" value="${book.weight}" required="required"></form:input>
                         </div>
 
                     </div>
@@ -64,18 +64,18 @@
                         <div class="form-group">
                             <img src="/resources/book_images/${book.image}" width="200px" height="210px" id="imgProduct" style="display: inline-block">
                             <label for="inputImage" class="btn btn-primary">Chọn hình ảnh</label>
-                            <input type="file"  hidden="true" value="Upload File"  name="file" id="inputImage"/>
+                            <input type="file"  hidden="true" value="Upload File"  name="file" id="inputImage" required/>
                         </div>
 
                         <div class="form-group">
                             <form:label path="size" >Kích thước</form:label>
-                            <form:input path="size" type="text" class="form-control" value="${book.size}"></form:input>
+                            <form:input path="size" type="text" class="form-control" value="${book.size}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="publisher_id">Chọn nhà xuất bản</form:label>
                             <br>
-                            <form:select cssClass="form-control" path="publisher_id">
+                            <form:select cssClass="form-control" path="publisher_id" required="required">
                                 <form:option value="${item.publisher_id}" label="${pName}"/>
                                 <form:options items="${listPublisher}" itemValue="id" itemLabel="name"/>
                             </form:select>
@@ -83,7 +83,7 @@
                         <div class="form-group">
                             <form:label path="category_id">Chọn danh mục</form:label>
                             <br>
-                            <form:select cssClass="form-control" path="category_id">
+                            <form:select cssClass="form-control" path="category_id" required="required">
                                 <form:option value="${item.category_id}" label="${cName}"/>
                                 <form:options items="${listCategory}" itemValue="id" itemLabel="name"/>
                             </form:select>
@@ -92,7 +92,7 @@
                         <div class="form-group">
                             <form:label path="status">Chọn tình trạng</form:label>
                             <br>
-                            <form:select cssClass="form-control" path="status">
+                            <form:select cssClass="form-control" path="status" required="required">
                                 <c:if test="${book.status == 1}">
                                     <form:option value="0" label="Hết hàng"/>
                                 </c:if>
@@ -111,7 +111,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <form:label path="shortDes" >Mô tả ngắn</form:label>
-                            <textarea name="shortDes" rows="5" cols="180">
+                            <textarea name="shortDes" class="form-control" rows="5" cols="180" required>
                                 ${book.shortDes}
                             </textarea>
                         </div>
@@ -119,7 +119,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <form:label path="description" >Mô tả</form:label>
-                            <textarea name="des" id="summernote" rows="5" cols="180">
+                            <textarea name="des" id="editor" rows="15" cols="180" required="required">
                                 ${book.description}
                             </textarea>
                         </div>

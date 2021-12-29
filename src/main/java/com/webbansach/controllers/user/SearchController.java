@@ -22,8 +22,8 @@ public class SearchController {
     @Autowired
     IPublisherService publisherService;
 
-    @RequestMapping(value = "/tim-kiem/q={key}", method = RequestMethod.GET)
-    public ModelAndView searchPage(@PathVariable("key") String key,
+    @RequestMapping(value = "/tim-kiem", method = RequestMethod.GET)
+    public ModelAndView searchPage(@RequestParam("key") String key,
                                    @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         ModelAndView mav = new ModelAndView("search");
         Pageable pageable = new PageRequest(page-1, 16);
@@ -39,6 +39,7 @@ public class SearchController {
         mav.addObject("totalItem", countItem);
         mav.addObject("totalPage", totalPage);
         mav.addObject("currentPage", page);
+        mav.addObject("keySearch", key);
         return mav;
     }
 

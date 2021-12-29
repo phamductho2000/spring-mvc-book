@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -35,6 +35,17 @@ public class PublisherService implements IPublisherService {
     @Override
     public List<PublisherDTO> findAll(Pageable pageable){
         Page<PublisherEntity> publisherEntities = publisherRepository.findAll(pageable);
+        List<PublisherDTO> publisherDTOS = new ArrayList<>();
+        for(PublisherEntity item: publisherEntities){
+            PublisherDTO publisherDTO = publisherConverter.entityToDTO(item);
+            publisherDTOS.add(publisherDTO);
+        }
+        return publisherDTOS;
+    }
+
+    @Override
+    public List<PublisherDTO> findAllByCateId(long cateId, Pageable pageable){
+        List<PublisherEntity> publisherEntities = publisherRepository.findAllByCateId(cateId, pageable);
         List<PublisherDTO> publisherDTOS = new ArrayList<>();
         for(PublisherEntity item: publisherEntities){
             PublisherDTO publisherDTO = publisherConverter.entityToDTO(item);
@@ -86,6 +97,11 @@ public class PublisherService implements IPublisherService {
     public void remove(long id){
         PublisherEntity publisherEntity = publisherRepository.findOne(id);
         publisherRepository.delete(publisherEntity);
+    }
+
+    @Override
+    public void remove(Long[] ids){
+        publisherRepository.removePublisersByIds(Arrays.asList((ids)));
     }
 
     @Override

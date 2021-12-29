@@ -17,4 +17,6 @@ public interface IVoucherService {
     void save(VoucherDTO voucherDTO);
 
     void remove(long id);
+
+    void remove(Long[] ids);
 }

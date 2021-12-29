@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <main class="main">
     <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
         <div class="container">
@@ -16,28 +17,28 @@
                 <div class="form-tab">
                     <ul class="nav nav-pills nav-fill" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link" id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="false">Sign In</a>
+                            <a class="nav-link" id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="false">ĐĂNG NHẬP</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab" aria-controls="register-2" aria-selected="true">Register</a>
+                            <a class="nav-link active" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab" aria-controls="register-2" aria-selected="true">ĐĂNG KÝ</a>
                         </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
                             <form action="j_spring_security_check" method="post">
                                 <div class="form-group">
-                                    <label for="singin">Username *</label>
+                                    <label for="singin">Tài khoản *</label>
                                     <input type="text" class="form-control" id="singin" name="j_username" required>
                                 </div><!-- End .form-group -->
 
                                 <div class="form-group">
-                                    <label for="singin-password-2">Password *</label>
+                                    <label for="singin-password-2">Mật khẩu *</label>
                                     <input type="password" class="form-control" id="singin-password-2" name="j_password" required>
                                 </div><!-- End .form-group -->
 
                                 <div class="form-footer">
                                     <button type="submit" class="btn btn-outline-primary-2">
-                                        <span>LOG IN</span>
+                                        <span>ĐĂNG NHẬP</span>
                                         <i class="icon-long-arrow-right"></i>
                                     </button>
 
@@ -46,11 +47,11 @@
                                         <label class="custom-control-label" for="signin-remember-2">Remember Me</label>
                                     </div><!-- End .custom-checkbox -->
 
-                                    <a href="#" class="forgot-link">Forgot Your Password?</a>
+                                    <a href="/forgot-password" class="forgot-link">Quên mật khẩu?</a>
                                 </div><!-- End .form-footer -->
                             </form>
                             <div class="form-choice">
-                                <p class="text-center">or sign in with</p>
+                                <p class="text-center">hoặc đăng nhập với</p>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <a href="#" class="btn btn-login btn-g">
@@ -68,31 +69,41 @@
                             </div><!-- End .form-choice -->
                         </div><!-- .End .tab-pane -->
                         <div class="tab-pane fade show active" id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
-                            <form action="#">
+                            <form action="/dang-ky" method="post">
+                                <c:if test="${messageError != null}">
+                                    <div class="alert alert-danger">
+                                        ${messageError}
+                                    </div>
+                                </c:if>
+                                <c:if test="${messageSuccess != null}">
+                                    <div class="alert alert-success">
+                                         ${messageSuccess}
+                                    </div>
+                                </c:if>
                                 <div class="form-group">
-                                    <label for="register-email-2">Your email address *</label>
-                                    <input type="email" class="form-control" id="register-email-2" name="register-email" required>
+                                    <label for="register-user">Nhập tài khoản *</label>
+                                    <input type="text" class="form-control" id="register-user" name="register-user" required>
                                 </div><!-- End .form-group -->
 
                                 <div class="form-group">
-                                    <label for="register-password-2">Password *</label>
-                                    <input type="password" class="form-control" id="register-password-2" name="register-password" required>
+                                    <label for="register-password">Nhập mật khẩu *</label>
+                                    <input type="password" class="form-control" id="register-password" name="register-password" required>
                                 </div><!-- End .form-group -->
 
                                 <div class="form-footer">
                                     <button type="submit" class="btn btn-outline-primary-2">
-                                        <span>SIGN UP</span>
+                                        <span>ĐĂNG KÝ</span>
                                         <i class="icon-long-arrow-right"></i>
                                     </button>
 
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
-                                        <label class="custom-control-label" for="register-policy-2">I agree to the <a href="#">privacy policy</a> *</label>
+                                        <input type="checkbox" class="custom-control-input" id="register-policy1" required>
+                                        <label class="custom-control-label" for="register-policy1">I agree to the <a href="#">privacy policy</a> *</label>
                                     </div><!-- End .custom-checkbox -->
                                 </div><!-- End .form-footer -->
                             </form>
                             <div class="form-choice">
-                                <p class="text-center">or sign in with</p>
+                                <p class="text-center">hoặc đăng nhập với</p>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <a href="#" class="btn btn-login btn-g">

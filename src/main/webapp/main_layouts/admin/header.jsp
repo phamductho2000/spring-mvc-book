@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import = "com.webbansach.util.SecurityUtils"%>
 <header class="header">
 	<div class="page-brand">
 		<a class="link" href="index.html">
@@ -139,14 +142,16 @@
 			</li>
 			<li class="dropdown dropdown-user">
 				<a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-					<img src="./assets/img/admin-avatar.png" />
-					<span></span>Admin<i class="fa fa-angle-down m-l-5"></i></a>
+					<sec:authorize access="isAuthenticated()">
+						<img src="/resources/book_images/<%= SecurityUtils.getPrincipal().getAvatar() %>" />
+						<span></span><%= SecurityUtils.getPrincipal().getFullName() %><i class="fa fa-angle-down m-l-5"></i></a>
+					</sec:authorize>
 				<ul class="dropdown-menu dropdown-menu-right">
 					<a class="dropdown-item" href="/admin/profile"><i class="fa fa-user"></i>Profile</a>
 					<a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Settings</a>
 					<a class="dropdown-item" href="javascript:;"><i class="fa fa-support"></i>Support</a>
 					<li class="dropdown-divider"></li>
-					<a class="dropdown-item" href="login.html"><i class="fa fa-power-off"></i>Logout</a>
+					<a class="dropdown-item" href="/admin/logout"><i class="fa fa-power-off"></i>Logout</a>
 				</ul>
 			</li>
 		</ul>

@@ -20,60 +20,75 @@
                 <form action="/dat-hang" method="post">
                     <div class="row">
                         <div class="col-lg-8">
-                            <sec:authorize access="isAuthenticated()">
-                            <h2 class="checkout-title">Đặt hàng</h2><!-- End .checkout-title -->
-                                <input type="text" hidden="true" name="userId" value="<%= SecurityUtils.getPrincipal().getId() %>">
-                            <div class="row">
-
-                                <div class="col-sm-6">
-                                    <label>Thông tin người nhận *</label>
-                                    <input type="text" class="form-control" placeholder="Họ và tên" required value="<%= SecurityUtils.getPrincipal().getFullName() %>">
-                                </div><!-- End .col-sm-6 -->
-
-                                <div class="col-sm-6">
-                                    <br>
-                                    <input type="text" class="form-control" placeholder="Số điện thoại" required value="<%= SecurityUtils.getPrincipal().getPhone() %>">
-                                </div><!-- End .col-sm-6 -->
-                            </div><!-- End .row -->
-
-                            <label>Địa chỉ *</label>
-                            <input type="text" class="form-control" value="<%= SecurityUtils.getPrincipal().getAddress() %>">
-
-                            <label>Email *</label>
-                            <input type="email" class="form-control" required value="<%= SecurityUtils.getPrincipal().getEmail() %>">
-
-                            <label>Ghi chú</label>
-                            <textarea class="form-control" cols="30" rows="4" placeholder="Ghi chú về đơn hàng"></textarea>
-                            </sec:authorize>
-
-                            <sec:authorize access="isAnonymous()">
-                                <h2 class="checkout-title">Đặt hàng</h2><!-- End .checkout-title -->
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>Thông tin người nhận *</label>
-                                        <input type="text" class="form-control" placeholder="Họ và tên" required >
-                                    </div><!-- End .col-sm-6 -->
-
-                                    <div class="col-sm-6">
-                                        <br>
-                                        <input type="text" class="form-control" placeholder="Số điện thoại" required >
-                                    </div><!-- End .col-sm-6 -->
-                                </div><!-- End .row -->
-
-                                <label>Địa chỉ *</label>
-                                <input type="text" class="form-control" >
-
-                                <label>Email *</label>
-                                <input type="email" class="form-control" required  >
-
-                                <label>Ghi chú</label>
-                                <textarea class="form-control" cols="30" rows="4" placeholder="Ghi chú về đơn hàng"></textarea>
-                            </sec:authorize>
-                        </div><!-- End .col-lg-9 -->
+                            <div class="checkout-option">
+                                <div class="shipp">
+                                    <h3 class="title">1. Chọn hình thức giao hàng</h3>
+                                    <div class="main-shipp">
+                                        <div class="option-shipp">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label" for="inlineRadio1">
+                                                    <img src="https://salt.tikicdn.com/ts/upload/2a/47/46/0e038f5927f3af308b4500e5b243bcf6.png" width="56" alt="TikiFast" style="display: inline-block; margin-bottom: 8px;">
+                                                    <span>Giao tiết kiệm</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="payment">
+                                    <h3 class="title">2. Chọn hình thức thanh toán</h3>
+                                    <div class="main-payment">
+                                        <ul class="list">
+                                            <li style="margin-bottom: 20px;">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="optionPayments" id="paymentCash" value="COD">
+                                                    <label class="form-check-label" for="paymentCash">
+                                                        <img class="method-icon" width="32" src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-cod.svg" alt="cod" style="display: inline-block; margin-left: 5px">
+                                                        <span>Thanh toán tiền mặt khi nhận hàng</span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li style="margin-bottom: 20px;">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="optionPayments" id="paymentMomo" value="MOMO">
+                                                    <label class="form-check-label" for="paymentMomo">
+                                                        <img class="method-icon" width="32" src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-mo-mo.svg" alt="cod" style="display: inline-block; margin-left: 5px">
+                                                        <span>Thanh toán bằng ví MoMo</span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                            <li style="margin-bottom: 20px;">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="optionPayments" id="paymentZaloPay" value="ZALOPAY">
+                                                    <label class="form-check-label" for="paymentZaloPay">
+                                                        <img class="method-icon" width="32" src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-zalo-pay.svg" alt="cod" style="display: inline-block; margin-left: 5px">
+                                                        <span>Thanh toán bằng ví ZaloPay</span>
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End .col-lg-8 -->
                         <aside class="col-lg-4">
+                            <div class="summary summary-cart">
+                                <div>
+                                    <span style="color: black">Giao tới</span>
+                                    <a href="/tai-khoan/thong-tin" style="float: right">Thay đổi</a>
+                                </div>
+                                <div>
+                                    <input type="hidden" name="userId" value="<%= SecurityUtils.getPrincipal().getId() %>">
+                                    <span class="nameUser" style="color: black"><%= SecurityUtils.getPrincipal().getFullName() %></span>
+                                    <span style="color: black"><%= SecurityUtils.getPrincipal().getPhone() %></span>
+                                </div>
+                                <div>
+                                    <p><%= SecurityUtils.getPrincipal().getAddress() %></p>
+                                </div>
+                            </div>
+
                             <div class="summary">
                                 <h3 class="summary-title">Đơn hàng (${Cart.size()})</h3><!-- End .summary-title -->
-
                                 <table class="table table-summary">
                                     <thead>
                                     <tr>
@@ -81,19 +96,20 @@
                                         <th>Thành tiền</th>
                                     </tr>
                                     </thead>
-
                                     <tbody>
                                     <c:forEach var="item" items="${Cart}">
                                         <tr>
-                                            <td><a href="#">${item.value.quanty}x ${item.value.book.name}</a></td>
-                                            <td>
+                                            <td style="border: none"><a href="#">${item.value.quanty}x ${item.value.book.name}</a></td>
+                                            <td style="border: none">
                                                  <fmt:formatNumber type="number" groupingUsed="true" value="${item.value.totalPrice}"/> ₫
                                             </td>
                                         </tr>
                                     </c:forEach>
                                     <tr class="summary-subtotal">
-                                        <td>Tạm tính:</td>
-                                        <td><fmt:formatNumber type="number" groupingUsed="true" value="${totalPrice - 30000}"/> ₫</td>
+                                        <td style="border-top: .1rem solid #ebebeb; border-bottom: none">Tạm tính:</td>
+                                        <td style="border-top: .1rem solid #ebebeb; border-bottom: none">
+                                            <fmt:formatNumber type="number" groupingUsed="true" value="${totalPrice - 30000}"/> ₫
+                                        </td>
                                     </tr><!-- End .summary-subtotal -->
                                     <tr>
                                         <td>Phí vận chuyển:</td>
@@ -106,19 +122,7 @@
                                     </tbody>
                                 </table><!-- End .table table-summary -->
 
-                                <div class="accordion-summary" id="accordion-payment">
-                                    <div class="card">
-                                        <div class="card-header" id="heading-1">
-                                            <h2 class="card-title">
-                                                <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-                                                   <i class="fa fa-money"> Thanh toán tiền mặt khi nhận hàng</i>
-                                                </a>
-                                            </h2>
-                                        </div><!-- End .card-header -->
-                                    </div><!-- End .card -->
-                                </div><!-- End .accordion -->
-
-                                <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                <button type="submit" id="btnPayment" class="btn btn-outline-primary-2 btn-order btn-block">
                                     <span class="btn-text">Hoàn tất đặt hàng</span>
                                     <span class="btn-hover-text">Hoàn tất đặt hàng</span>
                                 </button>

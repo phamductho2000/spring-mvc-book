@@ -22,13 +22,12 @@
                 </div><!-- End .toolbox-center -->
             </div><!-- End .toolbox -->
 
-            <div class="products">
+            <div class="products mb-3">
                 <div class="row">
                     <c:forEach var="item" items="${listBook}">
                     <div class="col-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
                         <div class="product">
                             <figure class="product-media">
-                                <span class="product-label label-new">New</span>
                                 <a href="/${item.name}/id=${item.id}">
                                     <img src="/resources/book_images/${item.image}" alt="Product image" class="product-image">
                                 </a>
@@ -83,6 +82,7 @@
                 <ul id="pagination" class="pagination-lg" style="float: right"></ul>
                 <input hidden="true" id="totalPage" value="${totalPage}">
                 <input hidden="true" id="currentPage" value="${currentPage}">
+                <input hidden="true" id="keySearch" value="${keySearch}">
             </nav>
         </div><!-- End .container-fluid -->
     </div><!-- End .page-content -->

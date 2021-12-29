@@ -18,23 +18,23 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <form:label path="name">Họ và tên</form:label>
-                            <form:input path="name" type="text" class="form-control" value="${user.name}"></form:input>
-                            <form:input path="id" type="hidden" class="form-control" value="${user.id}"></form:input>
+                            <form:input path="name" type="text" class="form-control" value="${user.name}" required="required"></form:input>
+                            <form:input path="id" type="hidden" class="form-control" value="${user.id}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="phone" >Số điện thoại</form:label>
-                            <form:input path="phone" type="text" class="form-control" value="${user.phone}"></form:input>
+                            <form:input path="phone" type="text" class="form-control" value="${user.phone}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="address" >Địa chỉ</form:label>
-                            <form:input path="address" type="text" class="form-control" value="${user.address}"></form:input>
+                            <form:input path="address" type="text" class="form-control" value="${user.address}" required="required"></form:input>
                         </div>
 
                         <div class="form-group">
                             <form:label path="email" >Email</form:label>
-                            <form:input path="email" type="text" class="form-control" value="${user.email}"></form:input>
+                            <form:input path="email" type="text" class="form-control" value="${user.email}" required="required"></form:input>
                         </div>
 
                     </div>
@@ -42,15 +42,15 @@
                         <div class="form-group">
                             <img src="/resources/book_images/${user.avatar}" width="130" height="135" id="imgProduct" style="display: inline-block">
                             <label for="inputImage" path="image" class="btn btn-primary">Chọn avatar</label>
-                            <input type="file"  value="Upload File"  hidden="true" name="file" id="inputImage"/>
+                            <input type="file"  value="Upload File"  hidden="true" name="file" id="inputImage" required/>
                         </div>
                         <div class="form-group">
                             <form:label path="username" >Username</form:label>
-                            <form:input path="username" type="text" readonly="true" class="form-control" value="${user.username}"></form:input>
+                            <form:input path="username" type="text" readonly="true" class="form-control" value="${user.username}" required="required"></form:input>
                         </div>
                         <div class="form-group">
                             <form:label path="password" >Password</form:label>
-                            <form:input path="password" type="password" class="form-control" value=""></form:input>
+                            <form:input path="password" type="password" class="form-control" value="" required="required"></form:input>
                         </div>
                     </div>
                 </div>

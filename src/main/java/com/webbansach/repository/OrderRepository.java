@@ -32,6 +32,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
     @Query("select o from OrderEntity o where ( ?1 = 0 or (o.id = ?1) ) " +
             "and ( ?2 = -1 or (o.status = ?2) )" +
-            "and ( ?3 = '' or ?4 = '' or (o.createdDate between cast( ?3 as date) and cast( ?4 as date)) )")
+            "and ( ?3 = 'default' or ?4 = 'default' or (o.createdDate between cast( ?3 as date) and cast( ?4 as date)) )")
     List<OrderEntity> search(int id, int status, String startDate, String endDate, Pageable pageable);
 }

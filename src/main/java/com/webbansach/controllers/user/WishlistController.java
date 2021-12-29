@@ -37,7 +37,7 @@ public class WishlistController {
     @Autowired
     IUserService userService;
 
-    @RequestMapping(value = "/yeu-thich")
+    @RequestMapping(value = "tai-khoan/yeu-thich")
     public ModelAndView show(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication == null || authentication instanceof AnonymousAuthenticationToken){
@@ -80,11 +80,10 @@ public class WishlistController {
         }
     }
 
-    @RequestMapping(value = "/yeu-thich/xoa/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/tai-khoan/yeu-thich/xoa/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable(value = "id") long id, HttpServletRequest request){
-
         wishlistService.remove(id);
-        return "redirect:/yeu-thich";
+        return "redirect:/tai-khoan/yeu-thich";
     }
 
 

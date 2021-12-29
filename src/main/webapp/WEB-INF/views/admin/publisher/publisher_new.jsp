@@ -22,11 +22,11 @@
             <form:form method="POST" action="admin/publisher/save" modelAttribute="publisher">
                 <div class="form-group">
                     <form:label path="name">Tên nhà sản xuất</form:label>
-                    <form:input path="name" type="text" class="form-control" ></form:input>
+                    <form:input path="name" type="text" class="form-control" required="required"></form:input>
                 </div>
                 <div class="form-group">
                     <form:label path="address" >Địa chỉ</form:label>
-                    <form:input path="address" type="text" class="form-control" ></form:input>
+                    <form:input path="address" type="text" class="form-control" required="required"></form:input>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form:form>

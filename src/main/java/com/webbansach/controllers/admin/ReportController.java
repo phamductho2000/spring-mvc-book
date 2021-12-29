@@ -5,25 +5,17 @@ import com.webbansach.dto.ReportDTO;
 import com.webbansach.service.IBookService;
 import com.webbansach.service.IOrderService;
 import com.webbansach.service.IReportService;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.DateFormatter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,15 +35,16 @@ public class ReportController {
     IReportService reportService;
 
     @RequestMapping(value = "/admin/report", method = RequestMethod.GET)
-    public ModelAndView homePage(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+    public ModelAndView homePage(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                 @RequestParam(value = "limit", defaultValue = "10") int limit) {
         ModelAndView mav = new ModelAndView("admin_report", "listOrder", new ReportDTO() );
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit, Sort.Direction.DESC, "createdDate");
         int totalPage = 0;
-        if((orderService.getTotalItem() % 8) == 0){
-            totalPage = orderService.getTotalItem()/8;
+        if((orderService.getTotalItem() % limit) == 0){
+            totalPage = orderService.getTotalItem()/limit;
         }
         else{
-            totalPage = (orderService.getTotalItem()/8) + 1;
+            totalPage = (orderService.getTotalItem()/limit) + 1;
         }
         ReportDTO reportDTO = new ReportDTO();
         reportDTO.setOrders(orderService.findAll(pageable));
@@ -110,19 +103,48 @@ public class ReportController {
         return mav;
     }
 
-    @RequestMapping(value = "/admin/report/search", method = RequestMethod.POST)
-    public ModelAndView searchBook(@RequestParam(name = "id", defaultValue = "0") int id,
-                                   @RequestParam(name = "status") int status,
-                                   @RequestParam(name = "startDate", defaultValue = "") String startDate,
-                                   @RequestParam(name = "endDate", defaultValue = "") String endDate,
-                                   @RequestParam(name = "page", required = false) int page) throws ParseException {
+    @RequestMapping(value = "/admin/report/search", method = RequestMethod.GET)
+    public ModelAndView search(@RequestParam(name = "id", required = false, defaultValue = "0") long id,
+                                   @RequestParam(name = "status", required = false, defaultValue = "-1") int status,
+                                   @RequestParam(name = "startDate", required = false, defaultValue = "") String startDate,
+                                   @RequestParam(name = "endDate", required = false, defaultValue = "") String endDate,
+                                   @RequestParam(name = "optionDate", required = false, defaultValue = "") String optionDate,
+                                   @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
+                                   @RequestParam(name = "page", required = false, defaultValue = "1") int page) throws ParseException {
         ModelAndView mav = new ModelAndView("admin_report", "listOrder", new ReportDTO());
         ReportDTO reportDTO = new ReportDTO();
-        List<OrderDTO> orderDTOS = orderService.search(id, status, startDate, endDate ,null);
+        int totalPage = 0, countItem = 0;
+        Pageable pageable = new PageRequest(page-1, limit);
+        List<OrderDTO> orderDTOS = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        if(startDate.equals("") && endDate.equals("")){
+            orderDTOS = orderService.searchOrder(id, status, null, null, optionDate, pageable);
+            countItem = orderService.searchOrder(id, status, null, null, optionDate, null).size();
+        }
+        else if(!startDate.equals("") && endDate.equals("")){
+            orderDTOS = orderService.searchOrder(id, status, formatter.parse(startDate), null, optionDate, pageable);
+            countItem = orderService.searchOrder(id, status, formatter.parse(startDate), null, optionDate, null).size();
+        }
+        else if(startDate.equals("") && !endDate.equals("")){
+            orderDTOS = orderService.searchOrder(id, status, null, formatter.parse(endDate), optionDate, pageable);
+            countItem = orderService.searchOrder(id, status, null, formatter.parse(endDate), optionDate, null).size();
+        }
+        else {
+            orderDTOS = orderService.searchOrder(id, status, formatter.parse(startDate), formatter.parse(endDate) ,optionDate, pageable);
+            countItem = orderService.searchOrder(id, status, formatter.parse(startDate), formatter.parse(endDate) ,optionDate, null).size();
+        }
         int totalPrice = orderService.getTotalPriceOptionsOrder(orderDTOS);
+        if((countItem % limit) == 0){
+            totalPage = countItem / limit;
+        }
+        else{
+            totalPage = (countItem / limit) + 1;
+        }
         reportDTO.setOrders(orderDTOS);
         mav.addObject("listOrder", reportDTO);
         mav.addObject("totalPrice", totalPrice);
+        mav.addObject("totalPage", totalPage);
+        mav.addObject("currentPage", page);
         return mav;
     }
 

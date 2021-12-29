@@ -14,7 +14,7 @@
     </nav><!-- End .breadcrumb-nav -->
 
     <div class="page-content">
-        <div class="container">
+        <div class="container" id="main-whishlist">
            <ul class="list">
                <c:forEach var="item" items="${wishlist}">
                    <li class="item">

@@ -14,15 +14,16 @@ public class CategoryController {
     ICategoryService categoryService;
 
     @RequestMapping(value = "/admin/category", method = RequestMethod.GET)
-    public ModelAndView categoryPage(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+    public ModelAndView homePage(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                                 @RequestParam(value = "limit", defaultValue = "10") int limit) {
         ModelAndView mav = new ModelAndView("admin_category");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
-        if((categoryService.getTotalItem() % 8) == 0){
-            totalPage = categoryService.getTotalItem()/8;
+        if((categoryService.getTotalItem() % limit) == 0){
+            totalPage = categoryService.getTotalItem()/limit;
         }
         else{
-            totalPage = (categoryService.getTotalItem()/8) + 1;
+            totalPage = (categoryService.getTotalItem()/limit) + 1;
         }
         mav.addObject("listCategory", categoryService.findAll(pageable));
         mav.addObject("totalPage", totalPage);
@@ -43,8 +44,14 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/admin/category/remove", method = RequestMethod.POST)
-    public String removeBook(@RequestParam("currentUrl") String url, @RequestParam("id") long id) {
+    public String remove(@RequestParam("currentUrl") String url, @RequestParam("id") long id) {
         categoryService.remove(id);
+        return "redirect:"+url;
+    }
+
+    @RequestMapping(value = "/admin/category/removeByIds", method = RequestMethod.POST)
+    public String removes(@RequestParam("currentUrl") String url, @RequestParam("ids") Long[] ids) {
+        categoryService.remove(ids);
         return "redirect:"+url;
     }
 
@@ -62,17 +69,18 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/admin/category/search", method = RequestMethod.POST)
-    public ModelAndView search(@RequestParam(name = "key") String key,
+    public ModelAndView search(@RequestParam(name = "name") String key,
+                               @RequestParam(value = "limit", defaultValue = "10") int limit,
                                @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         ModelAndView mav = new ModelAndView("admin_category");
-        Pageable pageable = new PageRequest(page-1, 8);
+        Pageable pageable = new PageRequest(page-1, limit);
         int totalPage = 0;
         int countItem = categoryService.search(key, null).size();
-        if((countItem % 8) == 0){
-            totalPage = countItem/8;
+        if((countItem % limit) == 0){
+            totalPage = countItem / limit;
         }
         else{
-            totalPage = (countItem/8) + 1;
+            totalPage = (countItem/limit) + 1;
         }
         mav.addObject("listCategory", categoryService.search(key, pageable));
         mav.addObject("totalPage", totalPage);

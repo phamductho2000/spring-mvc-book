@@ -23,47 +23,47 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <form:label path="name">Tên sách</form:label>
-                        <form:input path="name" type="text" class="form-control" ></form:input>
+                        <form:input path="name" type="text" class="form-control" required="required"></form:input>
                     </div>
 
                     <div class="form-group">
                         <form:label path="author" >Tác giả</form:label>
-                        <form:input path="author" type="text" class="form-control" ></form:input>
+                        <form:input path="author" type="text" class="form-control" required="required"></form:input>
                     </div>
 
                     <div class="form-group">
                         <form:label path="oldPrice" >Đơn giá</form:label>
-                        <form:input path="oldPrice" type="text" class="form-control" ></form:input>
+                        <form:input path="oldPrice" type="text" class="form-control" required="required"></form:input>
                     </div>
 
                     <div class="form-group">
                         <form:label path="page" >Số trang</form:label>
-                        <form:input path="page" type="text" class="form-control" ></form:input>
+                        <form:input path="page" type="text" class="form-control" required="required"></form:input>
                     </div>
 
                     <div class="form-group">
                         <form:label path="discount" >Khuyến mãi</form:label>
-                        <form:input path="discount" type="text" class="form-control" ></form:input>
+                        <form:input path="discount" type="text" class="form-control" required="required"></form:input>
                     </div>
 
                     <div class="form-group">
                         <form:label path="quanty" >Số lượng</form:label>
-                        <form:input path="quanty" type="text" class="form-control" ></form:input>
+                        <form:input path="quanty" type="text" class="form-control" required="required"></form:input>
                     </div>
 
 
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <img src="" width="200px" height="210px" id="imgProduct" style="display: inline-block">
+                        <img src="" width="200px" height="210px" id="imgProduct" style="display: inline-block;object-fit: contain">
                         <label for="inputImage" path="image" class="btn btn-primary">Chọn hình ảnh</label>
-                        <input type="file"  value="Upload File"  hidden="true" name="file" id="inputImage"/>
+                        <input type="file"  value="Upload File"  hidden="true" name="file" id="inputImage"  required/>
                     </div>
 
                     <div class="form-group">
                         <form:label path="publisher_id">Chọn nhà sản xuất</form:label>
                         <br>
-                        <form:select cssClass="form-control" path="publisher_id" >
+                        <form:select cssClass="form-control" path="publisher_id" required="required">
                             <form:option value="0" label=" Chọn nhà sản xuất "/>
                             <form:options items="${listPublisherName}" itemValue="id" itemLabel="name"/>
                         </form:select>
@@ -72,7 +72,7 @@
                     <div class="form-group">
                         <form:label path="category_id">Chọn danh mục</form:label>
                         <br>
-                        <form:select cssClass="form-control" path="category_id">
+                        <form:select cssClass="form-control" path="category_id" required="required">
                             <form:option value="0" label=" Chọn danh mục "/>
                             <form:options items="${listCategoryName}" itemValue="id" itemLabel="name"/>
                         </form:select>
@@ -80,19 +80,19 @@
 
                     <div class="form-group">
                         <form:label path="weight" >Trọng lượng</form:label>
-                        <form:input path="weight" type="text" class="form-control" ></form:input>
+                        <form:input path="weight" type="text" class="form-control" required="required"></form:input>
                     </div>
 
                     <div class="form-group">
                         <form:label path="size" >Kích thước</form:label>
-                        <form:input path="size" type="text" class="form-control" ></form:input>
+                        <form:input path="size" type="text" class="form-control" required="required"></form:input>
                     </div>
 
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <form:label path="shortDes" >Mô tả ngắn</form:label>
-                        <textarea name="shortDes" rows="5" cols="180" placeholder="Mô tả ngắn về sản phẩm">
+                        <textarea class="form-control" name="shortDes" rows="5" cols="180" required>
 
                         </textarea>
                     </div>
@@ -100,7 +100,9 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <form:label path="description" >Mô tả</form:label>
-                        <textarea name="des" id="summernote" rows="10" cols="180"></textarea>
+                        <textarea name="des" id="editor" required>
+
+                        </textarea>
                     </div>
                 </div>
             </div>

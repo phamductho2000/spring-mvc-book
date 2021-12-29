@@ -22,8 +22,18 @@
     <div class="brand">
         <p>QUẢN TRỊ HỆ THỐNG</p>
     </div>
-    <form id="login-form" action="/j_spring_security_check" method="post">
+    <form id="login-form" action="/admin/j_spring_security_check" method="post">
         <h2 class="login-title">Log in</h2>
+        <c:if test="${accessDenied != null}">
+            <div class="alert alert-danger">
+               ${accessDenied}
+            </div>
+        </c:if>
+        <c:if test="${param.incorrectAccount != null}">
+            <div class="alert alert-danger">
+                Tài khoản hoặc mật khẩu không đúng
+            </div>
+        </c:if>
         <div class="form-group">
             <div class="input-group-icon right">
                 <div class="input-icon"><i class="fa fa-envelope"></i></div>
@@ -45,19 +55,19 @@
         <div class="form-group">
             <button class="btn btn-info btn-block" type="submit">Login</button>
         </div>
-        <div class="social-auth-hr">
-            <span>Or login with</span>
-        </div>
-        <div class="text-center social-auth m-b-20">
-            <a class="btn btn-social-icon btn-twitter m-r-5" href="javascript:;"><i class="fa fa-twitter"></i></a>
-            <a class="btn btn-social-icon btn-facebook m-r-5" href="javascript:;"><i class="fa fa-facebook"></i></a>
-            <a class="btn btn-social-icon btn-google m-r-5" href="javascript:;"><i class="fa fa-google-plus"></i></a>
-            <a class="btn btn-social-icon btn-linkedin m-r-5" href="javascript:;"><i class="fa fa-linkedin"></i></a>
-            <a class="btn btn-social-icon btn-vk" href="javascript:;"><i class="fa fa-vk"></i></a>
-        </div>
-        <div class="text-center">Not a member?
-            <a class="color-blue" href="register.html">Create accaunt</a>
-        </div>
+<%--        <div class="social-auth-hr">--%>
+<%--            <span>Or login with</span>--%>
+<%--        </div>--%>
+<%--        <div class="text-center social-auth m-b-20">--%>
+<%--            <a class="btn btn-social-icon btn-twitter m-r-5" href="javascript:;"><i class="fa fa-twitter"></i></a>--%>
+<%--            <a class="btn btn-social-icon btn-facebook m-r-5" href="javascript:;"><i class="fa fa-facebook"></i></a>--%>
+<%--            <a class="btn btn-social-icon btn-google m-r-5" href="javascript:;"><i class="fa fa-google-plus"></i></a>--%>
+<%--            <a class="btn btn-social-icon btn-linkedin m-r-5" href="javascript:;"><i class="fa fa-linkedin"></i></a>--%>
+<%--            <a class="btn btn-social-icon btn-vk" href="javascript:;"><i class="fa fa-vk"></i></a>--%>
+<%--        </div>--%>
+<%--        <div class="text-center">Not a member?--%>
+<%--            <a class="color-blue" href="register.html">Create accaunt</a>--%>
+<%--        </div>--%>
     </form>
 </div>
 <!-- BEGIN PAGA BACKDROPS-->

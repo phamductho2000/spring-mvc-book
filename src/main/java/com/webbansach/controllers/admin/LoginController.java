@@ -35,4 +35,11 @@ public class LoginController {
         }
         return "redirect:/admin/login";
     }
+
+    @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
+    public ModelAndView accessDenied() {
+        ModelAndView mav = new ModelAndView("admin_login");
+        mav.addObject("accessDenied", "Bạn không có quyền vào hệ thống");
+        return mav;
+    }
 }

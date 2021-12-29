@@ -1971,7 +1971,7 @@ body.fullscreen-mode {
 .modal-dialog {
   z-index: 1100; }
   .modal-dialog .modal-content {
-    border: 0;
+    border: none;
     -webkit-border-radius: 0;
     border-radius: 0;
     -webkit-box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.14), 0 4px 5px 0 rgba(0, 0, 0, 0.098), 0 1px 10px 0 rgba(0, 0, 0, 0.084);

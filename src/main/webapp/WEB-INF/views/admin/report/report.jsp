@@ -19,10 +19,11 @@
             <div>
                 <select class="form-control" id="statusOrder" name="statusOrder" >
                     <option value="-1" label=" Tình trạng đơn hàng"/>
-                    <option value="0" label=" Chưa thanh toán"/>
-                    <option value="1" label=" Đang giao"/>
-                    <option value="2" label=" Hoàn thành"/>
-
+                    <option value="0" label=" Đã hủy"/>
+                    <option value="1" label=" Hoàn thành"/>
+                    <option value="2" label=" Đang giao"/>
+                    <option value="3" label=" Đã tiếp nhận"/>
+                    <option value="4" label=" Đang chờ xử lý"/>
                 </select>
             </div>
             <div class="form-group" id="date_5">
@@ -32,26 +33,40 @@
                     <input class="input-sm form-control" id="endDate" type="text" placeholder="Chọn ngày kết thúc" name="end" value="">
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" onclick="searchOrder('/admin/report/search')"><i class="fa fa-search" style="padding-right: 4px;"></i>Tìm kiếm</button>
+            <button type="button" class="btn btn-primary" onclick="searchReport()"><i class="fa fa-search" style="padding-right: 4px;"></i>Tìm kiếm</button>
         </div>
 </div>
 <div class="page-content fade-in-up">
     <div class="ibox">
-        <div class="ibox-head" style="justify-content: flex-end">
-            <div class="item-flex">
-                <a href="#" onclick="searchReportByCurrentDay()">Hôm nay</a>
+        <div class="ibox-head">
+            <div style="display: flex">
+                <div class="m-r-5">
+                    <p class="m-t-5">Hiển thị</p>
+                </div>
+                <div>
+                    <select class="form-control" id="limitShowOption" >
+                        <option value="10" label="10"/>
+                        <option value="30" label="30"/>
+                        <option value="50" label="50"/>
+                    </select>
+                </div>
             </div>
-            <div class="item-flex">
-                <a href="#" onclick="searchReportByPreviousDay()">Hôm qua</a>
-            </div>
-            <div class="item-flex">
-                <a href="#" id="currentMonth" onclick="searchReportByCurrentMonth()">Trong tháng</a>
-            </div>
-            <div class="item-flex">
-                <a href="#" onclick="searchReportByPreviousMonth()">Tháng trước</a>
-            </div>
-            <div class="">
-                <button onclick="exportExcel()"  style="margin-right: 5px;" class="btn btn-success" ><i class="fa fa-file-excel-o" style="padding-right: 4px; font-size: 17px"></i>Xuất file excel</button>
+            <div style="display: flex; justify-content: flex-end; align-items: center">
+                <div class="item-flex">
+                    <a href="#" onclick="searchReportByCurrentDay()">Hôm nay</a>
+                </div>
+                <div class="item-flex">
+                    <a href="#" onclick="searchReportByPreviousDay()">Hôm qua</a>
+                </div>
+                <div class="item-flex">
+                    <a href="#" id="currentMonth" onclick="searchReportByCurrentMonth()">Trong tháng</a>
+                </div>
+                <div class="item-flex">
+                    <a href="#" onclick="searchReportByPreviousMonth()">Tháng trước</a>
+                </div>
+                <div class="">
+                    <button onclick="exportExcel()"  style="margin-right: 5px;" class="btn btn-success" ><i class="fa fa-file-excel-o" style="padding-right: 4px; font-size: 17px"></i>Xuất file excel</button>
+                </div>
             </div>
         </div>
         <div class="ibox-body">
@@ -83,13 +98,16 @@
                         <c:if test="${item.status == 1}">
                             <td><span class="badge badge-success">Hoàn thành</span></td>
                         </c:if>
-                        <c:if test="${item.status == 0}">
-                            <td><span class="badge badge-danger">Đang xử lý</span></td>
+                        <c:if test="${item.status == 3}">
+                            <td><span class="badge badge-danger">Đã tiếp nhận</span></td>
+                        </c:if>
+                        <c:if test="${item.status == 4}">
+                            <td><span class="badge badge-danger">Đang chờ xử lý</span></td>
                         </c:if>
                         <c:if test="${item.status == 2}">
                             <td><span class="badge badge-warning">Đang giao</span></td>
                         </c:if>
-                        <c:if test="${item.status == 3}">
+                        <c:if test="${item.status == 0}">
                             <td><span class="badge badge-default">Đã hủy</span></td>
                         </c:if>
                         <td>
@@ -106,9 +124,11 @@
                 </tbody>
             </table>
             </form:form>
-            <ul id="pagination" class="pagination-sm" style="float: right"></ul>
-            <input hidden="true" id="totalPage" value="${totalPage}">
-            <input hidden="true" id="currentPage" value="${currentPage}">
+            <nav id="page_navigation">
+                <ul id="pagination" class="pagination-sm" style="float: right"></ul>
+                <input hidden="true" id="totalPage" value="${totalPage}">
+                <input hidden="true" id="currentPage" value="${currentPage}">
+            </nav>
         </div>
     </div>
 </div>

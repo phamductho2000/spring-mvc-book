@@ -7,9 +7,10 @@ import com.webbansach.entity.CategoryEntity;
 import com.webbansach.entity.PublisherEntity;
 import com.webbansach.repository.BookRepository;
 import com.webbansach.repository.CategoryRepository;
+import com.webbansach.repository.CustomBookRepository;
 import com.webbansach.repository.PublisherRepository;
 import com.webbansach.service.IBookService;
-import com.webbansach.service.IReviewService;
+import static com.webbansach.specifications.BookSpecification.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +18,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import static org.springframework.data.jpa.domain.Specifications.where;
 
 @Service
 public class BookService implements IBookService {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private CustomBookRepository customBookRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -31,9 +36,6 @@ public class BookService implements IBookService {
 
     @Autowired
     private BookConverter bookConverter;
-
-    @Autowired
-    private IReviewService reviewService;
 
     @Override
     public List<BookDTO> findAll(Pageable pageable) {
@@ -65,6 +67,30 @@ public class BookService implements IBookService {
     }
 
     @Override
+    public List<BookDTO> search(int cateId, int publisherId, int min, int max, Pageable pageable){
+
+        Page<BookEntity> bookEntities = customBookRepository.findAll(filter(cateId, publisherId, min, max), pageable);
+        List<BookDTO> bookDTOS = new ArrayList<>();
+        for(BookEntity item: bookEntities) {
+            BookDTO bookDTO = bookConverter.entityToDTO(item);
+            bookDTOS.add(bookDTO);
+        }
+        return bookDTOS;
+    }
+
+//    @Override
+//    public List<BookDTO> search(String name, int status, int cateId, int publisherId, Pageable pageable){
+//
+//        Page<BookEntity> bookEntities = customBookRepository.findAll(search(name, status, cateId, publisherId), pageable);
+//        List<BookDTO> bookDTOS = new ArrayList<>();
+//        for(BookEntity item: bookEntities) {
+//            BookDTO bookDTO = bookConverter.entityToDTO(item);
+//            bookDTOS.add(bookDTO);
+//        }
+//        return bookDTOS;
+//    }
+
+    @Override
     public  List<BookDTO> findAllByCateId(long id, Pageable pageable){
         List<BookEntity> bookEntities = bookRepository.findAllByCategoryId(id, pageable);
         List<BookDTO> bookDTOS = new ArrayList<>();
@@ -75,27 +101,27 @@ public class BookService implements IBookService {
         return bookDTOS;
     }
 
-    @Override
-    public  List<BookDTO> findAllByPublId(long id, Pageable pageable){
-        List<BookEntity> bookEntities = bookRepository.findAllByPublisherId(id, pageable);
-        List<BookDTO> bookDTOS = new ArrayList<>();
-        for(BookEntity item: bookEntities) {
-            BookDTO bookDTO = bookConverter.entityToDTO(item);
-            bookDTOS.add(bookDTO);
-        }
-        return bookDTOS;
-    }
+//    @Override
+//    public  List<BookDTO> findAllByPublId(long id, Pageable pageable){
+//        List<BookEntity> bookEntities = bookRepository.findAllByPublisherId(id, pageable);
+//        List<BookDTO> bookDTOS = new ArrayList<>();
+//        for(BookEntity item: bookEntities) {
+//            BookDTO bookDTO = bookConverter.entityToDTO(item);
+//            bookDTOS.add(bookDTO);
+//        }
+//        return bookDTOS;
+//    }
 
-    @Override
-    public  List<BookDTO> findAllByPublIdandCateId(long pubId, long cateId,  Pageable pageable){
-        List<BookEntity> bookEntities = bookRepository.findAllByPublisherIdAndCategoryId(pubId, cateId, pageable);
-        List<BookDTO> bookDTOS = new ArrayList<>();
-        for(BookEntity item: bookEntities) {
-            BookDTO bookDTO = bookConverter.entityToDTO(item);
-            bookDTOS.add(bookDTO);
-        }
-        return bookDTOS;
-    }
+//    @Override
+//    public  List<BookDTO> findAllByPublIdandCateId(long pubId, long cateId,  Pageable pageable){
+//        List<BookEntity> bookEntities = bookRepository.findAllByPublisherIdAndCategoryId(pubId, cateId, pageable);
+//        List<BookDTO> bookDTOS = new ArrayList<>();
+//        for(BookEntity item: bookEntities) {
+//            BookDTO bookDTO = bookConverter.entityToDTO(item);
+//            bookDTOS.add(bookDTO);
+//        }
+//        return bookDTOS;
+//    }
 
     @Override
     public  List<BookDTO> findAllNew(Pageable pageable){
@@ -122,6 +148,20 @@ public class BookService implements IBookService {
         return bookDTOS;
     }
 
+//    @Override
+//    public  List<BookDTO> findAllFeatureByCateId(long cateId, Pageable pageable){
+//        List<BookEntity> bookEntities =  new ArrayList<>();
+//        for (Object result[]: bookRepository.findlAllFeatureByCateId(cateId, pageable)){
+//            bookEntities.add((BookEntity) result[0]);
+//        }
+//        List<BookDTO> bookDTOS = new ArrayList<>();
+//        for(BookEntity item: bookEntities) {
+//            BookDTO bookDTO = bookConverter.entityToDTO(item);
+//            bookDTOS.add(bookDTO);
+//        }
+//        return bookDTOS;
+//    }
+
     @Override
     public  List<BookDTO> searchBook(String key, int statusBook, int cate, int publ, Pageable pageable){
         List<BookEntity> bookEntities = bookRepository.search(key, statusBook, cate, publ, pageable);
@@ -133,25 +173,25 @@ public class BookService implements IBookService {
         return bookDTOS;
     }
 
-    @Override
-    public  List<BookDTO> searchByMoney(long cateId, int startMoney, int endMoney, Pageable pageable){
-        List<BookEntity> bookEntities = new ArrayList<>();
-        if(startMoney > 0 && endMoney == 0){
-            bookEntities = bookRepository.findAllByPriceGreaterThanAndCategoryId(startMoney, cateId, pageable);
-        }
-        if(startMoney == 0 && endMoney > 0){
-            bookEntities = bookRepository.findAllByPriceLessThanAndCategoryId(endMoney, cateId, pageable);
-        }
-        if(startMoney > 0 && endMoney > 0){
-            bookEntities = bookRepository.searchByMoney(cateId, startMoney, endMoney, pageable);
-        }
-        List<BookDTO> bookDTOS = new ArrayList<>();
-        for(BookEntity item: bookEntities) {
-            BookDTO bookDTO = bookConverter.entityToDTO(item);
-            bookDTOS.add(bookDTO);
-        }
-        return bookDTOS;
-    }
+//    @Override
+//    public  List<BookDTO> searchByMoney(long cateId, int startMoney, int endMoney, Pageable pageable){
+//        List<BookEntity> bookEntities = new ArrayList<>();
+//        if(startMoney > 0 && endMoney == 0){
+//            bookEntities = bookRepository.findAllByPriceGreaterThanAndCategoryId(startMoney, cateId, pageable);
+//        }
+//        if(startMoney == 0 && endMoney > 0){
+//            bookEntities = bookRepository.findAllByPriceLessThanAndCategoryId(endMoney, cateId, pageable);
+//        }
+//        if(startMoney > 0 && endMoney > 0){
+//            bookEntities = bookRepository.searchByMoney(cateId, startMoney, endMoney, pageable);
+//        }
+//        List<BookDTO> bookDTOS = new ArrayList<>();
+//        for(BookEntity item: bookEntities) {
+//            BookDTO bookDTO = bookConverter.entityToDTO(item);
+//            bookDTOS.add(bookDTO);
+//        }
+//        return bookDTOS;
+//    }
 
     @Override
     public void save(BookDTO bookDTO){
@@ -189,18 +229,9 @@ public class BookService implements IBookService {
         return (int) bookRepository.count();
     }
 
-    @Override
-    public int getTotalItemByCateId(long cateId){
-        return bookRepository.countAllByCategoryId(cateId);
-    }
+//    @Override
+//    public int getTotalItemByCateId(long cateId){
+//        return bookRepository.countAllByCategoryId(cateId);
+//    }
 
-    @Override
-    public int getTotalItemByPublId(long publId){
-        return bookRepository.countAllByPublisherId(publId);
-    }
-
-    @Override
-    public int getTotalItemByKeyName(String key){
-        return bookRepository.countAllByNameContaining(key);
-    }
 }

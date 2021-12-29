@@ -4,10 +4,9 @@ import com.webbansach.converter.DetailOrderConverter;
 import com.webbansach.converter.OrderConverter;
 import com.webbansach.dto.DetailOrderDTO;
 import com.webbansach.dto.OrderDTO;
-import com.webbansach.dto.PublisherDTO;
 import com.webbansach.entity.DetailOrderEntity;
 import com.webbansach.entity.OrderEntity;
-import com.webbansach.entity.OrderEntity;
+import com.webbansach.repository.CustomOrderRepository;
 import com.webbansach.repository.DetailOrderRepository;
 import com.webbansach.repository.OrderRepository;
 import com.webbansach.service.IOrderService;
@@ -15,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import static com.webbansach.specifications.OrderSpecification.*;
+import java.util.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,9 @@ import java.util.List;
 public class OrderService implements IOrderService {
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    CustomOrderRepository customOrderRepository;
 
     @Autowired
     OrderConverter orderConverter;
@@ -134,9 +139,22 @@ public class OrderService implements IOrderService {
         return orderDTOS;
     }
 
+//    @Override
+//    public List<OrderDTO> search(int id, int status, String startDate, String endDate, Pageable pageable){
+//        List<OrderEntity> orderEntities = orderRepository.search(id, status, startDate, endDate, pageable);
+//        List<OrderDTO> orderDTOS = new ArrayList<>();
+//        for(OrderEntity item: orderEntities){
+//            OrderDTO orderDTO = orderConverter.entityToDTO(item);
+//            orderDTO.setUser_name(item.getUser().getName());
+//            orderDTOS.add(orderDTO);
+//        }
+//        return orderDTOS;
+//    }
+
     @Override
-    public List<OrderDTO> search(int id, int status, String startDate, String endDate, Pageable pageable){
-        List<OrderEntity> orderEntities = orderRepository.search(id, status, startDate, endDate, pageable);
+    public List<OrderDTO> searchOrder(long id, int status, Date startDate, Date endDate, String optionDate, Pageable pageable){
+
+        Page<OrderEntity> orderEntities = customOrderRepository.findAll(search(id, status, startDate, endDate, optionDate), pageable);
         List<OrderDTO> orderDTOS = new ArrayList<>();
         for(OrderEntity item: orderEntities){
             OrderDTO orderDTO = orderConverter.entityToDTO(item);
@@ -161,15 +179,13 @@ public class OrderService implements IOrderService {
     @Override
     public void save(OrderDTO orderDTO){
         OrderEntity orderEntity = new OrderEntity();
-
             OrderEntity orderEntityOld = orderRepository.findOne(orderDTO.getId());
             orderEntity = orderConverter.dtoToEntity(orderEntityOld, orderDTO);
-
         orderRepository.save(orderEntity);
     }
 
     @Override
-    public int getTotalItem(){
+    public int getTotalItem() {
         return (int) orderRepository.count();
     }
 

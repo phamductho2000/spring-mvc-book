@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -94,6 +95,11 @@ public class CategoryService implements ICategoryService {
     public void remove(long id){
         CategoryEntity categoryEntity = categoryRepository.findOne(id);
         categoryRepository.delete(categoryEntity);
+    }
+
+    @Override
+    public void remove(Long[] ids){
+        categoryRepository.removeCategoriesByIds(Arrays.asList((ids)));
     }
 
     @Override

@@ -7,11 +7,9 @@
             http://www.springframework.org/schema/security
             http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-    <http auto-config="true" use-expressions="true" >
+    <http pattern="/admin/**" auto-config="true" use-expressions="true" authentication-manager-ref="manager1">
 
         <intercept-url pattern="/admin/**" access="hasAnyRole('ADMIN,EMPLOYEE')" />
-
-        <intercept-url pattern="/tai-khoan/**" access="hasAnyRole('USER')" />
 
         <access-denied-handler error-page="/accessDenied" />
 
@@ -19,15 +17,39 @@
                 login-page="/login"
                 username-parameter="j_username"
                 password-parameter="j_password"
-                login-processing-url="/j_spring_security_check"
+                login-processing-url="/admin/j_spring_security_check"
                 authentication-success-handler-ref="customSuccessHandler"
-                authentication-failure-url="/admin?incorrectAccount"/>
+                authentication-failure-url="/login?incorrectAccount"/>
 
         <logout delete-cookies="JSESSIONID"/>
         <remember-me key="uniqueAndSecret" remember-me-parameter="remember-me"/>
     </http>
 
-    <authentication-manager >
+    <http auto-config="true" use-expressions="true" authentication-manager-ref="manager2">
+
+        <intercept-url pattern="/tai-khoan/**" access="hasAnyRole('USER')" />
+
+        <access-denied-handler error-page="/accessDenied" />
+
+        <form-login
+                login-page="/dang-nhap"
+                username-parameter="j_username"
+                password-parameter="j_password"
+                login-processing-url="/j_spring_security_check"
+                authentication-success-handler-ref="customSuccessHandler"
+                authentication-failure-url="/login-failure"/>
+
+        <logout delete-cookies="JSESSIONID"/>
+        <remember-me key="uniqueAndSecret" remember-me-parameter="remember-me"/>
+    </http>
+
+    <authentication-manager id="manager1">
+        <authentication-provider user-service-ref="customUserDetailsService">
+            <password-encoder ref="bcryptEncoder"/>
+        </authentication-provider>
+    </authentication-manager>
+
+    <authentication-manager id="manager2">
         <authentication-provider user-service-ref="customUserDetailsService">
             <password-encoder ref="bcryptEncoder"/>
         </authentication-provider>

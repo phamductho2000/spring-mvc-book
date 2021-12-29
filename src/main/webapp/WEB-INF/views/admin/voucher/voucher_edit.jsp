@@ -20,16 +20,16 @@
         </div>
         <div class="ibox-body">
             <form:form method="POST" action="/admin/voucher/save" modelAttribute="voucher">
-                <form:input path="id" value="${voucher.id}" type="hidden"></form:input>
+                <form:input path="id" value="${voucher.id}" type="hidden" required="required"></form:input>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <form:label path="code">Code giảm giá</form:label>
-                            <form:input path="code" type="text" class="form-control" value="${voucher.code}"></form:input>
+                            <form:input path="code" type="text" class="form-control" value="${voucher.code}" required="required"></form:input>
                         </div>
                         <div class="form-group">
                             <form:label path="discount">Giảm giá (%)</form:label>
-                            <form:input path="discount" type="number" class="form-control" value="${voucher.discount}"></form:input>
+                            <form:input path="discount" type="number" class="form-control" value="${voucher.discount}" required="required"></form:input>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -37,12 +37,12 @@
                             <label class="font-normal"></label>
                             <div class="input-group date">
                                 <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                                <input class="form-control" type="text" name="expirationDate" value="${voucher.expirationDate.toString().replace("-", "/")}">
+                                <input class="form-control" type="text" name="expirationDate" value="${voucher.expirationDate.toString().replace("-", "/")}" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <form:label path="status">Trạng thái</form:label>
-                            <form:select path="status" cssClass="form-control">
+                            <form:select path="status" cssClass="form-control" required="required">
                                 <c:if test="${voucher.status == 0}">
                                     <form:option value="0" label="Không hoạt động"/>
                                     <form:option value="1" label="Hoạt động"/>
@@ -57,7 +57,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <form:label path="description">Mổ tả</form:label>
-                            <form:input path="description" type="text" class="form-control" value="${voucher.description}"></form:input>
+                            <form:input path="description" type="text" class="form-control" value="${voucher.description}" required="required"></form:input>
                         </div>
                     </div>
                 </div>

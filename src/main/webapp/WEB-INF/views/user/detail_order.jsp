@@ -15,21 +15,7 @@
     <div class="page-content">
         <div class="dashboard">
             <div class="container">
-                <div class="row">
-                    <aside class="col-md-3 col-lg-2">
-                        <ul class="nav nav-dashboard flex-column mb-3 mb-md-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/tai-khoan/thong-tin" ><i class="fa fa-user-circle"></i> Tài khoản</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/tai-khoan/don-hang"><i class="fa fa-history"></i> Lịch sử mua hàng</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/dang-xuat"><i class="fa fa-sign-out"></i> Đăng xuất</a>
-                            </li>
-                        </ul>
-                    </aside><!-- End .col-lg-3 -->
-                    <div class="col-md-9 col-lg-10">
+
                         <div class="ibox invoice main-account ">
                             <div class="invoice-header">
                                 <h3>Chi tiết đơn hàng #${Order.id}</h3>
@@ -43,19 +29,31 @@
                                         <fmt:formatDate value="${dateObject }" pattern="dd/MM/yyyy" /></b>
                                     </p>
                                 </div>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <p><b>Địa chỉ người nhận</b></p>
-                                        <p>${Order.user_name}</p>
-                                        <p>Địa chỉ: ${Order.user_address}</p>
-                                        <p>Điện thoại: ${Order.user_phone}</p>
+                                <div style="display: flex; justify-content: space-between">
+                                    <div>
+                                        <p style="font-size: 15px">Địa chỉ người nhận</p>
+                                        <div class="infoCustomer">
+                                            <p style="font-weight: 700">${Order.user_name}</p>
+                                            <p>Địa chỉ: ${Order.user_address}</p>
+                                            <p>Điện thoại: ${Order.user_phone}</p>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        Hình thức giao hàng
+                                    <div>
+                                        <p style="font-size: 15px">Hình thức giao hàng</p>
+                                        <div class="infoCustomer">
+                                            <p>
+                                                <img src="https://salt.tikicdn.com/ts/upload/2a/47/46/0e038f5927f3af308b4500e5b243bcf6.png" width="56" alt="TikiFast" >
+                                                Giao hàng tiết kiệm
+                                            </p>
+                                            <p>Miễn phí vận chuyển</p>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        Phương thức thanh toán
-                                    </div>
+                                   <div>
+                                       <p style="font-size: 15px">Hình thức thanh toán</p>
+                                       <div class="infoCustomer">
+                                           <p>Thanh toán bằng tiền mặt</p>
+                                       </div>
+                                   </div>
                                 </div>
                             </div>
                             <table class="table" >
@@ -144,8 +142,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div><!-- End .col-lg-9 -->
-                </div><!-- End .row -->
+
             </div><!-- End .container -->
         </div><!-- End .dashboard -->
     </div><!-- End .page-content -->

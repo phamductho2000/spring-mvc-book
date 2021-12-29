@@ -18,11 +18,11 @@
                 <div class="col-lg-9">
                     <div class="toolbox">
                         <span style="margin-right: 1rem">Sắp xếp theo</span>
-                        <button class="button-sort" id="sortFeature" onclick="sortProduct('sort_feature')">Bán chạy</button>
-                        <button class="button-sort" id="sortNew" onclick="sortProduct('sort_new')">Mới về</button>
-                        <button class="button-sort" id="sortDiscount" onclick="sortProduct('sort_discount')">Khuyến mãi</button>
-                        <button class="button-sort" id="sortDesPrice" onclick="sortProduct('sort_des_price')">Giá giảm dần</button>
-                        <button class="button-sort" id="sortAscPrice" onclick="sortProduct('sort_asc_price')">Giá tăng dần</button>
+                        <button class="button-sort" id="sortFeature">Bán chạy</button>
+                        <button class="button-sort" id="desc_new">Mới về</button>
+                        <button class="button-sort" id="desc_discount">Khuyến mãi</button>
+                        <button class="button-sort" id="desc_price">Giá giảm dần</button>
+                        <button class="button-sort" id="asc_price">Giá tăng dần</button>
                     </div><!-- End .toolbox -->
 
                     <div class="products mb-3">
@@ -47,27 +47,35 @@
 
                                     <div class="product-body">
                                         <p class="product-title" style="font-size: 13px"><a href="/${item.name}/id=${item.id}">${item.name}</a></p><!-- End .product-title -->
-                                        <c:if test="${item.discount == 0}">
-                                        <div class="product-price">
-                                            <div class="new-price">
-                                                <fmt:formatNumber type="number" groupingUsed="true" value="${item.oldPrice}"/> ₫
-                                            </div>
-                                        </div><!-- End .product-price -->
-                                        </c:if>
-                                        <c:if test="${item.discount > 0}">
+                                        <c:if test="${item.status == 1}">
+                                            <c:if test="${item.discount == 0}">
                                             <div class="product-price">
                                                 <div class="new-price">
-                                                    <fmt:formatNumber type="number" groupingUsed="true" value="${item.price}"/> ₫
-                                                </div>
-                                            </div><!-- End .product-price -->
-                                            <div class="product-price">
-                                                <div class="old-price" style="margin-right: .8rem">
                                                     <fmt:formatNumber type="number" groupingUsed="true" value="${item.oldPrice}"/> ₫
                                                 </div>
-                                                <div class="discount-price" style="font-size: 13px; color: rgb(125, 210, 235)">
-                                                        ${item.discount}%
-                                                </div>
                                             </div><!-- End .product-price -->
+                                            </c:if>
+                                            <c:if test="${item.discount > 0}">
+                                                <div class="product-price">
+                                                    <div class="new-price">
+                                                        <fmt:formatNumber type="number" groupingUsed="true" value="${item.price}"/> ₫
+                                                    </div>
+                                                </div><!-- End .product-price -->
+                                                <div class="product-price">
+                                                    <div class="old-price" style="margin-right: .8rem">
+                                                        <fmt:formatNumber type="number" groupingUsed="true" value="${item.oldPrice}"/> ₫
+                                                    </div>
+                                                    <div class="discount-price" style="font-size: 13px; color: rgb(125, 210, 235)">
+                                                            ${item.discount}%
+                                                    </div>
+                                                </div><!-- End .product-price -->
+                                            </c:if>
+                                        </c:if>
+                                        <c:if test="${item.status == 0}">
+                                            <p>Hết hàng</p>
+                                        </c:if>
+                                        <c:if test="${item.status == 2}">
+                                            <p>Ngừng kinh doanh</p>
                                         </c:if>
                                         <div class="ratings-container">
                                             <div class="ratings">
@@ -82,10 +90,12 @@
                         </div><!-- End .row -->
                     </div><!-- End .products -->
 
-                    <nav aria-label="page_navigation">
+                    <nav id="page_navigation" aria-label="page_navigation">
                         <ul id="pagination" class="pagination-lg" style="float: right"></ul>
                         <input hidden="true" id="totalPage" value="${totalPage}">
                         <input hidden="true" id="currentPage" value="${currentPage}">
+                        <input hidden="true", id="nameCate" value="${nameCate}">
+                        <input hidden="true", id="idCate" value="${id}">
                     </nav>
                 </div><!-- End .col-lg-9 -->
                 <aside class="col-lg-3 order-lg-first">
@@ -93,29 +103,6 @@
                         <div class="widget widget-clean">
                             <label>Lọc theo:</label>
                         </div><!-- End .widget widget-clean -->
-
-                        <div class="widget widget-collapsible">
-                            <h3 class="widget-title">
-                                <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
-                                    Nhà xuất bản
-                                </a>
-                            </h3><!-- End .widget-title -->
-
-                            <div class="collapse show" id="widget-1">
-                                <div class="widget-body">
-                                    <div class="filter-items filter-items-count">
-                                        <c:forEach var="item" items="${listPublisher}">
-                                        <div class="filter-item">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" name="checkBoxPub" id="${item.id}" value="${item.id}">
-                                                <label class="custom-control-label" for="${item.id}">${item.name}</label>
-                                            </div><!-- End .custom-checkbox -->
-                                        </div><!-- End .filter-item -->
-                                        </c:forEach>
-                                    </div><!-- End .filter-items -->
-                                </div><!-- End .widget-body -->
-                            </div><!-- End .collapse -->
-                        </div><!-- End .widget -->
 
                         <div class="widget widget-collapsible">
                             <h3 class="widget-title">
@@ -128,18 +115,58 @@
                                 <div class="widget-body">
                                     <div class="filter-price">
                                         <div class="filter-price-text">
-                                           Chọn khoảng giá:
-                                            <div class="input-group">
-                                                <input type="number" pattern="[0-9]*" id="startMoney" class="input-price">
-                                                <span style="margin: 0 5px"> - </span>
-                                                <input type="number" pattern="[0-9]*" id="endMoney"class="input-price">
-                                            </div>
+                                            Chọn khoảng giá:
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input checkMoney" name="checkBoxRangeMoney" id="range1">
+                                                    <label class="custom-control-label" for="range1"> 0₫ - 150.000₫ </label>
+                                                </div><!-- End .custom-checkbox -->
+                                            </div><!-- End .filter-item -->
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input checkMoney" name="checkBoxRangeMoney" id="range2">
+                                                    <label class="custom-control-label" for="range2"> 150.000₫ - 300.000₫ </label>
+                                                </div><!-- End .custom-checkbox -->
+                                            </div><!-- End .filter-item -->
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input checkMoney" name="checkBoxRangeMoney" id="range3">
+                                                    <label class="custom-control-label" for="range3"> 300.000₫ - 500.000₫ </label>
+                                                </div><!-- End .custom-checkbox -->
+                                            </div><!-- End .filter-item -->
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input checkMoney" name="checkBoxRangeMoney" id="range4">
+                                                    <label class="custom-control-label" for="range4">  500.000₫ - Trở lên</label>
+                                                </div><!-- End .custom-checkbox -->
+                                            </div><!-- End .filter-item -->
                                         </div><!-- End .filter-price-text -->
-                                        <button type="button" class="btn btn-outline-primary" onclick="searchByMoney()">Áp dụng</button>
                                     </div><!-- End .filter-price -->
                                 </div><!-- End .widget-body -->
                             </div><!-- End .collapse -->
                         </div><!-- End .widget -->
+
+                                <div class="widget widget-collapsible">
+                                    <h3 class="widget-title">
+                                        <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
+                                            Nhà xuất bản
+                                        </a>
+                                    </h3><!-- End .widget-title -->
+                                <div class="collapse show" id="widget-1">
+                                    <div class="widget-body">
+                                        <div class="filter-items filter-items-count">
+                                            <c:forEach var="item" items="${listPublisher}">
+                                                <div class="filter-item">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input checkPublisher" name="checkBoxPub" id="${item.id}" value="${item.id}">
+                                                        <label class="custom-control-label" for="${item.id}">${item.name}</label>
+                                                    </div><!-- End .custom-checkbox -->
+                                                </div><!-- End .filter-item -->
+                                            </c:forEach>
+                                        </div><!-- End .filter-items -->
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget -->
                     </div><!-- End .sidebar sidebar-shop -->
                 </aside><!-- End .col-lg-3 -->
             </div><!-- End .row -->

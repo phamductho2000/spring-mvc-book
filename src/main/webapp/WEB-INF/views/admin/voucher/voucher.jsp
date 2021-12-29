@@ -40,15 +40,34 @@
 </div>
 <div class="page-content fade-in-up">
     <div class="ibox">
-        <div class="ibox-head" style="justify-content: flex-end">
-            <a href="/admin/voucher/new"  style="margin-right: 5px;" class="btn btn-primary" ><i class="fa fa-plus" style="padding-right: 4px;"></i>THÊM MỚI</a>
-            <button type="button"  class="btn btn-danger" onclick=""><i class="fa fa-trash" style="padding-right: 4px"></i>XÓA</button>
+        <div class="ibox-head">
+            <div style="display: flex">
+                <div class="m-r-5">
+                    <p class="m-t-5">Hiển thị</p>
+                </div>
+                <div>
+                    <select class="form-control" id="limitShowOption" >
+                        <option value="10" label="10"/>
+                        <option value="30" label="30"/>
+                        <option value="50" label="50"/>
+                    </select>
+                </div>
+            </div>
+            <div style="justify-content: flex-end">
+                <a href="/admin/voucher/new"  style="margin-right: 5px;" class="btn btn-primary" ><i class="fa fa-plus" style="padding-right: 4px;"></i>THÊM MỚI</a>
+                <button type="button"  class="btn btn-danger" id="removeVouchers"><i class="fa fa-trash" style="padding-right: 4px"></i>XÓA</button>
+            </div>
         </div>
         <div class="ibox-body">
-            <table class="table table-striped table-bordered table-hover" id="example-table" cellspacing="0" width="100%">
+            <table class="table table-striped table-bordered table-hover" id="Datatable" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th></th>
+                    <th>
+                        <label class="ui-checkbox">
+                            <input class="checkId" type="checkbox" id="checkAll" onclick="checkAll()">
+                            <span class="input-span"></span>
+                        </label>
+                    </th>
                     <th>Code</th>
                     <th>Giảm giá (%)</th>
                     <th>Mô tả</th>
@@ -63,7 +82,7 @@
                     <tr>
                         <td>
                             <label class="ui-checkbox">
-                                <input type="checkbox">
+                                <input class="checkId input-check" type="checkbox">
                                 <span class="input-span"></span>
                             </label>
                         </td>
@@ -100,9 +119,11 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <ul id="pagination" class="pagination-sm" style="float: right"></ul>
-            <input hidden="true" id="totalPage" value="${totalPage}">
-            <input hidden="true" id="currentPage" value="${currentPage}">
+            <nav id="page_navigation">
+                <ul id="pagination" class="pagination-sm" style="float: right"></ul>
+                <input hidden="true" id="totalPage" value="${totalPage}">
+                <input hidden="true" id="currentPage" value="${currentPage}">
+            </nav>
         </div>
     </div>
 </div>

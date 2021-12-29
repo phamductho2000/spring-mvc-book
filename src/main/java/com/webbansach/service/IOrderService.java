@@ -3,6 +3,8 @@ package com.webbansach.service;
 import com.webbansach.dto.DetailOrderDTO;
 import com.webbansach.dto.OrderDTO;
 import org.springframework.data.domain.Pageable;
+import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface IOrderService {
@@ -24,7 +26,9 @@ public interface IOrderService {
 
     List<OrderDTO> findAllByPreviousMonth(Pageable pageable);
 
-    List<OrderDTO> search(int id, int status, String startDate, String endDate, Pageable pageable);
+//    List<OrderDTO> search(int id, int status, String startDate, String endDate, Pageable pageable);
+
+    List<OrderDTO> searchOrder(long id, int status, Date startDate, Date endDate, String optionDate, Pageable pageable);
 
     List<OrderDTO> findAllByStatus(int status, Pageable pageable);
 

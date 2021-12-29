@@ -12,6 +12,8 @@ public class OrderConverter {
         result.setTotal_price(orderEntity.getTotal_price());
         result.setUser_id(orderEntity.getUser().getId());
         result.setUser_name(orderEntity.getUser().getName());
+        result.setPayment_id(orderEntity.getPayment().getId());
+        result.setPayment_method(orderEntity.getPayment().getCode());
         result.setUser_address(orderEntity.getUser().getAddress());
         result.setUser_phone(orderEntity.getUser().getPhone());
         result.setStatus(orderEntity.getStatus());

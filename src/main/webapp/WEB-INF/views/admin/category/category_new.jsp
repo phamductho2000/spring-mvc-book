@@ -24,13 +24,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <form:label path="name">Tên thể loại sách</form:label>
-                            <form:input path="name" type="text" class="form-control" ></form:input>
+                            <form:input path="name" type="text" class="form-control" required="required"></form:input>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <form:label path="status">Hiển thị</form:label>
-                            <form:select path="status" cssClass="form-control">
+                            <form:select path="status" cssClass="form-control" required="required">
                                 <form:option value="0" label="Không"/>
                                 <form:option value="1" label="Có"/>
                             </form:select>

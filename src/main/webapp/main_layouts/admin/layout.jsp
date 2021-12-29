@@ -17,10 +17,11 @@
     <link rel="stylesheet" href="<c:url value='/resources/admin/assets/vendors/jvectormap/jquery-jvectormap-2.0.3.css'/>">
     <link href="<c:url value='/resources/admin/assets/vendors/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css'/>" rel="stylesheet" />
     <link href="<c:url value='/resources/admin/assets/vendors/bootstrap-timepicker/css/bootstrap-timepicker.min.css'/>" rel="stylesheet" />
-    <link href="<c:url value='/resources/admin/assets/vendors/summernote/dist/summernote.css'/>" rel="stylesheet" />
+<%--    <link href="<c:url value='/resources/admin/assets/vendors/summernote/dist/summernote.css'/>" rel="stylesheet" />--%>
     <!-- THEME STYLES-->
     <link rel="stylesheet" href="<c:url value='/resources/admin/assets/css/main.css'/>">
     <!-- PAGE LEVEL STYLES-->
+
 </head>
 
 <body class="fixed-navbar">
@@ -189,27 +190,39 @@
 <script src="<c:url value='/resources/admin/assets/vendors/select2/dist/js/select2.full.min.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/admin/assets/vendors/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/admin/assets/vendors/bootstrap-timepicker/js/bootstrap-timepicker.min.js'/>" type="text/javascript"></script>
-<script src="<c:url value='/resources/admin/assets/vendors/summernote/dist/summernote.min.js'/>" type="text/javascript"></script>
+<script src="<c:url value='/resources/admin/assets/vendors/ckfinder/ckfinder.js'/>" type="text/javascript"></script>
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <!-- CORE SCRIPTS-->
-<script src="<c:url value='/resources/admin/assets/js/app.min.js'/>"></script>
-<script src="<c:url value='/resources/admin/assets/js/scripts/remove.js'/>"></script>
-<script src="<c:url value='/resources/admin/assets/js/scripts/search.js'/>"></script>
+<script src="<c:url value='/resources/admin/assets/js/app.min.js'/>" type="text/javascript"></script>
+<script src="<c:url value='/resources/admin/assets/js/scripts/remove.js'/>" type="text/javascript"></script>
+<script src="<c:url value='/resources/admin/assets/js/scripts/search.js'/>" type="text/javascript"></script>
 <!-- PAGE LEVEL SCRIPTS-->
-<script src="<c:url value='/resources/admin/assets/js/scripts/dashboard_1_demo.js'/>"></script>
-<script src="<c:url value='/resources/admin/assets/js/scripts/jquery.twbsPagination.js'/>"></script>
+<script src="<c:url value='/resources/admin/assets/js/scripts/dashboard_1_demo.js'/>" type="text/javascript"></script>
+<script src="<c:url value='/resources/admin/assets/js/scripts/jquery.twbsPagination.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/admin/assets/js/scripts/form-plugins.js'/>" type="text/javascript"></script>
 </body>
 <script>
-    //summernote
-    $('#summernote').summernote({
-        placeholder: ' Viết mô tả sản phẩm tại đây.',
-        height: 300
+    $(document).ready(function () {
+
+        pagination()
+
+        var editor = CKEDITOR.replace('editor');
+        CKFinder.setupCKEditor(editor, '/resources/admin/assets/vendors/ckfinder/')
+
+        function exportExcel() {
+            $('#formReport').submit()
+        }
+
+        $('#inputImage').on('change', function (event) {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imgProduct').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        })
+
     })
-
-    function exportExcel() {
-        $('#formReport').submit()
-    }
-
-
 </script>
 </html>

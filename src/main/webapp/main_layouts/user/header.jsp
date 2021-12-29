@@ -10,28 +10,27 @@
 <header class="header header-8" id="header_user">
     <div class="header-top">
         <div class="container">
+            <div class="header-left">
+                <ul class="top-menu">
+                    <li>
+                        <a href="#">Links</a>
+                        <ul>
+                            <li><a href="tel:#"><i class="icon-phone"></i>${contact.phone}</a></li>
+                            <li><a href=""><i class="fa fa-envelope-o"></i>${contact.email}</a></li>
+                        </ul>
+                    </li>
+                </ul><!-- End .top-menu -->
+            </div>
             <div class="header-right">
                 <ul class="top-menu">
                     <li>
                         <a href="#">Links</a>
                         <ul>
-                            <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
-                            <li><a href="">About Us</a></li>
-                            <sec:authorize access="isAnonymous()">
-                                <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Đăng nhập</a></li>
-                            </sec:authorize>
                             <sec:authorize access="isAuthenticated()">
                             <li>
-                                <div class="dropdown">
-                                    <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <%= SecurityUtils.getPrincipal().getFullName() %>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="/tai-khoan/thong-tin">Tài khoản</a>
-                                        <a class="dropdown-item" href="/tai-khoan/don-hang">Lịch sử mua hàng</a>
-                                        <a class="dropdown-item" href="/dang-xuat">Đăng xuất</a>
-                                    </div>
-                                </div>
+                                <a>
+                                    Xin chào <%= SecurityUtils.getPrincipal().getFullName() %>
+                                </a>
                             </li>
                             </sec:authorize>
                         </ul>
@@ -49,8 +48,8 @@
                     <i class="icon-bars"></i>
                 </button>
 
-                <a href="index.html" class="logo">
-                    <img src="assets/images/demos/demo-10/logo.png" alt="Molla Logo" width="105" height="25">
+                <a href="" class="logo">
+                    <img src="/resources/user/assets/images/logo.png" width="105px" height="25px">
                 </a>
             </div><!-- End .header-left -->
 
@@ -65,34 +64,50 @@
                             <ul>
                                 <c:forEach var="item" items="${menu}">
                                 <li class="custom-link">
-                                    <a href="/${item.name}/${item.id}" class="linkMenu">${item.name}</a>
+                                    <a href="/${item.name}/${item.id}?page=1&limit=16" class="linkMenu">${item.name}</a>
                                 </li>
                                 </c:forEach>
                             </ul>
                         </li>
                         <li>
-                            <a href="#" class="sf-with-ul">Blog</a>
-                        </li>
-                        <li>
-                            <a href="#" class="sf-with-ul">Liên hệ</a>
+                            <a href="/lien-he" class="sf-with-ul">Liên hệ</a>
                         </li>
                     </ul><!-- End .menu -->
                 </nav><!-- End .main-nav -->
 
                 <div class="header-search">
-                    <a onclick="searchProduct()" class="search-toggle" style="border: none; background: none" ><i class="icon-search"></i></a>
-                    <form action="#" method="get">
+                    <a id="btnSearch" class="search-toggle" style="border: none; background: none" ><i class="icon-search"></i></a>
+                    <form action="/tim-kiem" method="GET" id="formSearch">
                         <div class="header-search-wrapper">
                             <label for="q" class="sr-only">Search</label>
-                            <input type="search" class="form-control" name="q" id="q" placeholder="Tìm kiếm..." required>
+                            <input type="search" class="form-control" name="key" id="q" placeholder="Tìm kiếm..." required>
                         </div><!-- End .header-search-wrapper -->
                     </form>
                 </div><!-- End .header-search -->
 
-                <div class="cart-dropdown" id="wishlist">
-                    <a href="/yeu-thich"><i class="icon-heart-o" style="font-size: 2.2rem"></i></a>
-<%--                    <span class="cart-count" style="background-color: #e94444">0</span>--%>
-                </div>
+                <sec:authorize access="isAnonymous()">
+                    <div style="padding-top: 1.2rem; padding-left: 2.5rem;">
+                        <a href="#signin-modal" data-toggle="modal">
+                            <i class="fa fa-user-circle" style="font-size: 2.2rem; color: #435d7a;"></i>
+                        </a>
+                    </div>
+                </sec:authorize>
+
+                <sec:authorize access="isAuthenticated()">
+                    <div class="dropdown user-dropdown" style="padding-top: 1.2rem; padding-left: 2.5rem;">
+
+                        <a aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-circle" style="font-size: 2.2rem; color: #435d7a;"></i>
+                        </a>
+
+                        <div class="dropdown-menu" style="width: 200px; font-size: 1.3rem; border-radius: 10px; margin: .125rem -5rem;">
+                            <a class="dropdown-item" href="/tai-khoan/thong-tin">Tài khoản</a>
+                            <a class="dropdown-item" href="/tai-khoan/don-hang">Lịch sử mua hàng</a>
+                            <a class="dropdown-item" href="/tai-khoan/yeu-thich">Yêu thích</a>
+                            <a class="dropdown-item" href="/dang-xuat">Đăng xuất</a>
+                        </div>
+                    </div>
+                </sec:authorize>
 
                 <div class="dropdown cart-dropdown" id="cart_dropdown">
                     <a href="/gio-hang" class="dropdown-toggle" role="button" >
@@ -128,7 +143,7 @@
                                                 <img src="/resources/book_images/${item.value.book.image}" alt="product">
                                             </a>
                                         </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
+                                        <a href="#" onclick="removeItemCartDropDown(${item.value.book.image})" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                     </div><!-- End .product -->
                                 </div><!-- End .cart-product -->
                             </c:forEach>
@@ -138,8 +153,7 @@
                             </div><!-- End .dropdown-cart-total -->
 
                             <div class="dropdown-cart-action">
-                                        <a href="/gio-hang" class="btn btn-primary">XEM GIỎ HÀNG</a>
-                                        <a href="checkout.html" class="btn btn-outline-primary-2"><span>THANH TOÁN</span><i class="icon-long-arrow-right"></i></a>
+                                        <a href="/gio-hang" class="btn btn-primary" style="width: 100%">XEM GIỎ HÀNG VÀ THANH TOÁN</a>
                             </div><!-- End .dropdown-cart-total -->
                         <% } %>
                     </div><!-- End .dropdown-menu -->
@@ -162,24 +176,22 @@
                     <div class="form-tab">
                         <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Đăng nhập</a>
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">ĐĂNG NHẬP</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Đăng ký</a>
+                                <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">ĐĂNG KÝ</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="tab-content-5">
                             <br>
-                            <c:if test="${param.incorrectAccount != null}">
-                                <div class="alert alert-danger">
+                                <div class="alert alert-danger" id="alertLoginFail" style="display: none">
                                     Tài khoản hoặc mật khẩu không đúng
                                 </div>
-                            </c:if>
                             <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                <form action="/j_spring_security_check" method="post">
+                                <form action="/j_spring_security_check" method="post" id="formLogin">
                                     <div class="form-group">
-                                        <label for="singin-email">Tài khoản</label>
-                                        <input type="text" class="form-control" id="singin-email" name="j_username" required>
+                                        <label for="singin-username">Tài khoản</label>
+                                        <input type="text" class="form-control" id="singin-username" name="j_username" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
@@ -188,7 +200,7 @@
                                     </div><!-- End .form-group -->
 
                                     <div class="form-footer">
-                                        <button type="submit" class="btn btn-outline-primary-2">
+                                        <button type="button" id="submitLogin" class="btn btn-outline-primary-2">
                                             <span>ĐĂNG NHẬP</span>
                                             <i class="icon-long-arrow-right"></i>
                                         </button>
@@ -198,7 +210,7 @@
                                             <label class="custom-control-label" for="signin-remember">Remember Me</label>
                                         </div><!-- End .custom-checkbox -->
 
-                                        <a href="#" class="forgot-link">Quên mật khẩu?</a>
+                                        <a href="/forgot-password" class="forgot-link">Quên mật khẩu?</a>
                                     </div><!-- End .form-footer -->
                                 </form>
                                 <div class="form-choice">
@@ -222,8 +234,8 @@
                             <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
                                 <form action="/dang-ky" method="post">
                                     <div class="form-group">
-                                        <label for="register-email">Nhập tài khoản *</label>
-                                        <input type="email" class="form-control" id="register-email" name="register-user" required>
+                                        <label for="register-user">Nhập tài khoản *</label>
+                                        <input type="text" class="form-control" id="register-user" name="register-user" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
@@ -244,7 +256,7 @@
                                     </div><!-- End .form-footer -->
                                 </form>
                                 <div class="form-choice">
-                                    <p class="text-center">or sign in with</p>
+                                    <p class="text-center">hoặc đăng nhập với</p>
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <a href="#" class="btn btn-login btn-g">
@@ -268,4 +280,5 @@
         </div><!-- End .modal-content -->
     </div><!-- End .modal-dialog -->
 </div><!-- End .modal -->
+
 </head>
